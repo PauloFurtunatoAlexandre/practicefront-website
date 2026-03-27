@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticeFront — Competitive Positioning Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --bg:            hsl(230, 18%, 6%);
+    --card:          hsl(230, 16%, 9%);
+    --surface-1:     hsl(230, 14%, 13%);
+    --surface-2:     hsl(230, 12%, 17%);
+    --border:        hsl(230, 12%, 18%);
+    --fg:            hsl(220, 20%, 95%);
+    --fg-secondary:  hsl(220, 15%, 78%);
+    --fg-muted:      hsl(220, 10%, 56%);
+    --fg-subtle:     hsl(220, 8%, 38%);
+    --fg-faint:      hsl(220, 6%, 26%);
+    --primary:       hsl(234, 85%, 68%);
+    --primary-glow:  hsl(234, 85%, 68% / 0.15);
+    --primary-tint:  hsl(234, 85%, 68% / 0.08);
+    --primary-tint2: hsl(234, 85%, 68% / 0.04);
+    --font-heading:  'Space Grotesk', system-ui, sans-serif;
+    --font-body:     'Inter', system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+    --font-display:  'Instrument Serif', Georgia, serif;
+    --radius:        0.5rem;
+    --noise-opacity: 0.03;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    padding: 40px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .logo-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logo-wordmark {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .logo-wordmark span { opacity: 0.35; }
+
+  .header h1 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--primary), hsl(280, 70%, 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-family: var(--font-mono);
+    color: var(--fg-muted);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Positioning Map ── */
+  .positioning-map {
+    position: relative;
+    width: 700px;
+    height: 700px;
+    margin: 0 auto 64px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .axis-label {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--fg-faint);
+  }
+
+  .axis-label.top    { top: 16px; left: 50%; transform: translateX(-50%); }
+  .axis-label.bottom { bottom: 16px; left: 50%; transform: translateX(-50%); }
+  .axis-label.left   { left: 16px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+  .axis-label.right  { right: 16px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+
+  .grid-line-h, .grid-line-v {
+    position: absolute;
+    background: var(--surface-1);
+  }
+  .grid-line-h { width: 100%; height: 1px; left: 0; top: 50%; }
+  .grid-line-v { height: 100%; width: 1px; top: 0; left: 50%; }
+
+  .quadrant-label {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    padding: 5px 9px;
+    border-radius: 4px;
+    background: hsl(230, 16%, 9% / 0.85);
+  }
+  .q-tl { top: 40px; left: 40px; }
+  .q-tr { top: 40px; right: 40px; }
+  .q-bl { bottom: 40px; left: 40px; }
+  .q-br { bottom: 40px; right: 40px; }
+
+  .company {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    cursor: default;
+    z-index: 2;
+  }
+
+  .company .dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin: 0 auto 6px;
+    position: relative;
+  }
+
+  .company .dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid;
+    opacity: 0.3;
+  }
+
+  /* PracticeFront — primary accent */
+  .company.pf .dot { background: var(--primary); box-shadow: 0 0 20px hsl(234, 85%, 68% / 0.4); }
+  .company.pf .dot::after { border-color: var(--primary); }
+  .company.pf .name { color: var(--primary); font-weight: 700; font-size: 13px; }
+
+  .company .name { font-family: var(--font-heading); font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--fg-secondary); }
+  .company .desc { font-family: var(--font-body); font-size: 9px; color: var(--fg-subtle); max-width: 120px; margin-top: 2px; }
+
+  .company.di     .dot { background: hsl(25, 90%, 58%); }
+  .company.di     .dot::after { border-color: hsl(25, 90%, 58%); }
+  .company.sikka  .dot { background: hsl(0, 72%, 58%); }
+  .company.sikka  .dot::after { border-color: hsl(0, 72%, 58%); }
+  .company.kolla  .dot { background: hsl(43, 90%, 52%); }
+  .company.kolla  .dot::after { border-color: hsl(43, 90%, 52%); }
+  .company.pbn    .dot { background: hsl(152, 58%, 44%); }
+  .company.pbn    .dot::after { border-color: hsl(152, 58%, 44%); }
+  .company.adit   .dot { background: hsl(193, 75%, 46%); }
+  .company.adit   .dot::after { border-color: hsl(193, 75%, 46%); }
+  .company.jarvis .dot { background: hsl(322, 70%, 64%); }
+  .company.jarvis .dot::after { border-color: hsl(322, 70%, 64%); }
+
+  /* Opportunity zone */
+  .opportunity-zone {
+    position: absolute;
+    top: 45px;
+    right: 45px;
+    width: 280px;
+    height: 200px;
+    border: 2px dashed hsl(234, 85%, 68% / 0.22);
+    border-radius: 12px;
+    z-index: 1;
+  }
+  .opportunity-zone .label {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: var(--card);
+    padding: 0 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--fg);
+  }
+
+  /* ── Feature Matrix ── */
+  .matrix-container {
+    max-width: 960px;
+    margin: 0 auto 64px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    padding: 14px 16px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid var(--border);
+    color: var(--fg-muted);
+    background: var(--card);
+  }
+
+  thead th:first-child {
+    text-align: left;
+    min-width: 220px;
+  }
+
+  thead th.pf-col {
+    background: var(--primary-tint);
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  tbody tr { border-bottom: 1px solid var(--surface-1); }
+  tbody tr:hover { background: hsl(220, 20%, 95% / 0.02); }
+
+  tbody td {
+    padding: 12px 16px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  tbody td:first-child {
+    text-align: left;
+    font-weight: 500;
+    color: var(--fg-secondary);
+  }
+
+  .category-row td {
+    background: hsl(230, 14%, 13% / 0.6);
+    font-family: var(--font-mono);
+    font-weight: 700 !important;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--fg-subtle) !important;
+    padding: 10px 16px;
+  }
+
+  .check   { color: hsl(152, 58%, 44%); font-size: 18px; }
+  .cross   { color: var(--fg-faint);    font-size: 16px; }
+  .partial { color: hsl(43, 90%, 52%);  font-size: 14px; }
+  .unique  { font-family: var(--font-mono); color: var(--primary); font-weight: 700; font-size: 11px; letter-spacing: 0.5px; }
+
+  .pf-cell { background: var(--primary-tint2); }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* ── Positioning narrative ── */
+  .narrative {
+    max-width: 800px;
+    margin: 0 auto 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .narrative-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    transition: border-color 0.2s;
+  }
+
+  .narrative-card:hover {
+    border-color: hsl(230, 12%, 26%);
+  }
+
+  .narrative-card h3 {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .narrative-card p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--fg-muted);
+  }
+
+  .vs-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .vs-di     { background: hsl(25, 90%, 58% / 0.14); color: hsl(25, 90%, 62%); }
+  .vs-sikka  { background: hsl(0, 72%, 58% / 0.14);  color: hsl(0, 72%, 62%);  }
+  .vs-kolla  { background: hsl(43, 90%, 52% / 0.14); color: hsl(43, 90%, 58%); }
+  .vs-adit   { background: hsl(193, 75%, 46% / 0.14);color: hsl(193, 75%, 52%);}
+
+  /* ── Footer ── */
+  .footer-note {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-faint);
+    margin-top: 40px;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-lockup">
+    <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.3"/>
+      <rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.55"/>
+      <rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,85%,68%)" opacity="0.9"/>
+    </svg>
+    <span class="logo-wordmark">Practice<span>Front</span></span>
+  </div>
+  <h1>PracticeFront Competitive Positioning</h1>
+  <p>Market landscape analysis — March 2026</p>
+</div>
+
+<!-- ── Positioning Map ── -->
+<div class="positioning-map">
+  <div class="grid-line-h"></div>
+  <div class="grid-line-v"></div>
+
+  <div class="axis-label top">Practice-Owner Facing (Simple UX)</div>
+  <div class="axis-label bottom">Developer / Infrastructure Layer</div>
+  <div class="axis-label left">Analytics Only (Passive Data)</div>
+  <div class="axis-label right">Actionable + Accountability</div>
+
+  <div class="quadrant-label q-tl">Simple Monitoring</div>
+  <div class="quadrant-label q-tr">Monitor + Act</div>
+  <div class="quadrant-label q-bl">Raw Data Pipes</div>
+  <div class="quadrant-label q-br">Smart Infrastructure</div>
+
+  <div class="opportunity-zone">
+    <span class="label">PracticeFront's White Space</span>
+  </div>
+
+  <!-- PracticeFront — top-right quadrant, high simplicity + high actionability -->
+  <div class="company pf" style="left: 78%; top: 15%;">
+    <div class="dot"></div>
+    <div class="name">PracticeFront</div>
+    <div class="desc">Health monitoring + Partner accountability</div>
+  </div>
+
+  <!-- Dental Intelligence — top-left area, practice-facing but analytics-heavy -->
+  <div class="company di" style="left: 30%; top: 22%;">
+    <div class="dot"></div>
+    <div class="name">Dental Intelligence</div>
+    <div class="desc">Deep analytics, 47+ metrics, $85M funded</div>
+  </div>
+
+  <!-- Sikka — bottom-center, infrastructure with growing AI capabilities -->
+  <div class="company sikka" style="left: 55%; top: 72%;">
+    <div class="dot"></div>
+    <div class="name">Sikka</div>
+    <div class="desc">400+ PMS, MCP server, AI agents</div>
+  </div>
+
+  <!-- Kolla — bottom-left, pure infrastructure -->
+  <div class="company kolla" style="left: 30%; top: 80%;">
+    <div class="dot"></div>
+    <div class="name">Kolla</div>
+    <div class="desc">$19/loc, unified API, data warehouse</div>
+  </div>
+
+  <!-- Practice by Numbers — mid-left, analytics -->
+  <div class="company pbn" style="left: 25%; top: 38%;">
+    <div class="dot"></div>
+    <div class="name">Practice by Numbers</div>
+    <div class="desc">Visualization + patient insights</div>
+  </div>
+
+  <!-- Adit — mid-right, all-in-one but high switching cost -->
+  <div class="company adit" style="left: 62%; top: 35%;">
+    <div class="dot"></div>
+    <div class="name">Adit</div>
+    <div class="desc">All-in-one: comms, scheduling, payments</div>
+  </div>
+
+  <!-- Jarvis / Henry Schein — bottom-left-ish, Dentrix-locked -->
+  <div class="company jarvis" style="left: 40%; top: 55%;">
+    <div class="dot"></div>
+    <div class="name">Jarvis (Henry Schein)</div>
+    <div class="desc">Dentrix-embedded predictive models</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(234,85%,68%)"></div> PracticeFront</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(25,90%,58%)"></div> Dental Intelligence</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(0,72%,58%)"></div> Sikka</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(43,90%,52%)"></div> Kolla</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(152,58%,44%)"></div> Practice by Numbers</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(193,75%,46%)"></div> Adit</div>
+  <div class="legend-item"><div class="legend-dot" style="background:hsl(322,70%,64%)"></div> Jarvis (Henry Schein)</div>
+</div>
+
+<!-- ── Head-to-Head Narratives ── -->
+<div class="narrative">
+  <div class="narrative-card">
+    <h3><span class="vs-badge vs-di">vs Dental Intelligence</span></h3>
+    <p>DI gives you 47 metrics and expects you to study them. We give you 3 traffic lights and say "here's who can fix the red one." Their $85M round funds more complexity. Our approach exploits the innovator's dilemma — simplification would cannibalize their premium pricing.</p>
+  </div>
+  <div class="narrative-card">
+    <h3><span class="vs-badge vs-sikka">vs Sikka</span></h3>
+    <p>Sikka connects 400+ PMS systems and just launched MCP server support for AI agents. They're the best pipe in the market. We're the dashboard that makes the data meaningful AND the marketplace that connects it to action. Different layer, potentially complementary.</p>
+  </div>
+  <div class="narrative-card">
+    <h3><span class="vs-badge vs-kolla">vs Kolla</span></h3>
+    <p>Kolla solves the plumbing problem at $19/location. We solve the meaning problem (what does this data tell you?) and the action problem (what do you do about it?). Kolla could become an integration partner for multi-PMS coverage, not a competitor.</p>
+  </div>
+  <div class="narrative-card">
+    <h3><span class="vs-badge vs-adit">vs Adit</span></h3>
+    <p>Adit tries to replace everything — comms, scheduling, payments, analytics. High switching cost, forces PMS migration. We monitor everything without replacing anything. Zero switching cost. We work alongside existing tools, not against them.</p>
+  </div>
+</div>
+
+<!-- ── Feature Comparison Matrix ── -->
+<div class="section-title">Feature Comparison Matrix</div>
+
+<div class="matrix-container">
+<table>
+  <thead>
+    <tr>
+      <th>Capability</th>
+      <th class="pf-col">PracticeFront</th>
+      <th>Dental Intel</th>
+      <th>Sikka</th>
+      <th>Kolla</th>
+      <th>Adit</th>
+      <th>Jarvis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="category-row"><td colspan="7">Core Philosophy</td></tr>
+    <tr>
+      <td>10-second health scan</td>
+      <td class="pf-cell"><span class="unique">UNIQUE</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>Partner accountability tracking</td>
+      <td class="pf-cell"><span class="unique">UNIQUE</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>Curated partner marketplace</td>
+      <td class="pf-cell"><span class="unique">UNIQUE</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>Passive monitoring (no studying)</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+
+    <tr class="category-row"><td colspan="7">Patient Pillar</td></tr>
+    <tr>
+      <td>Patient retention rate</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td>New patient acquisition tracking</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td>Reactivation opportunity value</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+    </tr>
+    <tr>
+      <td>Membership plan analytics</td>
+      <td class="pf-cell"><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+
+    <tr class="category-row"><td colspan="7">Scheduling Pillar</td></tr>
+    <tr>
+      <td>Unscheduled treatment value</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td>No-show rate + cost impact</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td>Smart schedule optimization</td>
+      <td class="pf-cell"><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+
+    <tr class="category-row"><td colspan="7">Collections Pillar</td></tr>
+    <tr>
+      <td>Collection rate + Days in AR</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td>Insurance denial rate tracking</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="partial">◐</span></td>
+    </tr>
+    <tr>
+      <td>RCM partner performance scoring</td>
+      <td class="pf-cell"><span class="unique">UNIQUE</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+
+    <tr class="category-row"><td colspan="7">Data &amp; Infrastructure</td></tr>
+    <tr>
+      <td>Multi-PMS normalization</td>
+      <td class="pf-cell"><span class="partial">◐</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>PMS connections (count)</td>
+      <td class="pf-cell">1 (OD)</td>
+      <td>3-5</td>
+      <td>400+</td>
+      <td>10+</td>
+      <td>—</td>
+      <td>1 (Dentrix)</td>
+    </tr>
+    <tr>
+      <td>Partner/developer API</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>AI / MCP agent support</td>
+      <td class="pf-cell"><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+    <tr>
+      <td>Data governance + audit logs</td>
+      <td class="pf-cell"><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="partial">◐</span></td>
+      <td><span class="cross">✕</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+
+    <tr class="category-row"><td colspan="7">Business Model</td></tr>
+    <tr>
+      <td>Practice cost</td>
+      <td class="pf-cell">Free*</td>
+      <td>$299-599/mo</td>
+      <td>API fees</td>
+      <td>$19/loc</td>
+      <td>$299+/mo</td>
+      <td>Bundled</td>
+    </tr>
+    <tr>
+      <td>Revenue model</td>
+      <td class="pf-cell">Partner fees</td>
+      <td>Practice SaaS</td>
+      <td>API / data</td>
+      <td>API / data</td>
+      <td>Practice SaaS</td>
+      <td>PMS bundle</td>
+    </tr>
+    <tr>
+      <td>DSO multi-location support</td>
+      <td class="pf-cell"><span class="partial">◐</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="check">✓</span></td>
+      <td><span class="cross">✕</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="legend" style="margin-bottom: 64px;">
+  <div class="legend-item"><span class="check">✓</span> Full support</div>
+  <div class="legend-item"><span class="partial">◐</span> Partial / limited</div>
+  <div class="legend-item"><span class="cross">✕</span> Not available</div>
+  <div class="legend-item"><span class="unique">UNIQUE</span> Only PracticeFront</div>
+  <div class="legend-item" style="color:var(--fg-faint)">* Free to practices; partners pay $20-25/mo per connected practice</div>
+</div>
+
+<div class="footer-note">PracticeFront Market Research — March 2026 — Confidential</div>
+
+</body>
+</html>

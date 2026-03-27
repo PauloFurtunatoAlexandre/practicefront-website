@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticeFront — Visual Identity System v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════
+     THEME TOKENS — DARK (Default)
+     ══════════════════════════════════════════ */
+  [data-theme="dark"] {
+    --bg-0: hsl(230, 18%, 6%);
+    --bg-1: hsl(230, 16%, 9%);
+    --bg-2: hsl(230, 14%, 13%);
+    --bg-3: hsl(230, 12%, 17%);
+    --border: hsl(230, 12%, 18%);
+    --border-subtle: hsl(230, 10%, 14%);
+    --text-primary: hsl(220, 20%, 95%);
+    --text-secondary: hsl(220, 10%, 70%);
+    --text-muted: hsl(220, 8%, 45%);
+    --accent: hsl(234, 85%, 68%);
+    --accent-hover: hsl(234, 85%, 74%);
+    --accent-muted: hsl(234, 40%, 20%);
+    --accent-glow: hsla(234, 85%, 68%, 0.15);
+    --accent-text: hsl(234, 85%, 72%);
+    --warm: hsl(28, 80%, 62%);
+    --warm-muted: hsl(28, 40%, 18%);
+    --warm-text: hsl(28, 80%, 62%);
+    --success: hsl(152, 60%, 52%);
+    --success-muted: hsl(152, 30%, 14%);
+    --success-text: hsl(152, 60%, 52%);
+    --warning: hsl(38, 85%, 58%);
+    --warning-muted: hsl(38, 40%, 15%);
+    --danger: hsl(0, 70%, 58%);
+    --danger-muted: hsl(0, 35%, 15%);
+    --gradient-brand: linear-gradient(135deg, hsl(234, 85%, 68%), hsl(280, 70%, 65%));
+    --gradient-warm: linear-gradient(135deg, hsl(28, 80%, 62%), hsl(350, 70%, 62%));
+    --gradient-health: linear-gradient(135deg, hsl(152, 60%, 52%), hsl(175, 70%, 45%));
+    --gradient-depth: linear-gradient(135deg, hsl(230, 18%, 6%), hsl(234, 85%, 68%));
+    --nav-bg: hsla(230, 18%, 6%, 0.85);
+    --card-shadow: 0 16px 48px -12px hsla(0, 0%, 0%, 0.4);
+    --noise-opacity: 0.03;
+    --logo-text-on-light-card: hsl(230, 18%, 10%);
+    --logo-front-on-light-card: 0.4;
+    --do-bg: hsl(152, 30%, 14%);
+    --do-border: hsl(152, 30%, 22%);
+    --dont-bg: hsl(0, 35%, 15%);
+    --dont-border: hsl(0, 25%, 22%);
+    --code-bg: var(--bg-2);
+    --icon-stroke: var(--text-secondary);
+    --toggle-track: var(--bg-3);
+    --toggle-thumb: var(--text-primary);
+    --swatch-meta-bg: var(--bg-1);
+    --hero-glow: var(--accent-glow);
+  }
+
+  /* ══════════════════════════════════════════
+     THEME TOKENS — LIGHT
+     ══════════════════════════════════════════ */
+  [data-theme="light"] {
+    --bg-0: hsl(225, 20%, 97%);
+    --bg-1: hsl(225, 18%, 100%);
+    --bg-2: hsl(225, 15%, 94%);
+    --bg-3: hsl(225, 12%, 90%);
+    --border: hsl(225, 12%, 86%);
+    --border-subtle: hsl(225, 10%, 91%);
+    --text-primary: hsl(230, 25%, 10%);
+    --text-secondary: hsl(225, 10%, 38%);
+    --text-muted: hsl(225, 8%, 55%);
+    --accent: hsl(234, 75%, 55%);
+    --accent-hover: hsl(234, 75%, 48%);
+    --accent-muted: hsl(234, 50%, 93%);
+    --accent-glow: hsla(234, 75%, 55%, 0.1);
+    --accent-text: hsl(234, 75%, 45%);
+    --warm: hsl(28, 75%, 48%);
+    --warm-muted: hsl(28, 50%, 93%);
+    --warm-text: hsl(28, 75%, 40%);
+    --success: hsl(152, 55%, 38%);
+    --success-muted: hsl(152, 40%, 92%);
+    --success-text: hsl(152, 55%, 32%);
+    --warning: hsl(38, 80%, 45%);
+    --warning-muted: hsl(38, 55%, 92%);
+    --danger: hsl(0, 65%, 50%);
+    --danger-muted: hsl(0, 50%, 94%);
+    --gradient-brand: linear-gradient(135deg, hsl(234, 75%, 55%), hsl(280, 60%, 55%));
+    --gradient-warm: linear-gradient(135deg, hsl(28, 75%, 52%), hsl(350, 65%, 55%));
+    --gradient-health: linear-gradient(135deg, hsl(152, 55%, 42%), hsl(175, 60%, 38%));
+    --gradient-depth: linear-gradient(135deg, hsl(230, 20%, 95%), hsl(234, 75%, 55%));
+    --nav-bg: hsla(225, 20%, 97%, 0.88);
+    --card-shadow: 0 16px 48px -12px hsla(230, 25%, 10%, 0.08);
+    --noise-opacity: 0.015;
+    --logo-text-on-light-card: hsl(230, 18%, 10%);
+    --logo-front-on-light-card: 0.4;
+    --do-bg: hsl(152, 40%, 94%);
+    --do-border: hsl(152, 40%, 82%);
+    --dont-bg: hsl(0, 45%, 96%);
+    --dont-border: hsl(0, 35%, 86%);
+    --code-bg: hsl(225, 15%, 94%);
+    --icon-stroke: var(--text-secondary);
+    --toggle-track: hsl(225, 12%, 86%);
+    --toggle-thumb: hsl(225, 18%, 100%);
+    --swatch-meta-bg: var(--bg-1);
+    --hero-glow: hsla(234, 75%, 55%, 0.06);
+  }
+
+  /* ══════════════════════════════════════════
+     BASE RESET + GLOBAL
+     ══════════════════════════════════════════ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-0);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.5s;
+  }
+
+  /* Smooth transitions for all themed elements */
+  .nav, .section, .hero, .card, .pillar-card, .logo-variant,
+  .motion-card, .voice-card, .symbol-row, .color-chip .meta,
+  .btn, .status-badge, .icon-item, .palette-option, .cross-card,
+  .palette-tab, .spacing-block, .type-meta .role {
+    transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s,
+                box-shadow 0.5s;
+  }
+
+  /* ══════════════════════════════════════════
+     THEME TOGGLE
+     ══════════════════════════════════════════ */
+  .theme-toggle-container {
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .theme-toggle-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transition: color 0.4s;
+  }
+
+  .theme-toggle-track {
+    width: 40px;
+    height: 80px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.5s, border-color 0.5s;
+    box-shadow: 0 4px 20px -4px hsla(0,0%,0%,0.15);
+  }
+
+  .theme-toggle-thumb {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  [data-theme="light"] .theme-toggle-thumb {
+    transform: translateY(40px);
+  }
+
+  .theme-toggle-thumb svg {
+    width: 16px;
+    height: 16px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: opacity 0.3s;
+  }
+
+  .sun-icon { display: none; }
+  .moon-icon { display: block; }
+  [data-theme="light"] .sun-icon { display: block; }
+  [data-theme="light"] .moon-icon { display: none; }
+
+  /* ══════════════════════════════════════════
+     NAVIGATION
+     ══════════════════════════════════════════ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--gradient-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+    letter-spacing: 0.2px;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    transition: background 0.5s, border-color 0.5s, color 0.4s;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTIONS
+     ══════════════════════════════════════════ */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ══════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════ */
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
+    pointer-events: none;
+    transition: background 0.5s;
+  }
+
+  .hero-overline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-text);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 72px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -3px;
+    margin-bottom: 24px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+
+  .hero-cta:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 40px 8px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+
+  .hero-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-left: 12px;
+  }
+
+  .hero-cta-secondary:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+  }
+
+  /* ══════════════════════════════════════════
+     THEME INDICATOR BANNER
+     ══════════════════════════════════════════ */
+  .theme-banner {
+    text-align: center;
+    padding: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-text);
+    background: var(--accent-muted);
+    border-bottom: 1px solid var(--border-subtle);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.5s;
+  }
+
+  /* ══════════════════════════════════════════
+     LOGO
+     ══════════════════════════════════════════ */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .logo-variant {
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+
+  .logo-variant.contrast-card {
+    background: hsl(220, 20%, 95%);
+  }
+  [data-theme="light"] .logo-variant.contrast-card {
+    background: hsl(230, 18%, 10%);
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-icon.gradient { background: var(--gradient-brand); }
+  .logo-icon.mono-icon {
+    background: var(--bg-0);
+    border: 1px solid var(--border);
+  }
+
+  .logo-wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.8px;
+  }
+
+  .logo-wordmark .front { opacity: 0.5; }
+
+  .logo-wordmark.contrast-text { color: var(--logo-text-on-light-card); }
+  [data-theme="light"] .logo-wordmark.contrast-text { color: hsl(220, 20%, 95%); }
+
+  .logo-wordmark.contrast-text .front { opacity: var(--logo-front-on-light-card); }
+  [data-theme="light"] .logo-wordmark.contrast-text .front { opacity: 0.5; }
+
+  .logo-label {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .logo-variant.contrast-card .logo-label { color: hsl(220, 8%, 50%); }
+  [data-theme="light"] .logo-variant.contrast-card .logo-label { color: hsl(220, 10%, 65%); }
+
+  .symbol-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+  }
+
+  .symbol-icon-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    background: var(--gradient-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 20px 60px -15px hsla(234, 85%, 68%, 0.3);
+  }
+
+  .symbol-text h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .symbol-text p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════
+     COLOR PALETTES
+     ══════════════════════════════════════════ */
+  .palette-compare {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .palette-option {
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .palette-option:hover { border-color: var(--border); }
+
+  .palette-option.recommended {
+    border-color: var(--accent);
+    box-shadow: 0 0 40px -10px var(--accent-glow);
+  }
+
+  .palette-preview {
+    height: 120px;
+    display: flex;
+  }
+
+  .palette-preview div { flex: 1; }
+
+  .palette-info {
+    padding: 20px;
+  }
+
+  .palette-info h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rec-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    background: var(--accent-muted);
+    color: var(--accent-text);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .palette-info p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .palette-swatches {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mini-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .palette-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    margin-top: 32px;
+  }
+
+  .palette-section-label:first-child { margin-top: 0; }
+
+  .color-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .color-chip {
+    flex: 1;
+    min-width: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .color-chip .swatch { height: 72px; }
+
+  .color-chip .meta {
+    padding: 10px 14px;
+    background: var(--swatch-meta-bg);
+  }
+
+  .color-chip .name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .color-chip .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .gradient-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .gradient-sample {
+    flex: 1;
+    height: 100px;
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .gradient-sample .label {
+    position: absolute;
+    bottom: 10px;
+    left: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: white;
+    opacity: 0.8;
+  }
+
+  /* ══════════════════════════════════════════
+     TYPOGRAPHY
+     ══════════════════════════════════════════ */
+  .type-specimen {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .type-specimen:last-child { border-bottom: none; }
+
+  .type-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .type-meta .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-text);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--accent-muted);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .type-meta .spec {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .type-display {
+    font-family: 'Instrument Serif', serif;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -2px;
+  }
+
+  .type-display em { font-style: italic; }
+
+  .type-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: -1px;
+    line-height: 1.15;
+  }
+
+  .type-subheading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+  }
+
+  .type-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 600px;
+  }
+
+  .type-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+  }
+
+  .type-data {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    letter-spacing: -1.5px;
+    margin-top: 4px;
+  }
+
+  .type-data .unit {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+
+  /* ══════════════════════════════════════════
+     PILLAR CARDS
+     ══════════════════════════════════════════ */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .pillar-card {
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .pillar-card:hover {
+    border-color: var(--border);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow);
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .pillar-card.patient::before { background: var(--accent); }
+  .pillar-card.scheduling::before { background: var(--warm); }
+  .pillar-card.collections::before { background: var(--success); }
+
+  .pillar-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+
+  .pillar-card.patient .pillar-icon { background: var(--accent-muted); color: var(--accent); }
+  .pillar-card.scheduling .pillar-icon { background: var(--warm-muted); color: var(--warm); }
+  .pillar-card.collections .pillar-icon { background: var(--success-muted); color: var(--success); }
+
+  .pillar-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .pillar-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .pillar-score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .score-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .pillar-card.patient .score-fill { background: var(--accent); width: 82%; }
+  .pillar-card.scheduling .score-fill { background: var(--warm); width: 56%; }
+  .pillar-card.collections .score-fill { background: var(--success); width: 91%; }
+
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .pillar-card.patient .score-label { color: var(--accent-text); }
+  .pillar-card.scheduling .score-label { color: var(--warm-text); }
+  .pillar-card.collections .score-label { color: var(--success-text); }
+
+  /* ══════════════════════════════════════════
+     STATUS + BUTTONS + CARDS
+     ══════════════════════════════════════════ */
+  .status-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .status-badge .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .status-good { background: var(--success-muted); color: var(--success-text); }
+  .status-good .dot { background: var(--success); }
+  .status-concerning { background: var(--warning-muted); color: var(--warning); }
+  .status-concerning .dot { background: var(--warning); }
+  .status-bad { background: var(--danger-muted); color: var(--danger); }
+  .status-bad .dot { background: var(--danger); }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 0 32px 4px var(--accent-glow); transform: translateY(-1px); }
+
+  .btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+  .btn-ghost { background: transparent; color: var(--accent-text); padding: 12px 16px; }
+  .btn-ghost:hover { background: var(--accent-muted); }
+
+  .btn-warm { background: var(--warm); color: white; }
+  [data-theme="light"] .btn-warm { color: hsl(28, 40%, 10%); }
+  .btn-warm:hover { transform: translateY(-1px); }
+
+  .btn-sm { padding: 8px 16px; font-size: 12px; border-radius: 8px; }
+  .btn-lg { padding: 16px 32px; font-size: 16px; border-radius: 12px; }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .card {
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card:hover { border-color: var(--border); transform: translateY(-2px); box-shadow: var(--card-shadow); }
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .card-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  .card-trend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .card-trend.up { color: var(--success-text); }
+  .card-trend.down { color: var(--danger); }
+
+  /* ══════════════════════════════════════════
+     SPACING
+     ══════════════════════════════════════════ */
+  .spacing-demo {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 32px;
+  }
+
+  .spacing-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spacing-block {
+    background: var(--accent-muted);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+  }
+
+  .spacing-label-sm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* ══════════════════════════════════════════
+     MOTION
+     ══════════════════════════════════════════ */
+  .motion-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .motion-card {
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .motion-card h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .motion-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .motion-card code {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-text);
+    background: var(--code-bg);
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-align: left;
+  }
+
+  /* ══════════════════════════════════════════
+     VOICE & TONE
+     ══════════════════════════════════════════ */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .voice-card { padding: 24px; border-radius: 12px; }
+
+  .voice-card.do { background: var(--do-bg); border: 1px solid var(--do-border); }
+  .voice-card.dont { background: var(--dont-bg); border: 1px solid var(--dont-border); }
+
+  .voice-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .voice-card.do h4 { color: var(--success-text); }
+  .voice-card.dont h4 { color: var(--danger); }
+
+  .voice-card p { font-size: 14px; line-height: 1.7; color: var(--text-secondary); }
+
+  /* ══════════════════════════════════════════
+     ICONS
+     ══════════════════════════════════════════ */
+  .icon-grid {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .icon-item {
+    width: 72px;
+    height: 72px;
+    background: var(--bg-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .icon-item:hover { border-color: var(--accent); background: var(--accent-muted); }
+
+  .icon-item svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--icon-stroke);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-item span {
+    font-size: 8px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ══════════════════════════════════════════
+     IMPLEMENTATION + FOOTER
+     ══════════════════════════════════════════ */
+  .impl-code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-text);
+  }
+
+  .id-footer {
+    text-align: center;
+    padding: 48px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .id-footer p { font-size: 12px; color: var(--text-muted); }
+
+  .id-footer .version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Theme Toggle (Fixed) ── -->
+<div class="theme-toggle-container">
+  <span class="theme-toggle-label">Theme</span>
+  <div class="theme-toggle-track" onclick="toggleTheme()">
+    <div class="theme-toggle-thumb">
+      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ── Theme Banner ── -->
+<div class="theme-banner" id="themeBanner">Currently viewing: Dark Mode (Primary)</div>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo" style="background: none; border: none;">
+      <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.3"/>
+        <rect x="12" y="18" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.55"/>
+        <rect x="20" y="30" width="40" height="28" rx="4" fill="var(--accent)" opacity="0.9"/>
+      </svg>
+    </div>
+    <span class="nav-title">PracticeFront</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#logo">Logo</a></li>
+    <li><a href="#palettes">Color</a></li>
+    <li><a href="#typography">Type</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#motion">Motion</a></li>
+    <li><a href="#voice">Voice</a></li>
+  </ul>
+  <span class="nav-version">v1.0 — March 2026</span>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-overline">Visual Identity System</div>
+  <h1>Your practice health,<br><em>at a glance.</em></h1>
+  <p>A visual language built for trust, clarity, and action. Designed for dental professionals who have 30 seconds between patients to check on their business.</p>
+  <button class="hero-cta">Get Started <span>&rarr;</span></button>
+  <button class="hero-cta-secondary">See How It Works</button>
+</div>
+
+<!-- ── Logo ── -->
+<div class="section" id="logo">
+  <div class="section-label">01 — Logo & Symbol</div>
+  <div class="section-title">The Mark</div>
+  <div class="section-subtitle">The PracticeFront symbol is built from three overlapping data blocks — each representing a layer of practice intelligence converging into a single, clear picture. The wordmark uses Space Grotesk for its technical precision with human warmth.</div>
+
+  <div class="logo-grid">
+    <div class="logo-variant">
+      <div class="logo-mark">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="6" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.3"/>
+          <rect x="12" y="18" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.55"/>
+          <rect x="20" y="30" width="40" height="28" rx="4" fill="var(--accent)" opacity="0.9"/>
+        </svg>
+        <span class="logo-wordmark">Practice<span class="front">Front</span></span>
+      </div>
+      <span class="logo-label">Primary — Current Theme</span>
+    </div>
+    <div class="logo-variant contrast-card">
+      <div class="logo-mark">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234, 85%, 68%)" opacity="0.3"/>
+          <rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234, 85%, 68%)" opacity="0.55"/>
+          <rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234, 85%, 68%)" opacity="0.9"/>
+        </svg>
+        <span class="logo-wordmark contrast-text">Practice<span class="front">Front</span></span>
+      </div>
+      <span class="logo-label">Primary — Opposite Theme</span>
+    </div>
+    <div class="logo-variant">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.3"/>
+        <rect x="12" y="18" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.55"/>
+        <rect x="20" y="30" width="40" height="28" rx="4" fill="var(--accent)" opacity="0.9"/>
+      </svg>
+      <span class="logo-label">Symbol Only</span>
+    </div>
+    <div class="logo-variant">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="38" height="24" rx="4" fill="var(--text-primary)" opacity="0.2"/>
+        <rect x="12" y="18" width="38" height="24" rx="4" fill="var(--text-primary)" opacity="0.4"/>
+        <rect x="20" y="30" width="40" height="28" rx="4" fill="var(--text-primary)" opacity="0.7"/>
+      </svg>
+      <span class="logo-label">Monochrome</span>
+    </div>
+  </div>
+
+  <div class="symbol-row">
+    <div class="symbol-icon-large" style="background: none; box-shadow: none;">
+      <svg width="100" height="100" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.3"/>
+        <rect x="12" y="18" width="38" height="24" rx="4" fill="var(--accent)" opacity="0.55"/>
+        <rect x="20" y="30" width="40" height="28" rx="4" fill="var(--accent)" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="symbol-text">
+      <h3>Symbol Rationale</h3>
+      <p>Three overlapping data blocks — each a layer of practice intelligence. The back layer (lightest) is raw, scattered data from the PMS. The middle layer is normalized, structured information. The front layer (boldest) is the clear, actionable insight. The progressive opacity tells the story of what PracticeFront does: it takes fragmented practice data and converges it into clarity. The stacking also maps to the Three Pillars — Patient, Scheduling, Collections — unified into one view.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Color Palettes ── -->
+<div class="section" id="palettes">
+  <div class="section-label">02 — Color System</div>
+  <div class="section-title">Three Directions</div>
+  <div class="section-subtitle">Each palette is designed with both dark and light variants. Toggle the theme above to see how each system adapts. All built for WCAG AA contrast compliance in both modes.</div>
+
+  <div class="palette-compare">
+    <div class="palette-option recommended">
+      <div class="palette-preview">
+        <div style="background: hsl(230, 18%, 6%)"></div>
+        <div style="background: hsl(234, 85%, 68%)"></div>
+        <div style="background: hsl(280, 70%, 65%)"></div>
+        <div style="background: hsl(28, 80%, 62%)"></div>
+      </div>
+      <div class="palette-info">
+        <h4>A — Indigo Trust <span class="rec-badge">Recommended</span></h4>
+        <p>Cool indigo anchors trust and authority. Warm amber accent creates contrast without losing professionalism. The purple-to-indigo gradient adds premium depth.</p>
+        <div class="palette-swatches">
+          <div class="mini-swatch" style="background: hsl(230, 18%, 6%)"></div>
+          <div class="mini-swatch" style="background: hsl(230, 14%, 13%)"></div>
+          <div class="mini-swatch" style="background: hsl(234, 85%, 68%)"></div>
+          <div class="mini-swatch" style="background: hsl(280, 70%, 65%)"></div>
+          <div class="mini-swatch" style="background: hsl(28, 80%, 62%)"></div>
+          <div class="mini-swatch" style="background: hsl(152, 60%, 52%)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="palette-option">
+      <div class="palette-preview">
+        <div style="background: hsl(210, 20%, 6%)"></div>
+        <div style="background: hsl(175, 70%, 45%)"></div>
+        <div style="background: hsl(195, 80%, 55%)"></div>
+        <div style="background: hsl(340, 65%, 55%)"></div>
+      </div>
+      <div class="palette-info">
+        <h4>B — Teal Vitality</h4>
+        <p>Teal signals health and vitality without defaulting to generic "doctor blue." Rose accent is distinctive in dental tech. Feels energetic and modern.</p>
+        <div class="palette-swatches">
+          <div class="mini-swatch" style="background: hsl(210, 20%, 6%)"></div>
+          <div class="mini-swatch" style="background: hsl(175, 70%, 45%)"></div>
+          <div class="mini-swatch" style="background: hsl(195, 80%, 55%)"></div>
+          <div class="mini-swatch" style="background: hsl(340, 65%, 55%)"></div>
+          <div class="mini-swatch" style="background: hsl(48, 90%, 58%)"></div>
+          <div class="mini-swatch" style="background: hsl(152, 55%, 45%)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="palette-option">
+      <div class="palette-preview">
+        <div style="background: hsl(220, 22%, 5%)"></div>
+        <div style="background: hsl(25, 85%, 58%)"></div>
+        <div style="background: hsl(45, 80%, 55%)"></div>
+        <div style="background: hsl(160, 55%, 48%)"></div>
+      </div>
+      <div class="palette-info">
+        <h4>C — Warm Authority</h4>
+        <p>Breaks completely from healthcare blue. Amber and gold convey confidence and warmth. Sage green for health signals. The boldest, most disruptive direction.</p>
+        <div class="palette-swatches">
+          <div class="mini-swatch" style="background: hsl(220, 22%, 5%)"></div>
+          <div class="mini-swatch" style="background: hsl(25, 85%, 58%)"></div>
+          <div class="mini-swatch" style="background: hsl(45, 80%, 55%)"></div>
+          <div class="mini-swatch" style="background: hsl(160, 55%, 48%)"></div>
+          <div class="mini-swatch" style="background: hsl(280, 50%, 58%)"></div>
+          <div class="mini-swatch" style="background: hsl(0, 60%, 55%)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Palette Detail (Token System) -->
+  <div style="margin-top: 48px;">
+    <div class="palette-section-label">Active Palette — Surfaces</div>
+    <div class="color-row">
+      <div class="color-chip"><div class="swatch" style="background: var(--bg-0)"></div><div class="meta"><div class="name">Surface 0</div><div class="value">--bg-0</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--bg-1)"></div><div class="meta"><div class="name">Surface 1</div><div class="value">--bg-1</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--bg-2)"></div><div class="meta"><div class="name">Surface 2</div><div class="value">--bg-2</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--bg-3)"></div><div class="meta"><div class="name">Surface 3</div><div class="value">--bg-3</div></div></div>
+    </div>
+
+    <div class="palette-section-label">Accent & Signal Colors</div>
+    <div class="color-row">
+      <div class="color-chip"><div class="swatch" style="background: var(--accent)"></div><div class="meta"><div class="name">Indigo</div><div class="value">--accent</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--warm)"></div><div class="meta"><div class="name">Amber</div><div class="value">--warm</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--success)"></div><div class="meta"><div class="name">Emerald</div><div class="value">--success</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: hsl(280, 70%, 65%)"></div><div class="meta"><div class="name">Violet</div><div class="value">hsl(280, 70%, 65%)</div></div></div>
+    </div>
+
+    <div class="palette-section-label">Semantic / Status</div>
+    <div class="color-row">
+      <div class="color-chip"><div class="swatch" style="background: var(--success)"></div><div class="meta"><div class="name">Good</div><div class="value">--success</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--warning)"></div><div class="meta"><div class="name">Concerning</div><div class="value">--warning</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--danger)"></div><div class="meta"><div class="name">Bad</div><div class="value">--danger</div></div></div>
+      <div class="color-chip"><div class="swatch" style="background: var(--accent)"></div><div class="meta"><div class="name">Info</div><div class="value">--accent</div></div></div>
+    </div>
+
+    <div class="palette-section-label">Gradients</div>
+    <div class="gradient-row">
+      <div class="gradient-sample" style="background: var(--gradient-brand)"><span class="label">Brand</span></div>
+      <div class="gradient-sample" style="background: var(--gradient-warm)"><span class="label">Warm</span></div>
+      <div class="gradient-sample" style="background: var(--gradient-health)"><span class="label">Health</span></div>
+      <div class="gradient-sample" style="background: var(--gradient-depth)"><span class="label">Depth</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Typography ── -->
+<div class="section" id="typography">
+  <div class="section-label">03 — Typography</div>
+  <div class="section-title">Type System</div>
+  <div class="section-subtitle">Four typefaces, each with a clear job. Instrument Serif for emotion and authority. Space Grotesk for structure and data. Inter for readability. JetBrains Mono for precision.</div>
+
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Display</span>
+      <span class="spec">Instrument Serif — 48-72px — -2px tracking — 1.05 line-height</span>
+    </div>
+    <div class="type-display">Your practice <em>health,</em><br>at a glance.</div>
+  </div>
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Heading</span>
+      <span class="spec">Space Grotesk 700 — 24-36px — -1px tracking — 1.15 line-height</span>
+    </div>
+    <div class="type-heading">Three pillars of practice health</div>
+  </div>
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Subheading</span>
+      <span class="spec">Space Grotesk 600 — 16-20px — -0.3px tracking</span>
+    </div>
+    <div class="type-subheading">Monitor what matters. Ignore the noise.</div>
+  </div>
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Body</span>
+      <span class="spec">Inter 400 — 14-16px — 1.7 line-height — max 65ch width</span>
+    </div>
+    <div class="type-body">PracticeFront transforms raw practice data into three simple health indicators. No dashboards to study. No reports to run. Just answers — in 10 seconds between patients.</div>
+  </div>
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Data / Metric</span>
+      <span class="spec">Space Grotesk 700 — 32-48px — -1.5px tracking</span>
+    </div>
+    <div class="type-label">Collection Rate</div>
+    <div class="type-data">96.4<span class="unit">%</span></div>
+  </div>
+  <div class="type-specimen">
+    <div class="type-meta">
+      <span class="role">Label / Code</span>
+      <span class="spec">JetBrains Mono 500 — 10-12px — 1.5px letter-spacing — uppercase</span>
+    </div>
+    <div class="type-label" style="text-transform: uppercase; letter-spacing: 1.5px;">PATIENT PILLAR &bull; RETENTION RATE &bull; LAST 90 DAYS</div>
+  </div>
+</div>
+
+<!-- ── Components ── -->
+<div class="section" id="components">
+  <div class="section-label">04 — Components</div>
+  <div class="section-title">UI Language</div>
+  <div class="section-subtitle">Every component is designed for scanning, not studying. Large numbers, clear status colors, minimal text. Toggle the theme to see how each component adapts.</div>
+
+  <div class="palette-section-label">Three Pillars</div>
+  <div class="pillars-grid">
+    <div class="pillar-card patient">
+      <div class="pillar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <h3>Patient</h3>
+      <p>Growth & Retention</p>
+      <div class="pillar-score"><div class="score-bar"><div class="score-fill"></div></div><span class="score-label">Good</span></div>
+    </div>
+    <div class="pillar-card scheduling">
+      <div class="pillar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <h3>Scheduling</h3>
+      <p>Fill the chair, reduce no-shows</p>
+      <div class="pillar-score"><div class="score-bar"><div class="score-fill"></div></div><span class="score-label">Concerning</span></div>
+    </div>
+    <div class="pillar-card collections">
+      <div class="pillar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <h3>Collections</h3>
+      <p>Billing & claim submission</p>
+      <div class="pillar-score"><div class="score-bar"><div class="score-fill"></div></div><span class="score-label">Good</span></div>
+    </div>
+  </div>
+
+  <div class="palette-section-label">Status Indicators</div>
+  <div class="status-row">
+    <span class="status-badge status-good"><span class="dot"></span> Good</span>
+    <span class="status-badge status-concerning"><span class="dot"></span> Concerning</span>
+    <span class="status-badge status-bad"><span class="dot"></span> Needs Attention</span>
+  </div>
+
+  <div class="palette-section-label">Metric Cards</div>
+  <div class="card-grid">
+    <div class="card"><div class="card-label">New Patients / Month</div><div class="card-value">24</div><div class="card-trend up">+12% vs. last month</div></div>
+    <div class="card"><div class="card-label">No-Show Rate</div><div class="card-value">18%</div><div class="card-trend down">+3% — above industry avg</div></div>
+    <div class="card"><div class="card-label">Collection Rate</div><div class="card-value">96.4%</div><div class="card-trend up">Top 20% of practices</div></div>
+    <div class="card"><div class="card-label">Unscheduled Treatment</div><div class="card-value">$743K</div><div class="card-trend down">Revenue sitting in charts</div></div>
+  </div>
+
+  <div class="palette-section-label">Buttons</div>
+  <div class="btn-row">
+    <button class="btn btn-primary">Get Started</button>
+    <button class="btn btn-secondary">Learn More</button>
+    <button class="btn btn-ghost">View Details &rarr;</button>
+    <button class="btn btn-warm">Connect Partner</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-lg">Large</button>
+  </div>
+
+  <div class="palette-section-label" style="margin-top: 40px;">Spacing Scale (4px base)</div>
+  <div class="spacing-demo">
+    <div class="spacing-unit"><div class="spacing-block" style="width: 16px; height: 16px;"></div><span class="spacing-label-sm">4</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 24px; height: 24px;"></div><span class="spacing-label-sm">8</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 32px; height: 32px;"></div><span class="spacing-label-sm">12</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 40px; height: 40px;"></div><span class="spacing-label-sm">16</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 56px; height: 56px;"></div><span class="spacing-label-sm">24</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 72px; height: 72px;"></div><span class="spacing-label-sm">32</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 96px; height: 96px;"></div><span class="spacing-label-sm">48</span></div>
+    <div class="spacing-unit"><div class="spacing-block" style="width: 120px; height: 120px;"></div><span class="spacing-label-sm">64</span></div>
+  </div>
+</div>
+
+<!-- ── Motion ── -->
+<div class="section" id="motion">
+  <div class="section-label">05 — Motion Language</div>
+  <div class="section-title">Choreography</div>
+  <div class="section-subtitle">Motion is communication, not decoration. Every animation answers: what changed, and where should I look? Spring physics over bezier curves. Stagger over simultaneous.</div>
+
+  <div class="motion-grid">
+    <div class="motion-card"><h4>Entrance</h4><p>Elements fade up with subtle Y translation</p><code>opacity: 0 → 1<br>translateY: 16px → 0<br>duration: 500ms<br>spring: { stiffness: 300, damping: 30 }</code></div>
+    <div class="motion-card"><h4>Stagger</h4><p>Children animate sequentially, 60ms apart</p><code>staggerChildren: 0.06<br>delayChildren: 0.1<br>— Pillar cards: L → R<br>— Metrics: top → bottom</code></div>
+    <div class="motion-card"><h4>Hover / Lift</h4><p>Cards lift on hover with shadow deepening</p><code>translateY: -2px<br>shadow: 0 16px 48px<br>border-color: lighten<br>duration: 300ms ease-out</code></div>
+    <div class="motion-card"><h4>Score Fill</h4><p>Health bars animate width on viewport entry</p><code>width: 0% → target%<br>duration: 800ms<br>ease: [0.25, 0.46, 0.45, 0.94]<br>trigger: inView once</code></div>
+    <div class="motion-card"><h4>Number Count</h4><p>Metric values count up from 0 to target</p><code>0 → 96.4%<br>duration: 1200ms<br>ease: easeOutExpo<br>trigger: inView once</code></div>
+    <div class="motion-card"><h4>Theme Toggle</h4><p>Smooth 500ms cross-fade between modes</p><code>background: 500ms ease<br>color: 400ms ease<br>thumb: spring bounce<br>-- cubic-bezier(0.34, 1.56, 0.64, 1)</code></div>
+  </div>
+</div>
+
+<!-- ── Voice & Tone ── -->
+<div class="section" id="voice">
+  <div class="section-label">06 — Voice & Tone</div>
+  <div class="section-title">How We Speak</div>
+  <div class="section-subtitle">PracticeFront sounds like a trusted advisor who respects your time. Direct, warm, confident — never condescending, never jargon-heavy, never vague.</div>
+
+  <div class="voice-grid">
+    <div class="voice-card do"><h4>Do This</h4><p>"Your scheduling needs attention. No-show rate is 18% — industry average is 12%. Here are 2 partners who've helped similar practices."</p></div>
+    <div class="voice-card dont"><h4>Not This</h4><p>"Your KPI analysis indicates a deviation in appointment completion metrics relative to peer benchmarks. Consider optimizing your recall workflow."</p></div>
+    <div class="voice-card do"><h4>Do This</h4><p>"Collections look great. You're in the top 20% of practices we track."</p></div>
+    <div class="voice-card dont"><h4>Not This</h4><p>"Your net collection ratio of 96.4% places you at the 82nd percentile of our normalized practice cohort dataset."</p></div>
+  </div>
+
+  <div class="palette-section-label">Brand Voice Attributes</div>
+  <div class="pillars-grid">
+    <div class="card" style="text-align: center;"><div class="card-value" style="font-size: 20px; margin-bottom: 8px;">Direct</div><p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Say what you mean. "You have a problem" not "There may be an area of opportunity."</p></div>
+    <div class="card" style="text-align: center;"><div class="card-value" style="font-size: 20px; margin-bottom: 8px;">Warm</div><p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">We're on your side. "Here's who can help" not "Please consult our partner directory."</p></div>
+    <div class="card" style="text-align: center;"><div class="card-value" style="font-size: 20px; margin-bottom: 8px;">Confident</div><p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">We know this space. "This needs attention" not "You might want to consider looking into this."</p></div>
+  </div>
+</div>
+
+<!-- ── Icons ── -->
+<div class="section">
+  <div class="section-label">07 — Iconography</div>
+  <div class="section-title">Icon System</div>
+  <div class="section-subtitle">Lucide icons at 24px, 1.5px stroke, round caps and joins. Consistent with the clean, technical aesthetic. Never fill — always outline.</div>
+
+  <div class="icon-grid">
+    <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Patient</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Schedule</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Collect</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>Pulse</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Trend</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Trust</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Time</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Partners</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>Metrics</span></div>
+    <div class="icon-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+  </div>
+</div>
+
+<!-- ── Implementation ── -->
+<div class="section">
+  <div class="section-label">08 — Implementation</div>
+  <div class="section-title">Tech Specs</div>
+  <div class="section-subtitle">Built for Next.js 16 + React 19 + Tailwind CSS 4 + Framer Motion. Every token maps to a CSS custom property. Theme toggle uses <code class="impl-code">data-theme</code> attribute on <code class="impl-code">&lt;html&gt;</code>.</div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-label">Theming Architecture</div>
+      <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+        <strong style="color: var(--text-primary);">CSS Custom Properties</strong> on <code class="impl-code">[data-theme="dark"]</code> and <code class="impl-code">[data-theme="light"]</code>. All colors are semantic tokens (--bg-0, --accent, --success) that remap per theme. Components never reference raw color values — only tokens. Theme switch animates via 500ms CSS transitions.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Component Library</div>
+      <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+        <strong style="color: var(--text-primary);">shadcn/ui</strong> as the base primitive layer, re-themed with PracticeFront tokens. Custom pillar cards, metric displays, and status indicators built on top. Radix UI for accessibility primitives.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Animation Stack</div>
+      <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+        <strong style="color: var(--text-primary);">Framer Motion 11</strong> for spring physics, layout animations, and scroll-triggered reveals. CSS transitions for micro-interactions and theme toggling. <code class="impl-code">prefers-reduced-motion</code> and <code class="impl-code">prefers-color-scheme</code> respected.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Typography Loading</div>
+      <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+        <strong style="color: var(--text-primary);">next/font</strong> with variable font loading. Instrument Serif + Space Grotesk + Inter + JetBrains Mono. <code class="impl-code">font-display: swap</code> for performance. Fluid type using <code class="impl-code">clamp()</code> for display text.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<div class="id-footer">
+  <p>PracticeFront Visual Identity System</p>
+  <div class="version">v1.0 — March 27, 2026 — Confidential</div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const banner = document.getElementById('themeBanner');
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    banner.textContent = isDark
+      ? 'Currently viewing: Light Mode'
+      : 'Currently viewing: Dark Mode (Primary)';
+  }
+</script>
+
+</body>
+</html>

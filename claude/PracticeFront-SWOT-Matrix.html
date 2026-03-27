@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticeFront — SWOT Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --bg:            hsl(230, 18%, 6%);
+    --card:          hsl(230, 16%, 9%);
+    --surface-1:     hsl(230, 14%, 13%);
+    --surface-2:     hsl(230, 12%, 17%);
+    --border:        hsl(230, 12%, 18%);
+    --fg:            hsl(220, 20%, 95%);
+    --fg-secondary:  hsl(220, 15%, 78%);
+    --fg-muted:      hsl(220, 10%, 56%);
+    --fg-subtle:     hsl(220, 8%, 38%);
+    --fg-faint:      hsl(220, 6%, 26%);
+    --primary:       hsl(234, 85%, 68%);
+    --primary-tint:  hsl(234, 85%, 68% / 0.10);
+    --s-color:       hsl(152, 58%, 46%);
+    --s-tint:        hsl(152, 58%, 46% / 0.12);
+    --w-color:       hsl(25, 90%, 58%);
+    --w-tint:        hsl(25, 90%, 58% / 0.12);
+    --o-color:       hsl(234, 85%, 68%);
+    --o-tint:        hsl(234, 85%, 68% / 0.10);
+    --t-color:       hsl(0, 70%, 60%);
+    --t-tint:        hsl(0, 70%, 60% / 0.12);
+    --font-heading:  'Space Grotesk', system-ui, sans-serif;
+    --font-body:     'Inter', system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+    --font-display:  'Instrument Serif', Georgia, serif;
+    --noise-opacity: 0.03;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    width: 100%;
+  }
+
+  .logo-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logo-wordmark {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .logo-wordmark span { opacity: 0.35; }
+
+  .header h1 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--primary), hsl(280, 70%, 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-family: var(--font-mono);
+    color: var(--fg-muted);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── SWOT Grid ── */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px;
+    max-width: 960px;
+    width: 100%;
+    margin-bottom: 48px;
+    background: var(--surface-1);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .swot-card {
+    background: var(--card);
+    padding: 32px;
+    position: relative;
+    min-height: 340px;
+  }
+
+  .swot-card:first-child     { border-radius: 20px 0 0 0; }
+  .swot-card:nth-child(2)    { border-radius: 0 20px 0 0; }
+  .swot-card:nth-child(3)    { border-radius: 0 0 0 20px; }
+  .swot-card:nth-child(4)    { border-radius: 0 0 20px 0; }
+
+  .swot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .swot-badge .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .s .swot-badge        { color: var(--s-color); }
+  .s .swot-badge .icon  { background: var(--s-tint); }
+  .w .swot-badge        { color: var(--w-color); }
+  .w .swot-badge .icon  { background: var(--w-tint); }
+  .o .swot-badge        { color: var(--o-color); }
+  .o .swot-badge .icon  { background: var(--o-tint); }
+  .t .swot-badge        { color: var(--t-color); }
+  .t .swot-badge .icon  { background: var(--t-tint); }
+
+  .swot-subtitle {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .swot-items { list-style: none; }
+
+  .swot-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--surface-1);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .swot-item:last-child { border-bottom: none; }
+
+  .swot-item .num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  .s .swot-item .num { background: var(--s-tint); color: var(--s-color); }
+  .w .swot-item .num { background: var(--w-tint); color: var(--w-color); }
+  .o .swot-item .num { background: var(--o-tint); color: var(--o-color); }
+  .t .swot-item .num { background: var(--t-tint); color: var(--t-color); }
+
+  .swot-item .text { flex: 1; }
+
+  .swot-item .title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-secondary);
+    margin-bottom: 3px;
+  }
+
+  .swot-item .desc {
+    font-size: 11px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Cross-Reference Matrix ── */
+  .cross-section {
+    max-width: 960px;
+    width: 100%;
+    margin-bottom: 48px;
+  }
+
+  .cross-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+
+  .cross-subtitle {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    text-align: center;
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+  }
+
+  .cross-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .cross-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .cross-card:hover { border-color: hsl(230, 12%, 26%); }
+
+  .cross-card h3 {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg);
+  }
+
+  .cross-card .tags {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .cross-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .cross-tag.strength    { background: var(--s-tint); color: var(--s-color); }
+  .cross-tag.weakness    { background: var(--w-tint); color: var(--w-color); }
+  .cross-tag.opportunity { background: var(--o-tint); color: var(--o-color); }
+  .cross-tag.threat      { background: var(--t-tint); color: var(--t-color); }
+
+  .cross-card p {
+    font-size: 12px;
+    line-height: 1.75;
+    color: var(--fg-muted);
+  }
+
+  .cross-card .action {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: hsl(234, 85%, 68% / 0.06);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: hsl(234, 85%, 78%);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+
+  /* ── Priority Indicator ── */
+  .priority-section {
+    max-width: 960px;
+    width: 100%;
+    margin-bottom: 48px;
+  }
+
+  .priority-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--fg);
+  }
+
+  .priority-bar {
+    display: flex;
+    gap: 2px;
+    height: 56px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .priority-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 12px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+  }
+
+  .priority-labels {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .priority-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .priority-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+
+  /* ── Footer ── */
+  .footer-note {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-faint);
+    margin-top: 24px;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-lockup">
+    <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.3"/>
+      <rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.55"/>
+      <rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,85%,68%)" opacity="0.9"/>
+    </svg>
+    <span class="logo-wordmark">Practice<span>Front</span></span>
+  </div>
+  <h1>SWOT Analysis</h1>
+  <p>PracticeFront strategic position assessment — March 2026</p>
+</div>
+
+<!-- ── Main SWOT Grid ── -->
+<div class="swot-grid">
+
+  <!-- STRENGTHS -->
+  <div class="swot-card s">
+    <div class="swot-badge"><div class="icon">S</div> Strengths</div>
+    <div class="swot-subtitle">Internal advantages that give PracticeFront an edge</div>
+    <ul class="swot-items">
+      <li class="swot-item">
+        <div class="num">1</div>
+        <div class="text">
+          <div class="title">Unique market positioning</div>
+          <div class="desc">Only product connecting problem detection to partner recommendation to vendor accountability. No competitor occupies this space.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">2</div>
+        <div class="text">
+          <div class="title">"10-second scan" philosophy</div>
+          <div class="desc">Designed for 30 seconds between patients. Every competitor assumes dentists will study dashboards. Software fatigue validates this approach.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">3</div>
+        <div class="text">
+          <div class="title">Zero-cost to practices</div>
+          <div class="desc">Partner fee model means practices get value for free. $0/month vs. DI at $299-599/month eliminates price objection entirely.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">4</div>
+        <div class="text">
+          <div class="title">Data product architecture</div>
+          <div class="desc">Database-per-tenant, normalized data models, governance layer. Built as infrastructure from day one, not retrofitted.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">5</div>
+        <div class="text">
+          <div class="title">Two-sided marketplace demand</div>
+          <div class="desc">Practices want accountability. Good vendors want proof of performance. Natural selection pressure improves ecosystem quality over time.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">6</div>
+        <div class="text">
+          <div class="title">OpenDental-first strategy</div>
+          <div class="desc">12K+ practices on the most integration-friendly, open-source PMS. Certified marketplace that doubled integrations in 8 months.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- WEAKNESSES -->
+  <div class="swot-card w">
+    <div class="swot-badge"><div class="icon">W</div> Weaknesses</div>
+    <div class="swot-subtitle">Internal limitations that constrain execution</div>
+    <ul class="swot-items">
+      <li class="swot-item">
+        <div class="num">1</div>
+        <div class="text">
+          <div class="title">Single PMS integration</div>
+          <div class="desc">Only OpenDental at launch. Dentrix (25-30% market) and Eaglesoft require separate integrations or partnerships. Limits addressable market to ~12K practices initially.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">2</div>
+        <div class="text">
+          <div class="title">No benchmark data at launch</div>
+          <div class="desc">Pillar scores need comparison data to be meaningful. Sikka has 50K+ practices. PracticeFront starts at zero. Industry benchmarks can bridge the gap temporarily.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">3</div>
+        <div class="text">
+          <div class="title">Desktop dependency (Windows Service)</div>
+          <div class="desc">Requires installation on practice's server. IT complexity at practices is low. One failed install can kill a deal. Remote installation capability needed.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">4</div>
+        <div class="text">
+          <div class="title">Bootstrapped vs. funded competitors</div>
+          <div class="desc">DI has $85M. Pearl has $40M. Overjet has $35M. PracticeFront has hustle. Speed and focus must compensate for capital disadvantage.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">5</div>
+        <div class="text">
+          <div class="title">Cold-start marketplace problem</div>
+          <div class="desc">Partner ecosystem needs both practices AND partners to be valuable. Must build practice-side value first before partner accountability tracking works.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">6</div>
+        <div class="text">
+          <div class="title">No brand recognition</div>
+          <div class="desc">Dental is a trust-based, word-of-mouth industry. Zero existing relationships with dental communities, study clubs, or opinion leaders.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="swot-card o">
+    <div class="swot-badge"><div class="icon">O</div> Opportunities</div>
+    <div class="swot-subtitle">External trends that PracticeFront can capitalize on</div>
+    <ul class="swot-items">
+      <li class="swot-item">
+        <div class="num">1</div>
+        <div class="text">
+          <div class="title">Vendor accountability void</div>
+          <div class="desc">Practices spend $2K-$10K/month on vendors with zero tracking. 80% have billing issues. Marketing ROI is a black hole. Nobody fills this gap.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">2</div>
+        <div class="text">
+          <div class="title">Membership plan revolution</div>
+          <div class="desc">70M uninsured adults. 40% of practices already offer plans. 2.7x revenue vs. uninsured patients. 90% retention. Nobody provides membership analytics alongside practice health.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">3</div>
+        <div class="text">
+          <div class="title">Practice Health Score as bankable asset</div>
+          <div class="desc">DSOs use pillar-aligned metrics for valuations (5-11x EBITDA). A standardized score could become the "credit score" for dental practices. Banks, brokers, DSOs would all pay.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">4</div>
+        <div class="text">
+          <div class="title">Insurance reform wave (37 laws in 2025)</div>
+          <div class="desc">Dental loss ratio legislation, assignment of benefits laws. Practices need data to negotiate with insurers. Claims data flowing through PF contains this intelligence.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">5</div>
+        <div class="text">
+          <div class="title">DSO consolidation ($155B → $302B by 2035)</div>
+          <div class="desc">41% of DSOs grow by acquisition. They need standardized analytics across heterogeneous PMS systems. PF's data normalization is exactly what they need.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">6</div>
+        <div class="text">
+          <div class="title">Staffing crisis amplifies need</div>
+          <div class="desc">95% can't find hygienists. 33% retiring in 5 years. Skeleton-crew practices need passive monitoring most. They literally can't use complex analytics tools.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- THREATS -->
+  <div class="swot-card t">
+    <div class="swot-badge"><div class="icon">T</div> Threats</div>
+    <div class="swot-subtitle">External forces that could undermine success</div>
+    <ul class="swot-items">
+      <li class="swot-item">
+        <div class="num">1</div>
+        <div class="text">
+          <div class="title">Sikka's MCP server + 400 PMS</div>
+          <div class="desc">Makes it trivially easy for anyone to build dental practice tools. Lowers barriers for new competitors. Could build a practice dashboard if they choose to move up-stack.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">2</div>
+        <div class="text">
+          <div class="title">Dental Intelligence ($85M funded)</div>
+          <div class="desc">Could add a "simplified health check" feature to their existing platform. 35K+ practices to immediately surface it to. But simplification would cannibalize their premium pricing.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">3</div>
+        <div class="text">
+          <div class="title">Henry Schein / Jarvis acquisition</div>
+          <div class="desc">Predictive analytics embedded in Dentrix (25-30% market share). Bundled at no cost to existing Dentrix users. Could block PF from the largest PMS segment.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">4</div>
+        <div class="text">
+          <div class="title">AI agent automation wave</div>
+          <div class="desc">If AI agents can autonomously fix collections, scheduling, and outreach, do practices still need a dashboard that detects problems? PF must become the trust layer ON TOP of automation.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">5</div>
+        <div class="text">
+          <div class="title">Practice owner attention scarcity</div>
+          <div class="desc">Burned-out dentists running on skeleton crews. Getting 10 minutes of attention for onboarding is harder than the technical challenge. Software fatigue is real.</div>
+        </div>
+      </li>
+      <li class="swot-item">
+        <div class="num">6</div>
+        <div class="text">
+          <div class="title">PMS vendor lock-in strategies</div>
+          <div class="desc">Dentrix embedding Jarvis. Patterson bundling Weave with Eaglesoft. PMS vendors are building walled gardens. Open Dental is the exception, not the rule.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── Cross-Reference Strategies ── -->
+<div class="cross-section">
+  <div class="cross-title">SWOT Cross-Reference Strategies</div>
+  <div class="cross-subtitle">How to leverage strengths against threats and convert weaknesses into opportunities</div>
+
+  <div class="cross-grid">
+    <div class="cross-card">
+      <h3>SO: Leverage Strengths to Capture Opportunities</h3>
+      <div class="tags">
+        <span class="cross-tag strength">S1 + S2</span>
+        <span class="cross-tag opportunity">O1 + O2</span>
+      </div>
+      <p>Use the unique accountability positioning (S1) and passive monitoring design (S2) to capture the vendor accountability void (O1). No competitor can easily replicate this combination because it requires both UX opinion and marketplace mechanics.</p>
+      <div class="action">Action: Lead MVP sales with "we'll show you if your vendors are working" — the message that resonates most with overwhelmed practice owners.</div>
+    </div>
+
+    <div class="cross-card">
+      <h3>WO: Address Weaknesses via Opportunities</h3>
+      <div class="tags">
+        <span class="cross-tag weakness">W1 + W2</span>
+        <span class="cross-tag opportunity">O5</span>
+      </div>
+      <p>The single-PMS limitation (W1) and cold-start benchmark gap (W2) can be addressed by targeting DSOs (O5) that run OpenDental across multiple locations. One DSO deal = multiple practices, shared benchmarks, and proof of multi-location value.</p>
+      <div class="action">Action: Target 2-3 small DSOs (5-15 locations) running OpenDental as early design partners. They provide benchmark data AND multi-location validation.</div>
+    </div>
+
+    <div class="cross-card">
+      <h3>ST: Use Strengths to Mitigate Threats</h3>
+      <div class="tags">
+        <span class="cross-tag strength">S3 + S5</span>
+        <span class="cross-tag threat">T1 + T2</span>
+      </div>
+      <p>The zero-cost model (S3) and two-sided marketplace (S5) create barriers that Sikka (T1) and DI (T2) can't easily overcome. Sikka can't build a marketplace without UX DNA. DI can't go free without destroying their revenue model.</p>
+      <div class="action">Action: Race to establish the partner ecosystem before either competitor can pivot. First-mover in the accountability layer creates switching costs for both practices and partners.</div>
+    </div>
+
+    <div class="cross-card">
+      <h3>WT: Minimize Weaknesses to Avoid Threats</h3>
+      <div class="tags">
+        <span class="cross-tag weakness">W3 + W4</span>
+        <span class="cross-tag threat">T5</span>
+      </div>
+      <p>Desktop installation friction (W3) combined with limited capital (W4) means practice onboarding must be nearly zero-effort to overcome attention scarcity (T5). If onboarding takes &gt;10 min, the combination of these factors kills growth.</p>
+      <div class="action">Action: Invest heavily in white-glove remote installation. Consider sending health scores via email BEFORE the owner ever logs into the dashboard — deliver value before requiring engagement.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Strategic Priority ── -->
+<div class="priority-section">
+  <div class="priority-title">Strategic Priority Stack</div>
+  <div class="priority-bar">
+    <div class="priority-segment" style="flex: 3; background: linear-gradient(135deg, hsl(152,60%,38%), hsl(152,58%,28%)); color: hsl(152,40%,90%);">Ship MVP + first 10 practices</div>
+    <div class="priority-segment" style="flex: 2.5; background: linear-gradient(135deg, hsl(234,85%,60%), hsl(234,75%,48%)); color: hsl(234,40%,95%);">Partner ecosystem launch</div>
+    <div class="priority-segment" style="flex: 2; background: linear-gradient(135deg, hsl(43,85%,48%), hsl(43,80%,36%)); color: hsl(43,40%,92%);">Multi-PMS expansion</div>
+    <div class="priority-segment" style="flex: 1.5; background: linear-gradient(135deg, hsl(25,88%,52%), hsl(25,82%,40%)); color: hsl(25,40%,92%);">DSO play</div>
+    <div class="priority-segment" style="flex: 1; background: linear-gradient(135deg, hsl(270,65%,56%), hsl(270,58%,44%)); color: hsl(270,40%,94%);">Health Score</div>
+  </div>
+  <div class="priority-labels">
+    <div class="priority-label"><div class="priority-dot" style="background: hsl(152,58%,46%);"></div> Now (Q2 2026)</div>
+    <div class="priority-label"><div class="priority-dot" style="background: hsl(234,85%,68%);"></div> Next (Q3-Q4 2026)</div>
+    <div class="priority-label"><div class="priority-dot" style="background: hsl(43,90%,55%);"></div> Later (H1 2027)</div>
+    <div class="priority-label"><div class="priority-dot" style="background: hsl(25,90%,58%);"></div> Future (H2 2027)</div>
+    <div class="priority-label"><div class="priority-dot" style="background: hsl(270,65%,60%);"></div> Long-term moat (2028+)</div>
+  </div>
+</div>
+
+<div class="footer-note">PracticeFront SWOT Analysis — March 2026 — Confidential</div>
+
+</body>
+</html>

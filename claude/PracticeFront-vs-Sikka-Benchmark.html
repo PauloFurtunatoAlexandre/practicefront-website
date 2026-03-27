@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticeFront vs Sikka — Strategic Benchmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --bg:            hsl(230, 18%, 6%);
+    --card:          hsl(230, 16%, 9%);
+    --surface-1:     hsl(230, 14%, 13%);
+    --surface-2:     hsl(230, 12%, 17%);
+    --border:        hsl(230, 12%, 18%);
+    --fg:            hsl(220, 20%, 95%);
+    --fg-secondary:  hsl(220, 15%, 78%);
+    --fg-muted:      hsl(220, 10%, 56%);
+    --fg-subtle:     hsl(220, 8%, 38%);
+    --fg-faint:      hsl(220, 6%, 26%);
+    --primary:       hsl(234, 85%, 68%);
+    --primary-glow:  hsla(234, 85%, 68%, 0.15);
+    --primary-tint:  hsla(234, 85%, 68%, 0.10);
+    --sikka:         hsl(0, 70%, 60%);
+    --sikka-tint:    hsla(0, 70%, 60%, 0.12);
+    --font-heading:  'Space Grotesk', system-ui, sans-serif;
+    --font-body:     'Inter', system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+    --font-display:  'Instrument Serif', Georgia, serif;
+    --radius:        0.5rem;
+    --noise-opacity: 0.03;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    padding: 40px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: var(--noise-opacity);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .logo-lockup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logo-wordmark {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .logo-wordmark span { opacity: 0.35; }
+
+  .header h1 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .header h1 .pf  { color: var(--primary); }
+  .header h1 .vs  { color: var(--fg-faint); font-weight: 400; margin: 0 10px; }
+  .header h1 .sk  { color: var(--sikka); }
+
+  .header p {
+    font-family: var(--font-mono);
+    color: var(--fg-muted);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Identity Cards ── */
+  .identity-grid {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 0;
+    max-width: 900px;
+    margin: 0 auto 56px;
+    align-items: start;
+  }
+
+  .identity-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    transition: border-color 0.2s;
+  }
+
+  .identity-card.pf { border-color: hsla(234, 85%, 68%, 0.28); }
+  .identity-card.sk { border-color: hsla(0, 70%, 60%, 0.28); }
+
+  .identity-card h2 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .identity-card.pf h2 { color: var(--primary); }
+  .identity-card.sk h2 { color: var(--sikka); }
+
+  .identity-card .tagline {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .identity-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--surface-1);
+    font-size: 13px;
+  }
+
+  .identity-stat:last-child { border-bottom: none; }
+
+  .identity-stat .label { color: var(--fg-muted); font-size: 12px; }
+  .identity-stat .value { font-weight: 600; color: var(--fg-secondary); font-size: 12px; }
+
+  .vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vs-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface-1);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--fg-subtle);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--fg);
+  }
+
+  /* ── Dimension Bars ── */
+  .dimensions {
+    max-width: 800px;
+    margin: 0 auto 56px;
+  }
+
+  .dimension { margin-bottom: 24px; }
+
+  .dimension-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .dimension-name {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-secondary);
+  }
+
+  .dimension-scores {
+    display: flex;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .score-pf { color: var(--primary); font-weight: 600; }
+  .score-sk { color: var(--sikka);   font-weight: 600; }
+
+  .bar-container {
+    display: flex;
+    height: 28px;
+    align-items: stretch;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--surface-1);
+  }
+
+  .bar-left  { flex: 1; display: flex; justify-content: flex-end; }
+  .bar-right { flex: 1; display: flex; justify-content: flex-start; }
+
+  .bar-center {
+    width: 3px;
+    background: var(--bg);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .bar-fill {
+    height: 100%;
+    min-width: 0;
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.pf {
+    background: linear-gradient(90deg, hsla(234, 85%, 68%, 0.3), var(--primary));
+    border-radius: 2px 0 0 2px;
+  }
+
+  .bar-fill.sk {
+    background: linear-gradient(270deg, hsla(0, 70%, 60%, 0.3), var(--sikka));
+    border-radius: 0 2px 2px 0;
+  }
+
+  .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: -8px auto 32px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--fg-faint);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Strategic Overlap ── */
+  .overlap-section {
+    max-width: 800px;
+    margin: 0 auto 56px;
+  }
+
+  .overlap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .overlap-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .overlap-card h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+  }
+
+  .overlap-card.threat      h3 { color: var(--sikka); }
+  .overlap-card.neutral     h3 { color: hsl(43, 90%, 55%); }
+  .overlap-card.opportunity h3 { color: hsl(152, 58%, 46%); }
+
+  .overlap-card.threat      { border-color: hsla(0, 70%, 60%, 0.2); }
+  .overlap-card.neutral     { border-color: hsla(43, 90%, 52%, 0.2); }
+  .overlap-card.opportunity { border-color: hsla(152, 58%, 44%, 0.2); }
+
+  .overlap-card ul {
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--fg-muted);
+  }
+
+  .overlap-card li::before {
+    margin-right: 6px;
+    font-size: 10px;
+  }
+
+  .overlap-card.threat      li::before { content: '›'; color: var(--sikka); }
+  .overlap-card.neutral     li::before { content: '›'; color: hsl(43, 90%, 55%); }
+  .overlap-card.opportunity li::before { content: '›'; color: hsl(152, 58%, 46%); }
+
+  /* ── Timeline ── */
+  .timeline {
+    max-width: 800px;
+    margin: 0 auto 56px;
+    position: relative;
+  }
+
+  .timeline-track {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 28px;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -32px;
+    top: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    z-index: 1;
+  }
+
+  .timeline-dot.pf   { background: hsla(234, 85%, 68%, 0.18); color: var(--primary); border: 2px solid var(--primary); }
+  .timeline-dot.sk   { background: hsla(0, 70%, 60%, 0.18);   color: var(--sikka);   border: 2px solid var(--sikka); }
+  .timeline-dot.both { background: hsla(270, 60%, 60%, 0.18); color: hsl(270, 60%, 68%); border: 2px solid hsl(270, 60%, 60%); }
+
+  .timeline-content h4 {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 3px;
+  }
+
+  .timeline-content .date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--fg-subtle);
+    margin-bottom: 5px;
+    letter-spacing: 0.02em;
+  }
+
+  .timeline-content p {
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Bottom Line ── */
+  .bottom-line {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, hsla(234, 85%, 68%, 0.06), hsla(270, 60%, 60%, 0.06));
+    border: 1px solid hsla(234, 85%, 68%, 0.18);
+    border-radius: 16px;
+    padding: 32px 40px;
+  }
+
+  .bottom-line h2 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+
+  .bottom-line p {
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--fg-secondary);
+    margin-bottom: 12px;
+  }
+
+  .bottom-line .highlight {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* ── Footer ── */
+  .footer-note {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-faint);
+    margin-top: 48px;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-lockup">
+    <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.3"/>
+      <rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.55"/>
+      <rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,85%,68%)" opacity="0.9"/>
+    </svg>
+    <span class="logo-wordmark">Practice<span>Front</span></span>
+  </div>
+  <h1><span class="pf">PracticeFront</span><span class="vs">vs</span><span class="sk">Sikka</span></h1>
+  <p>Strategic benchmark — Where we compete, where we complement, where we diverge</p>
+</div>
+
+<!-- ── Identity Cards ── -->
+<div class="identity-grid">
+  <div class="identity-card pf">
+    <h2>PracticeFront</h2>
+    <div class="tagline">Practice health monitoring + partner accountability</div>
+    <div class="identity-stat"><span class="label">Founded</span><span class="value">2026</span></div>
+    <div class="identity-stat"><span class="label">Funding</span><span class="value">Bootstrapped</span></div>
+    <div class="identity-stat"><span class="label">PMS Integrations</span><span class="value">1 (OpenDental)</span></div>
+    <div class="identity-stat"><span class="label">Target User</span><span class="value">Practice Owner</span></div>
+    <div class="identity-stat"><span class="label">Revenue Model</span><span class="value">Partner fees</span></div>
+    <div class="identity-stat"><span class="label">Core Product</span><span class="value">Health Dashboard</span></div>
+    <div class="identity-stat"><span class="label">Practice Cost</span><span class="value">$0/month</span></div>
+    <div class="identity-stat"><span class="label">Key Differentiator</span><span class="value">Vendor Accountability</span></div>
+  </div>
+
+  <div class="vs-divider">
+    <div class="vs-circle">VS</div>
+  </div>
+
+  <div class="identity-card sk">
+    <h2>Sikka Software</h2>
+    <div class="tagline">Healthcare data infrastructure + AI API platform</div>
+    <div class="identity-stat"><span class="label">Founded</span><span class="value">2012</span></div>
+    <div class="identity-stat"><span class="label">Funding</span><span class="value">Established (CloudX winner)</span></div>
+    <div class="identity-stat"><span class="label">PMS Integrations</span><span class="value">400+</span></div>
+    <div class="identity-stat"><span class="label">Target User</span><span class="value">Developers / ISVs</span></div>
+    <div class="identity-stat"><span class="label">Revenue Model</span><span class="value">API licensing</span></div>
+    <div class="identity-stat"><span class="label">Core Product</span><span class="value">ONE API Platform</span></div>
+    <div class="identity-stat"><span class="label">Practice Cost</span><span class="value">Indirect (via partners)</span></div>
+    <div class="identity-stat"><span class="label">Key Differentiator</span><span class="value">400+ PMS + MCP Server</span></div>
+  </div>
+</div>
+
+<!-- ── Dimension Comparison ── -->
+<div class="section-title">Head-to-Head by Dimension</div>
+
+<div class="bar-labels">
+  <span>← PracticeFront advantage</span>
+  <span>Sikka advantage →</span>
+</div>
+
+<div class="dimensions">
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Practice-Owner UX</span>
+      <div class="dimension-scores"><span class="score-pf">9/10</span><span class="score-sk">1/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 90%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 10%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Cognitive Load Reduction</span>
+      <div class="dimension-scores"><span class="score-pf">9/10</span><span class="score-sk">0/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 90%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 0%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Partner / Vendor Accountability</span>
+      <div class="dimension-scores"><span class="score-pf">10/10</span><span class="score-sk">0/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 100%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 0%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">PMS Coverage Breadth</span>
+      <div class="dimension-scores"><span class="score-pf">1/10</span><span class="score-sk">10/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 10%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 100%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">AI / MCP Agent Ecosystem</span>
+      <div class="dimension-scores"><span class="score-pf">0/10</span><span class="score-sk">8/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 0%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 80%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Data Normalization Quality</span>
+      <div class="dimension-scores"><span class="score-pf">7/10</span><span class="score-sk">8/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 70%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 80%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">HIPAA / Data Governance</span>
+      <div class="dimension-scores"><span class="score-pf">7/10</span><span class="score-sk">9/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 70%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 90%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Practice Network / Benchmarks</span>
+      <div class="dimension-scores"><span class="score-pf">3/10</span><span class="score-sk">8/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 30%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 80%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">Speed to Value (Practice Owner)</span>
+      <div class="dimension-scores"><span class="score-pf">8/10</span><span class="score-sk">0/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 80%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 0%;"></div></div>
+    </div>
+  </div>
+
+  <div class="dimension">
+    <div class="dimension-header">
+      <span class="dimension-name">DSO / Enterprise Readiness</span>
+      <div class="dimension-scores"><span class="score-pf">3/10</span><span class="score-sk">9/10</span></div>
+    </div>
+    <div class="bar-container">
+      <div class="bar-left"><div class="bar-fill pf" style="width: 30%;"></div></div>
+      <div class="bar-center"></div>
+      <div class="bar-right"><div class="bar-fill sk" style="width: 90%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Strategic Overlap ── -->
+<div class="section-title">Strategic Relationship Map</div>
+
+<div class="overlap-section">
+  <div class="overlap-grid">
+    <div class="overlap-card threat">
+      <h3>Where Sikka Threatens</h3>
+      <ul>
+        <li>MCP server enables anyone to build practice dashboards on their data</li>
+        <li>50K+ practice data gives instant benchmarking capability</li>
+        <li>400+ PMS connections is a 3-5 year head start</li>
+        <li>AI agents could automate what PF surfaces as "problems"</li>
+        <li>They could acquire or fund a DI competitor</li>
+      </ul>
+    </div>
+
+    <div class="overlap-card neutral">
+      <h3>Where We Coexist</h3>
+      <ul>
+        <li>Both believe in data normalization as foundational</li>
+        <li>Both serve the dental partner ecosystem</li>
+        <li>Both have multi-tenant data models</li>
+        <li>Sikka's API could power PF's Dentrix/Eaglesoft integrations</li>
+        <li>Sikka's MCP server could extend PF's partner capabilities</li>
+      </ul>
+    </div>
+
+    <div class="overlap-card opportunity">
+      <h3>Where PracticeFront Wins</h3>
+      <ul>
+        <li>Practice-owner UX — Sikka has zero consumer-grade experience</li>
+        <li>Vendor accountability — nobody tracks partner performance</li>
+        <li>Curated marketplace — quality over quantity partner selection</li>
+        <li>"10-second scan" — Sikka sells complexity, PF sells simplicity</li>
+        <li>Trust engine positioning — practices control their data story</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── Timeline ── -->
+<div class="section-title">Competitive Timeline &amp; Key Moves</div>
+
+<div class="timeline">
+  <div class="timeline-track">
+    <div class="timeline-item">
+      <div class="timeline-dot sk">S</div>
+      <div class="timeline-content">
+        <div class="date">2012-2024</div>
+        <h4>Sikka builds data infrastructure moat</h4>
+        <p>12 years connecting PMS systems. Reaches 400+ integrations, 50K+ practices. Wins CloudX Best PaaS 2025. Zero practice-facing products.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot sk">S</div>
+      <div class="timeline-content">
+        <div class="date">Early 2026</div>
+        <h4>Sikka launches MCP server support</h4>
+        <p>AI agents can now connect to dental practice data via natural language. Developers report 60% → 90% time on innovation vs. integration. Critical signal.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot pf">P</div>
+      <div class="timeline-content">
+        <div class="date">Q1 2026</div>
+        <h4>PracticeFront MVP development</h4>
+        <p>Three Pillars framework, OpenDental sync service, health dashboard. Targeting the "10-second scan" white space that nobody occupies.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot both">?</div>
+      <div class="timeline-content">
+        <div class="date">Q2-Q3 2026 — Decision Point</div>
+        <h4>Build or partner for multi-PMS coverage?</h4>
+        <p>PracticeFront must decide: build Dentrix/Eaglesoft sync independently, or leverage Sikka/Kolla APIs for faster coverage? This shapes the competitive relationship.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot pf">P</div>
+      <div class="timeline-content">
+        <div class="date">Q3-Q4 2026 — Projected</div>
+        <h4>Partner ecosystem launch</h4>
+        <p>First billing/RCM partners connected. Accountability tracking goes live. This creates the moat Sikka cannot easily replicate — because it requires UX opinion and a marketplace network effect.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot both">?</div>
+      <div class="timeline-content">
+        <div class="date">2027 — Scenario Planning</div>
+        <h4>Does Sikka move up-stack?</h4>
+        <p>If Sikka builds a practice-facing product, they have 50K practices of data but zero UX DNA. If they stay infrastructure, PracticeFront could become a customer. Either way, the partner accountability layer is defensible.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bottom Line ── -->
+<div class="bottom-line">
+  <h2>Strategic Assessment</h2>
+  <p>Sikka and PracticeFront operate at <span class="highlight">different layers of the same stack</span>. Sikka is the data pipe (infrastructure layer). PracticeFront is the intelligence and action layer (application layer). Today, they don't compete.</p>
+  <p>The risk is Sikka moving up-stack — building a practice-facing dashboard. But their DNA is developer-focused infrastructure, and their MCP server strategy actually deepens that positioning by making it easier for <em>others</em> to build on top of them.</p>
+  <p>The opportunity is potentially <span class="highlight">using Sikka as an integration accelerant</span> for Dentrix/Eaglesoft coverage while PracticeFront owns the sync for OpenDental (where you control the full experience). This "own your core, partner for reach" strategy lets you move fast without building 400 PMS integrations.</p>
+  <p><span class="highlight">The moat Sikka cannot replicate:</span> partner accountability, curated marketplace, and the "10-second health scan" UX philosophy. These require product opinion, not data volume. Sikka sells pipes. You sell trust.</p>
+</div>
+
+<div class="footer-note">PracticeFront Strategic Analysis — March 2026 — Confidential</div>
+
+</body>
+</html>

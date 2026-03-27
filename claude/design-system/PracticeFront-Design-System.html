@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PracticeFront — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══ CSS VARIABLES — LIGHT (DEFAULT) ═══ */
+:root {
+  --background:          225 20% 97%;
+  --foreground:          230 25% 10%;
+  --card:                225 18% 100%;
+  --card-foreground:     230 25% 10%;
+  --primary:             234 75% 55%;
+  --primary-foreground:  0 0% 100%;
+  --secondary:           225 15% 94%;
+  --secondary-foreground: 230 25% 10%;
+  --muted:               225 15% 94%;
+  --muted-foreground:    225 10% 38%;
+  --accent:              234 50% 93%;
+  --accent-foreground:   234 75% 45%;
+  --destructive:         0 65% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border:              225 12% 86%;
+  --input:               225 12% 86%;
+  --ring:                234 75% 55%;
+  --radius:              0.5rem;
+  --surface-1:     225 15% 94%;
+  --surface-2:     225 12% 90%;
+  --warm:          28 75% 48%;
+  --warm-muted:    28 50% 93%;
+  --success:       152 55% 38%;
+  --success-muted: 152 40% 92%;
+  --warning:       38 80% 45%;
+  --warning-muted: 38 55% 92%;
+  --noise-opacity: 0.012;
+}
+
+.dark {
+  --background:          230 18% 6%;
+  --foreground:          220 20% 95%;
+  --card:                230 16% 9%;
+  --card-foreground:     220 20% 95%;
+  --primary:             234 85% 68%;
+  --primary-foreground:  0 0% 100%;
+  --secondary:           230 14% 13%;
+  --secondary-foreground: 220 20% 95%;
+  --muted:               230 14% 13%;
+  --muted-foreground:    220 10% 70%;
+  --accent:              234 40% 20%;
+  --accent-foreground:   234 85% 72%;
+  --destructive:         0 70% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --border:              230 12% 18%;
+  --input:               230 12% 18%;
+  --ring:                234 85% 68%;
+  --surface-1:     230 14% 13%;
+  --surface-2:     230 12% 17%;
+  --warm:          28 80% 62%;
+  --warm-muted:    28 40% 18%;
+  --success:       152 60% 52%;
+  --success-muted: 152 30% 14%;
+  --warning:       38 85% 58%;
+  --warning-muted: 38 40% 15%;
+  --noise-opacity: 0.03;
+}
+
+/* ═══ RESET ═══ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.4s, color 0.4s;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+  transition: opacity 0.4s;
+}
+
+/* ═══ LAYOUT ═══ */
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  border-right: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  padding: 32px 0;
+  transition: background 0.4s, border-color 0.4s;
+}
+.sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px 28px;
+  border-bottom: 1px solid hsl(var(--border));
+  margin-bottom: 16px;
+}
+.sidebar-wordmark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 15px; letter-spacing: -0.02em;
+  color: hsl(var(--foreground));
+}
+.sidebar-wordmark .front { opacity: 0.4; }
+.nav-group { margin-bottom: 4px; }
+.nav-group-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground)); padding: 8px 20px 4px;
+}
+.nav-link {
+  display: block; padding: 6px 20px;
+  font-size: 13px; color: hsl(var(--muted-foreground));
+  text-decoration: none; border-radius: 0;
+  transition: color 0.2s, background 0.2s;
+  border-left: 2px solid transparent; margin-left: -1px;
+}
+.nav-link:hover { color: hsl(var(--foreground)); background: hsl(var(--accent)); }
+.nav-link.active { color: hsl(var(--primary)); border-left-color: hsl(var(--primary)); background: hsl(var(--accent)); }
+
+/* ── Main content ── */
+.main { overflow-y: auto; }
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 48px;
+  background: hsl(var(--background) / 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid hsl(var(--border));
+  transition: background 0.4s, border-color 0.4s;
+}
+.topbar-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+}
+.theme-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: hsl(var(--secondary)); border: 1px solid hsl(var(--border));
+  border-radius: 40px; padding: 5px 14px 5px 6px; cursor: pointer;
+  transition: all 0.25s; font-size: 12px; color: hsl(var(--muted-foreground));
+  font-family: 'Inter', sans-serif;
+}
+.theme-toggle:hover { border-color: hsl(var(--primary)); color: hsl(var(--foreground)); }
+.toggle-track {
+  width: 36px; height: 20px; border-radius: 10px;
+  background: hsl(var(--surface-2)); position: relative;
+}
+.toggle-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: hsl(var(--primary)); position: absolute; top: 3px; left: 3px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dark .toggle-thumb { transform: translateX(16px); }
+
+.content { padding: 56px 48px; max-width: 900px; }
+
+/* ═══ SECTION STRUCTURE ═══ */
+.section { margin-bottom: 80px; scroll-margin-top: 80px; }
+.section-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: hsl(var(--primary)); margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif; font-size: 28px;
+  font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.section-desc {
+  font-size: 14px; color: hsl(var(--muted-foreground));
+  margin-bottom: 32px; max-width: 560px; line-height: 1.7;
+}
+.divider { height: 1px; background: hsl(var(--border)); margin: 48px 0; }
+
+/* ═══ TOKEN GRID ═══ */
+.token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+.token-swatch {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid hsl(var(--border));
+}
+.token-color { height: 56px; }
+.token-info { padding: 8px 10px; background: hsl(var(--card)); }
+.token-name { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--foreground)); font-weight: 500; }
+.token-value { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+
+/* ═══ TYPOGRAPHY ═══ */
+.type-row { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid hsl(var(--border)); }
+.type-row:last-child { border-bottom: none; }
+.type-meta { display: flex; gap: 12px; align-items: baseline; margin-bottom: 4px; }
+.type-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.08em; min-width: 80px; }
+.type-spec  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--primary)); }
+
+/* ═══ COMPONENT SHOWCASE BASE ═══ */
+.component-group { margin-bottom: 32px; }
+.component-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: hsl(var(--muted-foreground)); margin-bottom: 12px; }
+.component-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border-radius: var(--radius); font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500; font-size: 14px; cursor: pointer;
+  transition: all 0.2s; border: 1px solid transparent;
+  text-decoration: none; white-space: nowrap;
+}
+.btn:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+.btn-sm  { padding: 6px 14px; font-size: 13px; }
+.btn-md  { padding: 9px 18px; }
+.btn-lg  { padding: 12px 24px; font-size: 16px; }
+.btn-icon { width: 36px; height: 36px; padding: 0; }
+
+.btn-primary {
+  background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+  box-shadow: 0 1px 3px hsl(var(--primary) / 0.3);
+}
+.btn-primary:hover { background: hsl(234 75% 48%); box-shadow: 0 4px 12px hsl(var(--primary) / 0.35); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground));
+  border-color: hsl(var(--border));
+}
+.btn-secondary:hover { background: hsl(var(--accent)); border-color: hsl(var(--primary) / 0.3); }
+
+.btn-outline {
+  background: transparent; color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+.btn-outline:hover { background: hsl(var(--accent)); border-color: hsl(var(--primary) / 0.4); color: hsl(var(--accent-foreground)); }
+
+.btn-ghost {
+  background: transparent; color: hsl(var(--foreground)); border-color: transparent;
+}
+.btn-ghost:hover { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+
+.btn-destructive {
+  background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground));
+}
+.btn-destructive:hover { background: hsl(0 65% 44%); }
+
+.btn-warm {
+  background: hsl(var(--warm)); color: white;
+}
+.btn-warm:hover { filter: brightness(0.92); }
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+/* ═══ INPUTS ═══ */
+.input-group { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }
+.input-label { font-size: 13px; font-weight: 500; color: hsl(var(--foreground)); font-family: 'Space Grotesk', sans-serif; }
+.input-hint  { font-size: 12px; color: hsl(var(--muted-foreground)); }
+.input-error-msg { font-size: 12px; color: hsl(var(--destructive)); }
+
+.input {
+  width: 100%; padding: 9px 13px;
+  background: hsl(var(--card)); color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--input)); border-radius: var(--radius);
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.input::placeholder { color: hsl(var(--muted-foreground)); }
+.input:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / 0.12); }
+.input.error { border-color: hsl(var(--destructive)); }
+.input.error:focus { box-shadow: 0 0 0 3px hsl(var(--destructive) / 0.12); }
+.input:disabled { opacity: 0.5; cursor: not-allowed; background: hsl(var(--muted)); }
+
+.textarea { resize: vertical; min-height: 88px; }
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 36px;
+}
+
+/* ── Checkbox & Radio ── */
+.check-group { display: flex; flex-direction: column; gap: 10px; }
+.check-item  { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.check-input {
+  appearance: none; width: 16px; height: 16px; flex-shrink: 0;
+  border: 1.5px solid hsl(var(--border)); border-radius: 3px;
+  background: hsl(var(--card)); cursor: pointer;
+  transition: all 0.15s; position: relative;
+}
+.check-input:checked { background: hsl(var(--primary)); border-color: hsl(var(--primary)); }
+.check-input:checked::after {
+  content: ''; position: absolute; left: 4px; top: 1.5px;
+  width: 5px; height: 9px; border: 2px solid white;
+  border-top: none; border-left: none; transform: rotate(45deg);
+}
+.radio-input { border-radius: 50%; }
+.radio-input:checked::after { top: 3px; left: 3px; width: 8px; height: 8px; border: none; border-radius: 50%; background: white; }
+.check-label { font-size: 14px; color: hsl(var(--foreground)); user-select: none; }
+.check-label-disabled { opacity: 0.5; }
+
+/* ── Switch ── */
+.switch-item { display: flex; align-items: center; gap: 10px; }
+.switch {
+  position: relative; width: 40px; height: 22px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-track {
+  position: absolute; inset: 0; border-radius: 11px;
+  background: hsl(var(--surface-2)); border: 1.5px solid hsl(var(--border));
+  transition: all 0.25s;
+}
+.switch input:checked ~ .switch-track {
+  background: hsl(var(--primary)); border-color: hsl(var(--primary));
+}
+.switch-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: white; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.switch input:checked ~ .switch-track .switch-thumb { transform: translateX(18px); }
+
+/* ═══ CARDS ═══ */
+.card {
+  background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) + 4px); padding: 24px;
+  transition: background 0.4s, border-color 0.4s;
+}
+.card-hover:hover {
+  border-color: hsl(var(--primary) / 0.3);
+  box-shadow: 0 8px 32px -8px hsl(var(--primary) / 0.1);
+  transform: translateY(-2px);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.card-desc  { font-size: 13px; color: hsl(var(--muted-foreground)); line-height: 1.6; }
+.card-grid  { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+
+/* Metric card */
+.metric-card { padding: 20px; }
+.metric-value { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.03em; }
+.metric-label { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 4px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; }
+.metric-delta { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 500; margin-top: 8px; padding: 2px 8px; border-radius: 99px; }
+.metric-delta.up   { background: hsl(var(--success-muted)); color: hsl(var(--success)); }
+.metric-delta.down { background: hsl(0 50% 94%); color: hsl(var(--destructive)); }
+.dark .metric-delta.down { background: hsl(0 35% 15%); }
+
+/* ═══ BADGES ═══ */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 99px;
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500;
+  border: 1px solid transparent;
+}
+.badge-default   { background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); border-color: hsl(var(--border)); }
+.badge-primary   { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+.badge-success   { background: hsl(var(--success-muted)); color: hsl(var(--success)); }
+.badge-warning   { background: hsl(var(--warning-muted)); color: hsl(var(--warning)); }
+.badge-danger    { background: hsl(0 50% 94%); color: hsl(var(--destructive)); }
+.dark .badge-danger { background: hsl(0 35% 15%); }
+.badge-warm      { background: hsl(var(--warm-muted)); color: hsl(var(--warm)); }
+.badge-dot::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* ═══ ALERTS ═══ */
+.alert {
+  display: flex; gap: 12px; padding: 14px 16px;
+  border-radius: calc(var(--radius) + 2px); border: 1px solid;
+  margin-bottom: 12px; font-size: 14px;
+}
+.alert-icon { flex-shrink: 0; margin-top: 1px; }
+.alert-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.alert-desc  { font-size: 13px; opacity: 0.85; }
+.alert-info        { background: hsl(var(--accent)); border-color: hsl(var(--primary) / 0.2); color: hsl(var(--accent-foreground)); }
+.dark .alert-info  { background: hsl(234 40% 20%); border-color: hsl(234 85% 68% / 0.2); color: hsl(220 20% 95%); }
+.alert-success     { background: hsl(var(--success-muted)); border-color: hsl(var(--success) / 0.25); color: hsl(var(--success)); }
+.alert-warning     { background: hsl(var(--warning-muted)); border-color: hsl(var(--warning) / 0.25); color: hsl(var(--warning)); }
+.dark .alert-warning { background: hsl(38 40% 15%); color: hsl(38 85% 58%); }
+.alert-danger      { background: hsl(0 50% 94%); border-color: hsl(var(--destructive) / 0.25); color: hsl(var(--destructive)); }
+.dark .alert-danger { background: hsl(0 35% 15%); color: hsl(0 70% 58%); }
+
+/* ═══ AVATAR ═══ */
+.avatar {
+  border-radius: 50%; background: hsl(var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+  color: hsl(var(--accent-foreground)); flex-shrink: 0; overflow: hidden;
+  border: 2px solid hsl(var(--background));
+}
+.avatar-sm  { width: 28px; height: 28px; font-size: 11px; }
+.avatar-md  { width: 36px; height: 36px; font-size: 13px; }
+.avatar-lg  { width: 48px; height: 48px; font-size: 16px; }
+.avatar-xl  { width: 64px; height: 64px; font-size: 20px; }
+.avatar-stack { display: flex; flex-direction: row-reverse; }
+.avatar-stack .avatar { margin-left: -8px; }
+.avatar-stack .avatar:last-child { margin-left: 0; }
+
+/* ═══ PROGRESS ═══ */
+.progress-group { display: flex; flex-direction: column; gap: 16px; }
+.progress-item  { display: flex; flex-direction: column; gap: 6px; }
+.progress-header { display: flex; justify-content: space-between; align-items: baseline; }
+.progress-name  { font-size: 13px; font-weight: 500; font-family: 'Space Grotesk', sans-serif; }
+.progress-val   { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.progress-track { height: 6px; background: hsl(var(--surface-1)); border-radius: 99px; overflow: hidden; }
+.progress-bar   { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.progress-primary { background: hsl(var(--primary)); }
+.progress-success { background: hsl(var(--success)); }
+.progress-warm    { background: hsl(var(--warm)); }
+
+/* ═══ TABLE ═══ */
+.table-wrapper { border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius) + 4px); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: hsl(var(--secondary)); }
+th {
+  text-align: left; padding: 10px 16px;
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground)); border-bottom: 1px solid hsl(var(--border));
+}
+td {
+  padding: 12px 16px; font-size: 14px;
+  border-bottom: 1px solid hsl(var(--border)); vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: hsl(var(--accent) / 0.5); }
+.td-mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+/* ═══ SKELETON ═══ */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, hsl(var(--surface-1)) 25%, hsl(var(--surface-2)) 50%, hsl(var(--surface-1)) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--radius);
+}
+.skeleton-text { height: 14px; }
+.skeleton-title { height: 22px; width: 60%; }
+.skeleton-circle { border-radius: 50%; }
+
+/* ═══ SEPARATOR ═══ */
+.separator { height: 1px; background: hsl(var(--border)); }
+.separator-v { width: 1px; background: hsl(var(--border)); align-self: stretch; }
+.separator-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; color: hsl(var(--muted-foreground));
+  font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.separator-label::before, .separator-label::after { content: ''; flex: 1; height: 1px; background: hsl(var(--border)); }
+
+/* ═══ TABS ═══ */
+.tabs-list {
+  display: flex; gap: 2px; background: hsl(var(--secondary));
+  border-radius: var(--radius); padding: 3px; width: fit-content;
+  border: 1px solid hsl(var(--border));
+}
+.tab {
+  padding: 6px 16px; border-radius: calc(var(--radius) - 2px);
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer; color: hsl(var(--muted-foreground));
+  transition: all 0.2s; border: none; background: transparent;
+}
+.tab.active {
+  background: hsl(var(--card)); color: hsl(var(--foreground));
+  box-shadow: 0 1px 4px hsl(var(--foreground) / 0.08);
+}
+.tab:hover:not(.active) { color: hsl(var(--foreground)); }
+
+/* ═══ TOOLTIP (CSS-only) ═══ */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip-wrap .tooltip {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  background: hsl(var(--foreground)); color: hsl(var(--background));
+  padding: 5px 10px; border-radius: var(--radius); font-size: 12px; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+.tooltip-wrap:hover .tooltip { opacity: 1; }
+
+/* ═══ LOGO SECTION ═══ */
+.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.logo-variant {
+  background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) + 4px); padding: 40px 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.logo-variant.on-dark { background: hsl(230 18% 6%); border-color: hsl(230 12% 18%); }
+.logo-variant.on-primary { background: hsl(var(--primary)); }
+.logo-lockup { display: flex; align-items: center; gap: 10px; }
+.wordmark { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em; color: hsl(var(--foreground)); }
+.wordmark .front { opacity: 0.45; }
+.logo-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: hsl(var(--muted-foreground)); }
+.logo-variant.on-dark .wordmark, .logo-variant.on-dark .logo-label { color: hsl(220 20% 95%); }
+.logo-variant.on-dark .wordmark .front { opacity: 0.4; }
+.logo-variant.on-primary .wordmark { color: white; }
+.logo-variant.on-primary .logo-label { color: hsl(234 85% 90%); }
+
+/* ═══ SPACING DEMO ═══ */
+.spacing-row { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.spacing-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.spacing-block { background: hsl(var(--primary)); border-radius: 3px; width: 100%; }
+.spacing-val { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--muted-foreground)); }
+
+/* ═══ RADIUS DEMO ═══ */
+.radius-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.radius-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.radius-box { width: 56px; height: 56px; background: hsl(var(--primary) / 0.15); border: 2px solid hsl(var(--primary)); }
+.radius-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--muted-foreground)); }
+
+/* ═══ MOTION EASING DEMOS ═══ */
+.motion-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.motion-card {
+  background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) + 2px); padding: 20px; cursor: pointer;
+  transition: all 0.25s;
+}
+.motion-card:hover { border-color: hsl(var(--primary) / 0.4); }
+.motion-demo {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: hsl(var(--primary)); margin-bottom: 12px;
+}
+.motion-card.spring:hover .motion-demo    { transform: translateX(48px); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.motion-card.ease-out:hover .motion-demo  { transform: translateX(48px); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.motion-card.ease-inout:hover .motion-demo { transform: translateX(48px); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.motion-name { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; }
+.motion-curve { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+.motion-use  { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 6px; }
+
+/* ═══ SCROLLBAR ═══ */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="22" height="22" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234, 75%, 55%)" opacity="0.3"/>
+        <rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234, 75%, 55%)" opacity="0.55"/>
+        <rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234, 75%, 55%)" opacity="0.9"/>
+      </svg>
+      <span class="sidebar-wordmark">Practice<span class="front">Front</span></span>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">Foundation</div>
+      <a href="#tokens" class="nav-link active">Color Tokens</a>
+      <a href="#typography" class="nav-link">Typography</a>
+      <a href="#spacing" class="nav-link">Spacing</a>
+      <a href="#radius" class="nav-link">Radius</a>
+      <a href="#logo" class="nav-link">Logo</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Components</div>
+      <a href="#buttons" class="nav-link">Buttons</a>
+      <a href="#inputs" class="nav-link">Inputs & Forms</a>
+      <a href="#cards" class="nav-link">Cards</a>
+      <a href="#badges" class="nav-link">Badges</a>
+      <a href="#alerts" class="nav-link">Alerts</a>
+      <a href="#tabs" class="nav-link">Tabs</a>
+      <a href="#avatar" class="nav-link">Avatar</a>
+      <a href="#progress" class="nav-link">Progress</a>
+      <a href="#table" class="nav-link">Table</a>
+      <a href="#skeleton" class="nav-link">Skeleton</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Motion</div>
+      <a href="#motion" class="nav-link">Easing Tokens</a>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Design System v1.0 — March 2026</span>
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        <span id="themeLabel">Light Mode</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── COLOR TOKENS ── -->
+      <section class="section" id="tokens">
+        <div class="section-eyebrow">01 — Foundation</div>
+        <div class="section-title">Color Tokens</div>
+        <div class="section-desc">All colors reference CSS custom properties. Toggle dark mode to see how every token adapts. All combinations meet WCAG AA contrast.</div>
+
+        <div class="component-group">
+          <div class="component-label">Core Surfaces</div>
+          <div class="token-grid">
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--background))"></div>
+              <div class="token-info"><div class="token-name">background</div><div class="token-value">--background</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--card))"></div>
+              <div class="token-info"><div class="token-name">card</div><div class="token-value">--card</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--secondary))"></div>
+              <div class="token-info"><div class="token-name">secondary</div><div class="token-value">--secondary</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--surface-1))"></div>
+              <div class="token-info"><div class="token-name">surface-1</div><div class="token-value">--surface-1</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--surface-2))"></div>
+              <div class="token-info"><div class="token-name">surface-2</div><div class="token-value">--surface-2</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-group">
+          <div class="component-label">Brand & Interactive</div>
+          <div class="token-grid">
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--primary))"></div>
+              <div class="token-info"><div class="token-name">primary</div><div class="token-value">Indigo Trust</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--accent))"></div>
+              <div class="token-info"><div class="token-name">accent</div><div class="token-value">--accent</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--ring))"></div>
+              <div class="token-info"><div class="token-name">ring</div><div class="token-value">--ring</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--warm))"></div>
+              <div class="token-info"><div class="token-name">warm</div><div class="token-value">--warm</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-group">
+          <div class="component-label">Semantic States</div>
+          <div class="token-grid">
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--success))"></div>
+              <div class="token-info"><div class="token-name">success</div><div class="token-value">--success</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--warning))"></div>
+              <div class="token-info"><div class="token-name">warning</div><div class="token-value">--warning</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--destructive))"></div>
+              <div class="token-info"><div class="token-name">destructive</div><div class="token-value">--destructive</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-group">
+          <div class="component-label">Text Hierarchy</div>
+          <div class="token-grid">
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--foreground))"></div>
+              <div class="token-info"><div class="token-name">foreground</div><div class="token-value">Primary text</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--muted-foreground))"></div>
+              <div class="token-info"><div class="token-name">muted-fg</div><div class="token-value">Secondary text</div></div>
+            </div>
+            <div class="token-swatch">
+              <div class="token-color" style="background: hsl(var(--border))"></div>
+              <div class="token-info"><div class="token-name">border</div><div class="token-value">--border</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TYPOGRAPHY ── -->
+      <section class="section" id="typography">
+        <div class="section-eyebrow">02 — Foundation</div>
+        <div class="section-title">Typography</div>
+        <div class="section-desc">Four typefaces, each with a precise role. Never mix roles.</div>
+
+        <div class="type-row">
+          <div class="type-meta"><span class="type-label">Display</span><span class="type-spec">Instrument Serif · Regular / Italic</span></div>
+          <div style="font-family:'Instrument Serif',serif; font-size:48px; line-height:1.1; letter-spacing:-0.01em">Your practice health,<br><em>at a glance.</em></div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><span class="type-label">Heading</span><span class="type-spec">Space Grotesk · 600 · −0.02em</span></div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:600; letter-spacing:-0.02em">Practice Health Score</div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:600; letter-spacing:-0.02em; margin-top:8px; color:hsl(var(--muted-foreground))">Collection Rate — 94.2%</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><span class="type-label">Body</span><span class="type-spec">Inter · 14–16px · 1.6 leading</span></div>
+          <div style="font-size:16px; max-width:540px; line-height:1.6">Understand your entire practice in under 30 seconds. PracticeFront surfaces the three metrics that actually drive revenue — patient flow, scheduling efficiency, and collections — in a single daily view.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><span class="type-label">Mono</span><span class="type-spec">JetBrains Mono · Labels, data, code</span></div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:hsl(var(--primary))">01 — COLLECTIONS · $142,800 · +12.4%</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:hsl(var(--muted-foreground)); margin-top:6px; text-transform:uppercase; letter-spacing:0.1em">API_KEY · ENV · VERSION_2.1.0</div>
+        </div>
+      </section>
+
+      <!-- ── SPACING ── -->
+      <section class="section" id="spacing">
+        <div class="section-eyebrow">03 — Foundation</div>
+        <div class="section-title">Spacing Scale</div>
+        <div class="section-desc">4px base unit. All spacing derives from multiples of 4.</div>
+        <div class="spacing-row">
+          <div class="spacing-item"><div class="spacing-block" style="height:4px;width:40px"></div><div class="spacing-val">4px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:8px;width:40px"></div><div class="spacing-val">8px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:12px;width:40px"></div><div class="spacing-val">12px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:16px;width:40px"></div><div class="spacing-val">16px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:24px;width:40px"></div><div class="spacing-val">24px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:32px;width:40px"></div><div class="spacing-val">32px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:48px;width:40px"></div><div class="spacing-val">48px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:64px;width:40px"></div><div class="spacing-val">64px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:80px;width:40px"></div><div class="spacing-val">80px</div></div>
+          <div class="spacing-item"><div class="spacing-block" style="height:96px;width:40px"></div><div class="spacing-val">96px</div></div>
+        </div>
+      </section>
+
+      <!-- ── RADIUS ── -->
+      <section class="section" id="radius">
+        <div class="section-eyebrow">04 — Foundation</div>
+        <div class="section-title">Border Radius</div>
+        <div class="section-desc">Base radius is 0.5rem (8px). All steps derive from it.</div>
+        <div class="radius-row">
+          <div class="radius-item"><div class="radius-box" style="border-radius:0"></div><div class="radius-label">none</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:2px"></div><div class="radius-label">xs · 2px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:4px"></div><div class="radius-label">sm · 4px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:6px"></div><div class="radius-label">md · 6px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:8px"></div><div class="radius-label">lg · 8px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:12px"></div><div class="radius-label">xl · 12px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:16px"></div><div class="radius-label">2xl · 16px</div></div>
+          <div class="radius-item"><div class="radius-box" style="border-radius:9999px"></div><div class="radius-label">full</div></div>
+        </div>
+      </section>
+
+      <!-- ── LOGO ── -->
+      <section class="section" id="logo">
+        <div class="section-eyebrow">05 — Foundation</div>
+        <div class="section-title">Logo & Symbol</div>
+        <div class="section-desc">The Blocks mark stands free — never inside a container. Three data layers, monochromatic, adapts to any background via the primary color token.</div>
+        <div class="logo-grid">
+          <div class="logo-variant">
+            <div class="logo-lockup">
+              <svg width="32" height="32" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,75%,55%)" opacity="0.9"/></svg>
+              <span class="wordmark">Practice<span class="front">Front</span></span>
+            </div>
+            <div class="logo-label">Primary — Light</div>
+          </div>
+          <div class="logo-variant on-dark">
+            <div class="logo-lockup">
+              <svg width="32" height="32" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,85%,68%)" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,85%,68%)" opacity="0.9"/></svg>
+              <span class="wordmark">Practice<span class="front">Front</span></span>
+            </div>
+            <div class="logo-label">Primary — Dark</div>
+          </div>
+          <div class="logo-variant" style="justify-content:space-around; flex-direction:row; align-items:center;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <svg width="48" height="48" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,75%,55%)" opacity="0.9"/></svg>
+              <div class="logo-label">48px</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <svg width="32" height="32" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,75%,55%)" opacity="0.9"/></svg>
+              <div class="logo-label">32px</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="hsl(234,75%,55%)" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="hsl(234,75%,55%)" opacity="0.9"/></svg>
+              <div class="logo-label">20px</div>
+            </div>
+          </div>
+          <div class="logo-variant on-primary">
+            <div class="logo-lockup">
+              <svg width="32" height="32" viewBox="0 0 64 64" fill="none"><rect x="4" y="6" width="38" height="24" rx="4" fill="white" opacity="0.3"/><rect x="12" y="18" width="38" height="24" rx="4" fill="white" opacity="0.55"/><rect x="20" y="30" width="40" height="28" rx="4" fill="white" opacity="0.9"/></svg>
+              <span class="wordmark">Practice<span class="front">Front</span></span>
+            </div>
+            <div class="logo-label">On Brand Color</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BUTTONS ── -->
+      <section class="section" id="buttons">
+        <div class="section-eyebrow">06 — Components</div>
+        <div class="section-title">Buttons</div>
+        <div class="section-desc">Six variants, three sizes. Uses Space Grotesk 500 for all labels.</div>
+
+        <div class="component-group">
+          <div class="component-label">Variants</div>
+          <div class="component-row">
+            <button class="btn btn-md btn-primary">Get Started</button>
+            <button class="btn btn-md btn-secondary">Secondary</button>
+            <button class="btn btn-md btn-outline">Outline</button>
+            <button class="btn btn-md btn-ghost">Ghost</button>
+            <button class="btn btn-md btn-destructive">Delete</button>
+            <button class="btn btn-md btn-warm">Upgrade</button>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="component-label">Sizes</div>
+          <div class="component-row">
+            <button class="btn btn-sm btn-primary">Small</button>
+            <button class="btn btn-md btn-primary">Default</button>
+            <button class="btn btn-lg btn-primary">Large</button>
+            <button class="btn btn-md btn-outline" style="width:36px;height:36px;padding:0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="component-group">
+          <div class="component-label">States</div>
+          <div class="component-row">
+            <button class="btn btn-md btn-primary" disabled>Disabled</button>
+            <button class="btn btn-md btn-primary" style="opacity:0.7;cursor:wait">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              Loading...
+            </button>
+            <button class="btn btn-md btn-primary" style="gap:8px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              With Icon
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── INPUTS ── -->
+      <section class="section" id="inputs">
+        <div class="section-eyebrow">07 — Components</div>
+        <div class="section-title">Inputs & Forms</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+          <div class="input-group">
+            <label class="input-label">Practice name</label>
+            <input class="input" type="text" placeholder="Sunshine Dental Co.">
+            <span class="input-hint">Used for all reports and exports.</span>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Email address</label>
+            <input class="input error" type="email" value="invalid@">
+            <span class="input-error-msg">Please enter a valid email address.</span>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Notes</label>
+            <textarea class="input textarea" placeholder="Add context about this practice..."></textarea>
+          </div>
+          <div class="input-group">
+            <label class="input-label">PMS Software</label>
+            <select class="input select">
+              <option>Select your PMS</option>
+              <option>Dentrix</option>
+              <option>Eaglesoft</option>
+              <option>Open Dental</option>
+              <option>Curve</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="component-group">
+          <div class="component-label">Checkboxes</div>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" class="check-input" checked><span class="check-label">Patient reminders enabled</span></label>
+            <label class="check-item"><input type="checkbox" class="check-input"><span class="check-label">Send weekly digest emails</span></label>
+            <label class="check-item"><input type="checkbox" class="check-input" disabled><span class="check-label check-label-disabled">Require two-factor authentication</span></label>
+          </div>
+        </div>
+
+        <div class="component-group" style="margin-top:24px">
+          <div class="component-label">Switches</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="switch-item">
+              <label class="switch"><input type="checkbox" checked><div class="switch-track"><div class="switch-thumb"></div></div></label>
+              <span class="check-label">Dark mode</span>
+            </div>
+            <div class="switch-item">
+              <label class="switch"><input type="checkbox"><div class="switch-track"><div class="switch-thumb"></div></div></label>
+              <span class="check-label">Practice health alerts</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CARDS ── -->
+      <section class="section" id="cards">
+        <div class="section-eyebrow">08 — Components</div>
+        <div class="section-title">Cards</div>
+        <div class="card-grid">
+          <div class="card card-hover" style="cursor:pointer">
+            <div class="card-title">Patient Flow</div>
+            <div class="card-desc">Track new patients, reactivations, and attrition in real time across your practice.</div>
+            <div style="margin-top:16px"><span class="badge badge-success badge-dot">Healthy</span></div>
+          </div>
+          <div class="card card-hover" style="cursor:pointer">
+            <div class="card-title">Scheduling Health</div>
+            <div class="card-desc">Monitor chair utilization, no-show rates, and same-day cancellations at a glance.</div>
+            <div style="margin-top:16px"><span class="badge badge-warning badge-dot">Needs Attention</span></div>
+          </div>
+          <div class="card metric-card">
+            <div class="metric-value">$142.8K</div>
+            <div class="metric-label">Monthly Collections</div>
+            <div class="metric-delta up">↑ 12.4% vs last month</div>
+          </div>
+          <div class="card metric-card">
+            <div class="metric-value">94.2%</div>
+            <div class="metric-label">Collection Rate</div>
+            <div class="metric-delta down">↓ 1.8% vs last month</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BADGES ── -->
+      <section class="section" id="badges">
+        <div class="section-eyebrow">09 — Components</div>
+        <div class="section-title">Badges</div>
+        <div class="component-row" style="flex-wrap:wrap">
+          <span class="badge badge-default">Default</span>
+          <span class="badge badge-primary">Primary</span>
+          <span class="badge badge-success">Healthy</span>
+          <span class="badge badge-warning">At Risk</span>
+          <span class="badge badge-danger">Critical</span>
+          <span class="badge badge-warm">Pro Plan</span>
+          <span class="badge badge-success badge-dot">Live</span>
+          <span class="badge badge-danger badge-dot">Disconnected</span>
+          <span class="badge badge-warning badge-dot">Syncing</span>
+        </div>
+      </section>
+
+      <!-- ── ALERTS ── -->
+      <section class="section" id="alerts">
+        <div class="section-eyebrow">10 — Components</div>
+        <div class="section-title">Alerts</div>
+        <div class="alert alert-info">
+          <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div><div class="alert-title">PMS sync completed</div><div class="alert-desc">Your Dentrix data has been synchronized. 1,247 records updated.</div></div>
+        </div>
+        <div class="alert alert-success">
+          <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div><div class="alert-title">Collection target achieved</div><div class="alert-desc">You've reached 100% of your monthly collections goal two weeks early.</div></div>
+        </div>
+        <div class="alert alert-warning">
+          <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div><div class="alert-title">No-show rate elevated</div><div class="alert-desc">Your no-show rate is 18% this week, above the 12% benchmark. Consider reminder cadence.</div></div>
+        </div>
+        <div class="alert alert-danger">
+          <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div><div class="alert-title">PMS connection lost</div><div class="alert-desc">Unable to reach your Eaglesoft instance. Data may be stale. Check your Windows Service.</div></div>
+        </div>
+      </section>
+
+      <!-- ── TABS ── -->
+      <section class="section" id="tabs">
+        <div class="section-eyebrow">11 — Components</div>
+        <div class="section-title">Tabs</div>
+        <div class="tabs-list" style="margin-bottom:20px">
+          <button class="tab active">Overview</button>
+          <button class="tab">Collections</button>
+          <button class="tab">Scheduling</button>
+          <button class="tab">Patients</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Overview Tab Content</div>
+          <div class="card-desc">Tab content appears here. In production, each tab reveals a different view — managed with React state or URL-based routing.</div>
+        </div>
+      </section>
+
+      <!-- ── AVATAR ── -->
+      <section class="section" id="avatar">
+        <div class="section-eyebrow">12 — Components</div>
+        <div class="section-title">Avatar</div>
+        <div class="component-group">
+          <div class="component-label">Sizes</div>
+          <div class="component-row" style="align-items:center">
+            <div class="avatar avatar-sm" style="background:hsl(var(--primary));color:white">PF</div>
+            <div class="avatar avatar-md" style="background:hsl(var(--warm));color:white">DR</div>
+            <div class="avatar avatar-lg" style="background:hsl(var(--success));color:white">JL</div>
+            <div class="avatar avatar-xl" style="background:hsl(var(--primary));color:white">MK</div>
+          </div>
+        </div>
+        <div class="component-group" style="margin-top:20px">
+          <div class="component-label">Stacked</div>
+          <div class="avatar-stack">
+            <div class="avatar avatar-md" style="background:hsl(var(--warm));color:white">+4</div>
+            <div class="avatar avatar-md" style="background:hsl(var(--success));color:white">JL</div>
+            <div class="avatar avatar-md" style="background:hsl(var(--primary));color:white">DR</div>
+            <div class="avatar avatar-md" style="background:hsl(234 75% 70%);color:white">PF</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PROGRESS ── -->
+      <section class="section" id="progress">
+        <div class="section-eyebrow">13 — Components</div>
+        <div class="section-title">Progress</div>
+        <div class="progress-group" style="max-width:480px">
+          <div class="progress-item">
+            <div class="progress-header"><span class="progress-name">Collections</span><span class="progress-val">$142.8K / $151K</span></div>
+            <div class="progress-track"><div class="progress-bar progress-primary" style="width:94%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header"><span class="progress-name">Chair Utilization</span><span class="progress-val">78%</span></div>
+            <div class="progress-track"><div class="progress-bar progress-success" style="width:78%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header"><span class="progress-name">New Patients</span><span class="progress-val">18 / 30 goal</span></div>
+            <div class="progress-track"><div class="progress-bar progress-warm" style="width:60%"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TABLE ── -->
+      <section class="section" id="table">
+        <div class="section-eyebrow">14 — Components</div>
+        <div class="section-title">Table</div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Production</th>
+                <th>Collection Rate</th>
+                <th>Patients</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:500">Dr. Sarah Chen</div><div style="font-size:12px;color:hsl(var(--muted-foreground))">General</div></td>
+                <td class="td-mono">$52,400</td>
+                <td class="td-mono">96.2%</td>
+                <td class="td-mono">142</td>
+                <td><span class="badge badge-success badge-dot">Healthy</span></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500">Dr. Michael Torres</div><div style="font-size:12px;color:hsl(var(--muted-foreground))">Orthodontics</div></td>
+                <td class="td-mono">$61,200</td>
+                <td class="td-mono">91.4%</td>
+                <td class="td-mono">98</td>
+                <td><span class="badge badge-warning badge-dot">At Risk</span></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500">Dr. Lisa Park</div><div style="font-size:12px;color:hsl(var(--muted-foreground))">Pediatric</div></td>
+                <td class="td-mono">$29,200</td>
+                <td class="td-mono">98.1%</td>
+                <td class="td-mono">203</td>
+                <td><span class="badge badge-success badge-dot">Healthy</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── SKELETON ── -->
+      <section class="section" id="skeleton">
+        <div class="section-eyebrow">15 — Components</div>
+        <div class="section-title">Skeleton Loading</div>
+        <div class="card-grid">
+          <div class="card" style="display:flex;flex-direction:column;gap:12px">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text" style="width:90%"></div>
+            <div class="skeleton skeleton-text" style="width:70%"></div>
+            <div class="skeleton skeleton-text" style="width:50%;height:10px;margin-top:4px"></div>
+          </div>
+          <div class="card" style="display:flex;gap:12px;align-items:flex-start">
+            <div class="skeleton skeleton-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+              <div class="skeleton skeleton-text" style="width:60%"></div>
+              <div class="skeleton skeleton-text" style="width:90%"></div>
+              <div class="skeleton" style="height:80px;margin-top:4px"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── MOTION ── -->
+      <section class="section" id="motion">
+        <div class="section-eyebrow">16 — Motion</div>
+        <div class="section-title">Easing Tokens</div>
+        <div class="section-desc">Hover each card to preview the easing curve. Use Spring for UI interactions, Ease Out for entrances, Ease In-Out for state changes.</div>
+        <div class="motion-row">
+          <div class="motion-card spring">
+            <div class="motion-demo"></div>
+            <div class="motion-name">Spring</div>
+            <div class="motion-curve">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+            <div class="motion-use">Buttons, cards, modals, dropdowns — any direct interaction</div>
+          </div>
+          <div class="motion-card ease-out">
+            <div class="motion-demo"></div>
+            <div class="motion-name">Ease Out</div>
+            <div class="motion-curve">cubic-bezier(0.22, 1, 0.36, 1)</div>
+            <div class="motion-use">Page entrances, content reveals, elements entering the viewport</div>
+          </div>
+          <div class="motion-card ease-inout">
+            <div class="motion-demo"></div>
+            <div class="motion-name">Ease In-Out</div>
+            <div class="motion-curve">cubic-bezier(0.4, 0, 0.2, 1)</div>
+            <div class="motion-use">Theme switching, tab transitions, background state changes</div>
+          </div>
+        </div>
+
+        <div style="margin-top:32px;padding:24px;background:hsl(var(--secondary));border-radius:calc(var(--radius) + 4px);border:1px solid hsl(var(--border))">
+          <div class="component-label" style="margin-bottom:12px">Duration Tokens</div>
+          <div style="display:flex;gap:24px;flex-wrap:wrap">
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:hsl(var(--primary))">fast</div><div style="font-size:13px;margin-top:2px">150ms · Tooltips, badges</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:hsl(var(--primary))">base</div><div style="font-size:13px;margin-top:2px">250ms · Buttons, inputs</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:hsl(var(--primary))">slow</div><div style="font-size:13px;margin-top:2px">400ms · Page sections</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:hsl(var(--primary))">slower</div><div style="font-size:13px;margin-top:2px">600ms · Theme, hero</div></div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  document.getElementById('themeLabel').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+  // update logo in sidebar
+  const sidebarRects = document.querySelectorAll('.sidebar-logo svg rect');
+  const color = isDark ? 'hsl(234,85%,68%)' : 'hsl(234,75%,55%)';
+  sidebarRects.forEach(r => r.setAttribute('fill', color));
+}
+
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('.section[id]');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Tab interaction
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    this.closest('.tabs-list').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
