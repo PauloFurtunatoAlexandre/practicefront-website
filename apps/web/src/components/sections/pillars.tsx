@@ -103,7 +103,7 @@ export function PillarsSection() {
             <span className="font-heading text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
               Three pillars of practice health
             </span>
-            <h2 className="mt-4 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-[3rem]">
+            <h2 className="mt-4 font-display text-4xl tracking-tight text-foreground sm:text-5xl lg:text-[3rem]">
               One view.{' '}
               <span className="bg-linear-to-br from-primary via-[hsl(250,80%,62%)] to-[hsl(280,70%,65%)] bg-clip-text text-transparent">
                 Three signals.
@@ -194,7 +194,7 @@ export function PillarsSection() {
                 <div className="grid gap-8 lg:grid-cols-[1fr,280px] items-start">
                   {/* Left: copy */}
                   <div>
-                    <h3 className="font-heading text-3xl font-bold tracking-tight text-foreground">
+                    <h3 className="font-display text-3xl tracking-tight text-foreground">
                       {pillar.title}
                     </h3>
                     <p className="mt-2 font-heading text-base font-medium text-muted-foreground">

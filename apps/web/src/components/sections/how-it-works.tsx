@@ -12,7 +12,7 @@ const steps = [
     icon: DatabaseIcon,
     title: 'Connect',
     description:
-      'Link your OpenDental database in 10 minutes. Read-only. No migration, no disruption.',
+      'Link your practice management system in 10 minutes. Read-only. No migration, no disruption.',
     detail: 'Your data never leaves your network',
   },
   {
@@ -62,7 +62,7 @@ export function HowItWorksSection() {
             <span className="font-heading text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
               How it works
             </span>
-            <h2 className="mt-4 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            <h2 className="mt-4 font-display text-4xl tracking-tight text-foreground sm:text-5xl">
               Ruthlessly simple.
             </h2>
             <p className="mt-5 text-lg leading-[1.7] text-muted-foreground">
@@ -105,7 +105,7 @@ export function HowItWorksSection() {
                       <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                         <Icon className="size-5" />
                       </div>
-                      <h3 className="font-heading text-xl font-bold text-foreground">{step.title}</h3>
+                      <h3 className="font-display text-xl text-foreground">{step.title}</h3>
                     </div>
                     <p className="leading-[1.75] text-muted-foreground">{step.description}</p>
                     <p className="mt-3 font-mono text-xs text-muted-foreground border-t border-border pt-3 inline-block">

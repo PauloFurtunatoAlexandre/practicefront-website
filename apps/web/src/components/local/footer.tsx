@@ -35,11 +35,11 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <LogoLockup />
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Practice health monitoring for OpenDental practices. Free for practices, always.
+              Practice health monitoring for dental practices. Connects to any PMS. Free for practices, always.
             </p>
             <div className="mt-6 flex items-center gap-2">
               <span className="inline-flex items-center rounded-full bg-success/10 px-2.5 py-1 text-xs font-mono font-medium text-success">
-                ● OpenDental
+                ● Any PMS
               </span>
             </div>
           </div>

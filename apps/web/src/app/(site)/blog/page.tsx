@@ -7,7 +7,11 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Blog',
   description:
-    'Practice health insights, dental business strategy, and OpenDental tips from the PracticeFront team.',
+    'Practice health insights, dental business strategy, and practice management tips from the PracticeFront team.',
+  openGraph: {
+    title: 'Blog — PracticeFront',
+    description: 'Practice health insights, dental business strategy, and practice management tips from the PracticeFront team.',
+  },
 }
 
 export const revalidate = 60

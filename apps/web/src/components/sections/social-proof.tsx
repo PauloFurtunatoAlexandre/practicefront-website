@@ -22,7 +22,7 @@ const testimonials = [
   },
   {
     quote:
-      'The setup really was 10 minutes. I connected our OpenDental database and had my first health scan before lunch.',
+      'The setup really was 10 minutes. I connected our practice management system and had my first health scan before lunch.',
     author: 'Beta Practice Owner',
     practice: 'Cosmetic & General · Denver, CO',
     initials: 'AK',
@@ -33,7 +33,7 @@ const trustStats = [
   { value: '10 min', label: 'Average setup time' },
   { value: 'Free', label: 'For dental practices, always' },
   { value: '3', label: 'Pillars monitored daily' },
-  { value: '100%', label: 'OpenDental compatible' },
+  { value: 'Any', label: 'PMS supported' },
 ]
 
 export function SocialProofSection() {
@@ -114,7 +114,7 @@ export function SocialProofSection() {
           className="mt-16 flex flex-wrap items-center justify-center gap-6"
         >
           {[
-            'Built for OpenDental',
+            'Works with any PMS',
             'Free for practices',
             'Designed for owners, not analysts',
             'Light enough to understand in one glance',

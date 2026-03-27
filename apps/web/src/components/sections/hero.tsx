@@ -131,7 +131,7 @@ function MetricCard({ label, metric, status, description, delay = 0, className, 
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 const trustItems = [
-  'Works with OpenDental',
+  'Works with any PMS',
   'No credit card required',
   'Setup in 10 minutes',
 ]
@@ -204,7 +204,7 @@ export function HeroSection() {
 
       {/* ── Content ── */}
       <Container className="relative z-10 pt-28 pb-16 lg:pt-36 lg:pb-24">
-        <div className="grid lg:grid-cols-[1fr,420px] lg:gap-16 xl:gap-24 items-center">
+        <div className="grid lg:grid-cols-[1fr_420px] lg:gap-16 xl:gap-24 items-center">
 
           {/* Left column: copy */}
           <div className="max-w-2xl">
@@ -220,7 +220,7 @@ export function HeroSection() {
                   transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                   className="size-1.5 rounded-full bg-primary"
                 />
-                Built for OpenDental practices
+                Works with OpenDental, Dentrix, Eaglesoft & more
               </span>
             </motion.div>
 
@@ -229,7 +229,7 @@ export function HeroSection() {
               initial={prefersReduced ? false : { opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mt-7 font-heading text-[clamp(2.4rem,5.5vw,4.5rem)] font-bold leading-[1.08] tracking-tight text-foreground"
+              className="mt-7 font-display text-[clamp(2.4rem,5.5vw,4.5rem)] leading-[1.08] tracking-tight text-foreground"
             >
               Your practice health,
               <br />

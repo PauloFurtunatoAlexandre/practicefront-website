@@ -6,6 +6,10 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'About',
   description: 'PracticeFront gives dental practice owners a 10-second health scan. Here\'s why we built it.',
+  openGraph: {
+    title: 'About — PracticeFront',
+    description: 'PracticeFront gives dental practice owners a 10-second health scan. Here\'s why we built it.',
+  },
 }
 
 const beliefs = [
@@ -67,12 +71,13 @@ export default function CompanyPage() {
                 shows which partner is responsible for each one.
               </p>
 
-              <h2>Why OpenDental first</h2>
+              <h2>Works with any PMS</h2>
               <p>
-                OpenDental is the practice management system of choice for independent practices
-                that want control over their own data. That ethos aligns perfectly with ours.
-                We built PracticeFront for OpenDental practices first because they&apos;re the
-                ones who most value transparency and data access.
+                PracticeFront connects to OpenDental, Dentrix, Eaglesoft, Curve Dental, and the
+                other leading practice management systems. We built a universal connector so that
+                your practice&apos;s data can flow into PracticeFront regardless of which PMS
+                you run — because every practice owner deserves visibility, not just the ones who
+                happen to use a specific software.
               </p>
             </div>
           </div>
@@ -90,7 +95,7 @@ export default function CompanyPage() {
           <div className="mx-auto mt-12 max-w-3xl grid gap-6 sm:grid-cols-2">
             {beliefs.map(({ title, description }) => (
               <div key={title} className="rounded-2xl border border-border bg-card p-6">
-                <h3 className="font-heading text-base font-bold text-foreground">{title}</h3>
+                <h3 className="font-display text-base text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
               </div>
             ))}

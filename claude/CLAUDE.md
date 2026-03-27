@@ -550,3 +550,169 @@ import { cn } from "@/lib/utils"
 - `../PracticeFront-Visual-Identity.html` — live visual identity system
 - `../design-system/PracticeFront-Design-System.html` — interactive component showcase
 - `../PracticeFront-Market-Research-2026.md` — competitive analysis and market context
+
+---
+
+## Product Positioning — PMS Connector (Important)
+
+PracticeFront is **not** an OpenDental-only tool. It is a **universal connector** for any dental practice management system (PMS). OpenDental is the launch integration — used first because of its open-source nature and popularity among independent practices — but the product vision is to connect to any PMS.
+
+**Supported / planned PMS integrations:**
+- OpenDental (launched first)
+- Dentrix
+- Eaglesoft
+- Curve Dental
+- Carestream Dental
+- Denticon
+- Practice-Web
+
+**Messaging rule:** Never say "built for OpenDental" as the product identity. Say "works with your PMS" or "connects to OpenDental, Dentrix, Eaglesoft, and more." OpenDental can be highlighted as the first/most mature integration, but must not be the product ceiling.
+
+---
+
+## Implementation Plan
+
+### Current state (as of March 2026)
+The marketing website is fully scaffolded and running at localhost:3000. All pages exist. The design system (Indigo Trust) is applied. Sanity CMS is wired for blog + newsletter automation.
+
+What does **not** exist yet: the authenticated console/dashboard, real PMS integrations, database, auth, and billing.
+
+---
+
+### Phase 1 — Marketing Site Polish ✅ In Progress
+*Goal: World-class marketing site that converts visitors to signups.*
+
+- [x] Monorepo scaffolded (Next.js 15, Tailwind 4, Framer Motion, Sanity)
+- [x] Design system applied (Indigo Trust tokens, 4-font stack)
+- [x] Homepage — Hero, Problem, Pillars, Partner Accountability, How It Works, Social Proof, Pricing, Final CTA
+- [x] Pages: `/how-it-works`, `/partners`, `/pricing`, `/company`, `/contact`, `/blog`, `/blog/[slug]`
+- [x] Newsletter API + Sanity webhook automation
+- [ ] Fix PMS-agnostic messaging (remove OpenDental-only framing)
+- [ ] Add PMS integration logos / compatibility section to homepage
+- [ ] Add real testimonials via Sanity
+- [ ] Add OG images + SEO metadata per page
+- [ ] Lighthouse ≥ 90 mobile audit + fix
+- [ ] Dark mode toggle in navbar
+- [ ] Accessibility audit (keyboard nav, aria labels, focus rings)
+
+---
+
+### Phase 2 — Auth & Onboarding
+*Goal: A practice owner can sign up, verify email, and reach a working health dashboard.*
+
+**Pages to build:**
+- `/console/register` — email + password signup form
+- `/console/login` — login
+- `/console/verify` — email verification
+- `/console/forgot-password` + `/console/reset-password`
+- `/console/welcome` — post-signup onboarding wizard
+
+**Onboarding wizard steps:**
+1. Practice name + location
+2. Choose PMS (OpenDental / Dentrix / Eaglesoft / Other)
+3. Connect PMS (read-only credentials or file upload for early access)
+4. Confirm connection + run first health scan
+5. Dashboard reveal moment
+
+**Tech:**
+- `better-auth` is already installed — wire up email/password provider
+- Email verification via Resend (already installed)
+- Store practice + user in Drizzle/Postgres schema
+
+---
+
+### Phase 3 — Three Pillars Dashboard
+*Goal: A logged-in practice owner sees their real health scan, not placeholder data.*
+
+**The console dashboard (`/console/dashboard`):**
+- Three Pillar cards: Patients · Scheduling · Collections
+- Each card shows status (green/yellow/red), key metric, and trend
+- Clicking a card drills into detail view
+- Last updated timestamp + refresh trigger
+
+**Data pipeline:**
+- PMS adapter layer (`src/lib/pms/`) — one adapter per PMS
+  - `opendental.ts` — query OpenDental DB via read-only connection
+  - `dentrix.ts` — Dentrix API / file export parser
+  - Each adapter normalizes data into `PracticeHealthSnapshot` type
+- Calculation engine (`src/lib/health/`) — computes pillar scores from normalized data
+- Scheduled job (cron or Vercel cron) — refreshes snapshots daily
+- Store snapshots in Postgres via Drizzle
+
+**Pillar score logic:**
+- Patients: retention %, new patient count, reactivation $
+- Scheduling: no-show rate, recare %, unscheduled TX $
+- Collections: collection rate, days in AR, denial rate
+
+---
+
+### Phase 4 — Partner Layer
+*Goal: Partners pay and are visible in the accountability layer of the dashboard.*
+
+**Partner portal (`/console/partners/` or separate `app/partners/`):**
+- Partner signup + application review flow
+- Partner performance dashboard (their scores across connected practices)
+- Stripe billing — $20–25/mo per connected practice
+
+**Practice-side partner accountability:**
+- Partners assigned to pillars (e.g., billing company → Collections)
+- Performance score shown next to their pillar
+- "Find a better one" CTA links to vetted marketplace
+
+**Tech:**
+- Stripe (already installed) — subscription for partners
+- Webhook from Stripe → update partner status
+- Sanity OR Postgres for partner directory
+
+---
+
+### Phase 5 — PMS Connector Expansion
+*Goal: Support Dentrix and Eaglesoft in addition to OpenDental.*
+
+- Build Dentrix adapter (CSV export parser initially, then API)
+- Build Eaglesoft adapter (SQL or API)
+- Add "Request my PMS" form for unsupported systems
+- PMS compatibility badge on homepage (shows logos)
+- Integration status page (`/integrations`)
+
+---
+
+### Phase 6 — Content & SEO
+*Goal: Organic traffic from practice owners searching for practice health, billing accountability, etc.*
+
+- Seed Sanity with 10–15 foundational blog posts
+  - "What is a healthy dental collection rate?"
+  - "How to know if your billing company is underperforming"
+  - "The real cost of a 10% no-show rate"
+- Newsletter automation live (Sanity webhook → Resend broadcast)
+- SEO: canonical URLs, structured data (Organization, BlogPosting)
+- Sitemap + robots.txt
+- OpenGraph images per page (dynamic via `@vercel/og` or static)
+
+---
+
+### Phase 7 — Production & Launch
+*Goal: Ship to real practices.*
+
+- Deploy to Vercel (connect GitHub repo)
+- Custom domain + SSL
+- Environment variables in Vercel dashboard
+- Sanity project created + schemas deployed
+- Resend domain verified + email templates
+- Postgres database provisioned (Neon or Supabase)
+- Error monitoring (Sentry)
+- Analytics (Posthog or Vercel Analytics)
+- Beta invite flow — private signups, waitlist
+- Public launch
+
+---
+
+### Iteration Loop
+After each phase, the pattern is:
+1. Build the feature
+2. Type-check (`pnpm -r run typecheck`)
+3. Review in browser
+4. Commit with meaningful message
+5. Push to main (or PR if working in a team)
+
+Keep this file updated as decisions change. If a decision in the plan above conflicts with something in the codebase, the codebase wins — update the plan, not the code.

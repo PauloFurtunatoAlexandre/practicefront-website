@@ -21,7 +21,7 @@ const tiers = [
       'Partner performance tracking',
       'Vetted partner marketplace access',
       'Unlimited historical data',
-      'OpenDental integration',
+      'Any PMS integration',
       'Email alerts when pillars need attention',
       'Practice health dashboard',
     ],
@@ -206,7 +206,7 @@ export default function PricingPage() {
       <section className="py-16 bg-secondary/30">
         <Container>
           <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 text-center">
-            <h3 className="font-heading text-lg font-bold text-foreground">
+            <h3 className="font-display text-lg text-foreground">
               The business model, openly.
             </h3>
             <p className="mt-3 leading-relaxed text-muted-foreground">

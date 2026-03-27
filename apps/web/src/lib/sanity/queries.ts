@@ -32,28 +32,44 @@ const POST_FIELDS = `
 `
 
 export async function getAllPosts(): Promise<BlogPost[]> {
-  return sanityClient.fetch(
-    `*[_type == "post"] | order(publishedAt desc) { ${POST_FIELDS} }`,
-  )
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "post"] | order(publishedAt desc) { ${POST_FIELDS} }`,
+    )
+  } catch {
+    return []
+  }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  return sanityClient.fetch(
-    `*[_type == "post" && slug.current == $slug][0] { ${POST_FIELDS}, body }`,
-    { slug },
-  )
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "post" && slug.current == $slug][0] { ${POST_FIELDS}, body }`,
+      { slug },
+    )
+  } catch {
+    return null
+  }
 }
 
 export async function getRecentPosts(limit = 3): Promise<BlogPost[]> {
-  return sanityClient.fetch(
-    `*[_type == "post"] | order(publishedAt desc) [0...$limit] { ${POST_FIELDS} }`,
-    { limit },
-  )
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "post"] | order(publishedAt desc) [0...$limit] { ${POST_FIELDS} }`,
+      { limit },
+    )
+  } catch {
+    return []
+  }
 }
 
 export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
-  return sanityClient.fetch(
-    `*[_type == "post" && $category in categories] | order(publishedAt desc) { ${POST_FIELDS} }`,
-    { category },
-  )
+  try {
+    return await sanityClient.fetch(
+      `*[_type == "post" && $category in categories] | order(publishedAt desc) { ${POST_FIELDS} }`,
+      { category },
+    )
+  } catch {
+    return []
+  }
 }

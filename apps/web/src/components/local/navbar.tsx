@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuIcon, XIcon } from 'lucide-react'
 import { LogoLockup } from './blocks-logo'
+import { ThemeToggle } from './theme-toggle'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
@@ -58,7 +59,8 @@ export function Navbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-2 lg:flex">
+            <ThemeToggle />
             <Link
               href="/console"
               className="font-heading text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

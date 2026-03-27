@@ -8,18 +8,18 @@ interface HeadingProps {
 }
 
 const sizeClasses = {
-  xs: 'text-lg font-semibold tracking-tight',
-  sm: 'text-xl font-semibold tracking-tight',
-  md: 'text-2xl font-bold tracking-tight',
-  lg: 'text-3xl font-bold tracking-tight',
-  xl: 'text-4xl font-bold tracking-tight',
-  '2xl': 'text-5xl font-bold tracking-tight',
-  '3xl': 'text-6xl font-bold tracking-tight lg:text-7xl',
+  xs: 'text-lg tracking-tight',
+  sm: 'text-xl tracking-tight',
+  md: 'text-2xl tracking-tight',
+  lg: 'text-3xl tracking-tight',
+  xl: 'text-4xl tracking-tight',
+  '2xl': 'text-5xl tracking-tight',
+  '3xl': 'text-6xl tracking-tight lg:text-7xl',
 }
 
 export function Heading({ as: Tag = 'h2', size = 'xl', className, children }: HeadingProps) {
   return (
-    <Tag className={cn('font-heading', sizeClasses[size], className)}>
+    <Tag className={cn('font-display', sizeClasses[size], className)}>
       {children}
     </Tag>
   )

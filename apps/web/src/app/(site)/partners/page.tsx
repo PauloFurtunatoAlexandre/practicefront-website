@@ -131,7 +131,7 @@ export default function PartnersPage() {
                     {pillar}
                   </span>
                 </div>
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">{title}</h3>
+                <h3 className="mt-4 font-display text-lg text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
               </motion.div>
             ))}

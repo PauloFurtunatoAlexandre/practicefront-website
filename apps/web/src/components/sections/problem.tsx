@@ -80,7 +80,7 @@ export function ProblemSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] leading-[1.1]"
+              className="font-display text-4xl tracking-tight text-white sm:text-5xl lg:text-[3.25rem] leading-[1.1]"
             >
               You&apos;re already paying{' '}
               <span className="text-white/30">for answers.</span>

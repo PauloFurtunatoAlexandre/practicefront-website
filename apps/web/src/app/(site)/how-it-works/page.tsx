@@ -14,9 +14,9 @@ const steps = [
   {
     number: '01',
     icon: DatabaseIcon,
-    title: 'Connect your OpenDental database',
+    title: 'Connect your practice management system',
     description:
-      'PracticeFront uses a read-only connection to your existing OpenDental database. No data migration, no new software to install on every workstation, no disruption to your day.',
+      'PracticeFront uses a read-only connection to your existing PMS — OpenDental, Dentrix, Eaglesoft, Curve Dental, and more. No data migration, no new software to install on every workstation, no disruption to your day.',
     details: [
       'Read-only — we cannot write to your database',
       'Your data never leaves your network',
@@ -29,7 +29,7 @@ const steps = [
     icon: ActivityIcon,
     title: 'Your Three Pillars update daily',
     description:
-      'Every day, PracticeFront calculates your Patients, Scheduling, and Collections scores from your OpenDental data. No manual data entry. No spreadsheets.',
+      'Every day, PracticeFront calculates your Patients, Scheduling, and Collections scores from your practice data. No manual data entry. No spreadsheets.',
     details: [
       'Scores calculated fresh every 24 hours',
       'Green = on track, Red = needs attention',
@@ -93,8 +93,8 @@ const securityPoints = [
 
 const faqs = [
   {
-    q: 'Does PracticeFront work with all versions of OpenDental?',
-    a: 'PracticeFront is designed for OpenDental practices running version 21.x and newer. If you\'re on an older version, contact us — we can often still make it work.',
+    q: 'Which practice management systems does PracticeFront support?',
+    a: 'PracticeFront connects to OpenDental, Dentrix, Eaglesoft, Curve Dental, and other leading PMS platforms. If you don\'t see yours listed, contact us — we may already support it or have it on the roadmap.',
   },
   {
     q: 'Who can see my practice data?',
@@ -163,7 +163,7 @@ export default function HowItWorksPage() {
                         <Icon className="size-6" />
                       </div>
                     </div>
-                    <h2 className="mt-5 font-heading text-2xl font-bold tracking-tight text-foreground">
+                    <h2 className="mt-5 font-display text-2xl tracking-tight text-foreground">
                       {step.title}
                     </h2>
                     <p className="mt-4 leading-relaxed text-muted-foreground">
@@ -198,7 +198,7 @@ export default function HowItWorksPage() {
               Every metric that matters to a healthy practice.
             </Heading>
             <Subheading className="mt-4">
-              Pulled directly from your OpenDental data. No manual input.
+              Pulled directly from your practice management system. No manual input.
             </Subheading>
           </div>
           <div className="mt-12 flex flex-wrap justify-center gap-3">
@@ -235,7 +235,7 @@ export default function HowItWorksPage() {
                 <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="size-5" />
                 </div>
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">{title}</h3>
+                <h3 className="mt-4 font-display text-lg text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
               </motion.div>
             ))}
