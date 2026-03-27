@@ -61,7 +61,7 @@ export function GradientText({ className, children }: { className?: string; chil
   return (
     <span
       className={cn(
-        'bg-gradient-to-br from-primary to-[hsl(280,70%,65%)] bg-clip-text text-transparent',
+        'bg-linear-to-br from-primary to-[hsl(280,70%,65%)] bg-clip-text text-transparent',
         className,
       )}
     >

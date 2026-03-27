@@ -236,7 +236,7 @@ export function HeroSection() {
               <span className="relative">
                 in a{' '}
                 <span className="relative inline-block">
-                  <span className="bg-gradient-to-br from-primary via-[hsl(250,80%,62%)] to-[hsl(280,70%,65%)] bg-clip-text text-transparent">
+                  <span className="bg-linear-to-br from-primary via-[hsl(250,80%,62%)] to-[hsl(280,70%,65%)] bg-clip-text text-transparent">
                     10-second scan.
                   </span>
                   {/* Underline accent */}
@@ -244,7 +244,7 @@ export function HeroSection() {
                     initial={{ scaleX: 0, opacity: 0 }}
                     animate={{ scaleX: 1, opacity: 1 }}
                     transition={{ delay: 0.9, duration: 0.6, ease: 'easeOut' }}
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 origin-left bg-gradient-to-r from-primary to-[hsl(280,70%,65%)] rounded-full"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 origin-left bg-linear-to-r from-primary to-[hsl(280,70%,65%)] rounded-full"
                   />
                 </span>
               </span>
@@ -279,7 +279,7 @@ export function HeroSection() {
                 <motion.span
                   animate={prefersReduced ? {} : { x: ['-100%', '200%'] }}
                   transition={{ duration: 2.5, repeat: Number.POSITIVE_INFINITY, ease: 'linear', repeatDelay: 2 }}
-                  className="pointer-events-none absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  className="pointer-events-none absolute inset-0 -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent"
                 />
                 Get Started Free
                 <ArrowRightIcon className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
