@@ -4,12 +4,9 @@ import { motion } from 'framer-motion'
 import { Container } from '@/components/local/container'
 
 const systems = [
-  { name: 'OpenDental',    status: 'live' },
-  { name: 'Dentrix',       status: 'soon' },
-  { name: 'Eaglesoft',     status: 'soon' },
-  { name: 'Curve Dental',  status: 'soon' },
-  { name: 'Carestream',    status: 'soon' },
-  { name: 'Denticon',      status: 'soon' },
+  { name: 'OpenDental', status: 'live' },
+  { name: 'Dentrix',    status: 'soon' },
+  { name: 'Eaglesoft',  status: 'soon' },
 ]
 
 export function PMSLogosSection() {

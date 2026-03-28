@@ -677,11 +677,15 @@ What does **not** exist yet: the authenticated console/dashboard, real PMS integ
 ### Phase 5 — PMS Connector Expansion
 *Goal: Support Dentrix and Eaglesoft in addition to OpenDental.*
 
-- Build Dentrix adapter (CSV export parser initially, then API)
-- Build Eaglesoft adapter (SQL or API)
-- Add "Request my PMS" form for unsupported systems
-- PMS compatibility badge on homepage (shows logos)
-- Integration status page (`/integrations`)
+- [x] Build Dentrix adapter (CSV export parser initially, then API) — `src/lib/pms/dentrix.ts`
+- [x] Build Eaglesoft adapter (SQL or API) — `src/lib/pms/eaglesoft.ts`
+- [x] Register both adapters in `src/lib/pms/index.ts`
+- [x] Add `pms_requests` table to schema — `src/lib/db/schema.ts`
+- [x] Add "Request my PMS" API route — `POST /api/pms-request`
+- [x] PMS compatibility strip on homepage — `src/components/sections/pms-logos.tsx` (OpenDental live, Dentrix/Eaglesoft soon)
+- [x] Integration status page (`/integrations`) — full marketing page with status rows + request form
+- [x] Onboarding wizard — removed Curve Dental, split non-live branch: Dentrix/Eaglesoft show timeline note; Other shows notify-me form with PMS name + email fields
+- [ ] Run `pnpm drizzle-kit push` to create `pms_requests` table in DB (requires DB connection)
 
 ---
 

@@ -28,8 +28,8 @@ const steps = [
     icon: ZapIcon,
     title: 'Act',
     description:
-      'PracticeFront shows you which partner to call, or connects you with a better one.',
-    detail: 'Replace what\'s not working — fast',
+      'See the exact metric driving the red. Pro plan shows which vendor is responsible and connects you to vetted alternatives.',
+    detail: 'Partner accountability is a Pro feature',
   },
 ]
 

@@ -1,313 +1,454 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRightIcon, CheckIcon, BarChart3Icon, UsersIcon, ZapIcon, ShieldCheckIcon } from 'lucide-react'
+import { ArrowRightIcon } from 'lucide-react'
 import { Container } from '@/components/local/container'
-import { Eyebrow, Heading, Subheading, GradientText } from '@/components/local/text'
+import { Eyebrow } from '@/components/local/text'
 
-const partnerTypes = [
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const whatPartnersGet = [
   {
-    icon: BarChart3Icon,
-    title: 'Billing Companies',
-    description: 'Your collection rate, days in AR, and denial rates are tracked daily. Good performance builds trust with practice owners.',
-    pillar: 'Collections',
+    id: 'scorecard',
+    title: 'A verified performance scorecard',
+    description:
+      'Your results \u2014 collection rates, new patient volume, recare scheduled \u2014 are scored against real practice data. Not self-reported. Not a case study. Verified against live outcomes.',
   },
   {
-    icon: UsersIcon,
-    title: 'Marketing Agencies',
-    description: 'New patient acquisition, retention trends, and reactivation rates are attributed to your work. Make your results visible.',
-    pillar: 'Patients',
+    id: 'visibility',
+    title: 'Visibility when practices need you most',
+    description:
+      'When a practice sees a red pillar in their dashboard, they\u2019re actively looking for a better solution. Your listing surfaces at the exact moment they\u2019re motivated to make a change.',
   },
   {
-    icon: ZapIcon,
-    title: 'Recall & Scheduling Software',
-    description: 'Recare scheduled rates, no-show patterns, and unscheduled treatment recovery show whether your software is delivering.',
-    pillar: 'Scheduling',
+    id: 'differentiation',
+    title: 'Differentiation that sells itself',
+    description:
+      'Most dental service vendors promise outcomes. You can prove them. A data-backed scorecard in a market full of self-reported testimonials is a significant competitive advantage.',
   },
   {
-    icon: ShieldCheckIcon,
-    title: 'Other Service Providers',
-    description: 'Membership plan providers, practice consultants, and technology vendors can all connect their services to practice outcomes.',
-    pillar: 'Various',
+    id: 'relationships',
+    title: 'Qualified practice relationships',
+    description:
+      'Practices that connect through PracticeFront already understand their numbers. These are not cold leads. They are practice owners who know what they need and are looking for who can deliver it.',
   },
 ]
 
-const benefits = [
+const howItWorks = [
   {
-    title: 'Visibility to practice owners',
-    description: 'Be seen by the practices you serve. Your performance data surfaces automatically when a practice views their health scan.',
+    number: '01',
+    title: 'Apply to partner',
+    description:
+      'Send us a brief email about your service, who you serve, and what outcomes you deliver. We review all applications within 2 business days.',
   },
   {
-    title: 'Competitive differentiation',
-    description: 'If your results are strong, PracticeFront makes them visible. Let the data speak for you.',
+    number: '02',
+    title: 'Connect your client practices',
+    description:
+      'We build a lightweight data bridge between your service and PracticeFront. The metrics we track for each pillar are mapped to your category \u2014 billing to Collections, marketing to Patients, recall to Scheduling.',
   },
   {
-    title: 'A marketplace of motivated buyers',
-    description: 'When a practice sees a red pillar, they\'re actively looking for a better solution. Be the vetted alternative they find.',
+    number: '03',
+    title: 'Get a verified performance score',
+    description:
+      'Your score is calculated from real practice outcomes, updated regularly. No self-reporting. No testimonials. Just your actual numbers \u2014 which you\u2019re welcome to use in your own marketing.',
   },
   {
-    title: 'Flat, transparent pricing',
-    description: '$20–25/month per connected practice. No revenue share, no hidden fees. You know exactly what you\'re paying and why.',
+    number: '04',
+    title: 'Receive qualified leads',
+    description:
+      'When a practice sees a red pillar in the category your service touches, PracticeFront surfaces your listing as a vetted alternative. The lead already knows they have a problem. You show up with proof you can solve it.',
   },
 ]
+
+const categories = [
+  'Billing & RCM Companies',
+  'Marketing Agencies',
+  'Recall & Scheduling Software',
+  'Membership Plan Providers',
+  'Practice Consultants',
+  'Technology Vendors',
+]
+
+const faqs = [
+  {
+    q: 'What does it cost for partners to join?',
+    a: 'Nothing. Partners join the marketplace free. There is no monthly fee, no per-lead charge, and no revenue share. We built the partner marketplace to serve practices \u2014 making it free to join means more quality vendors participate, which makes the marketplace more valuable for everyone.',
+  },
+  {
+    q: 'How are performance scores calculated?',
+    a: 'Scores are calculated from real outcomes in the practices you serve, mapped to the pillar your service touches. For a billing company, that means collection rate, days in AR, and denial rate. For a marketing agency, it\u2019s new patient volume and retention trends. Scores update regularly as practice data syncs.',
+  },
+  {
+    q: 'What if my performance score is low?',
+    a: 'We\u2019ll tell you before it\u2019s visible to anyone. Partners see their scores first and can work with us to understand what\u2019s driving them. We\u2019d rather help you improve than reject you. Good vendors welcome accountability \u2014 if your numbers need work, we\u2019ll be transparent about what they show.',
+  },
+  {
+    q: 'Which practice management systems does PracticeFront support?',
+    a: 'OpenDental at launch. Dentrix and Eaglesoft integrations are planned for later in 2026. This means you can participate if your clients are on OpenDental today, and the network will expand.',
+  },
+  {
+    q: 'Is there a review process? Not every vendor qualifies?',
+    a: 'Yes. We review all applications and only accept partners whose service can be meaningfully measured against practice outcomes. If your service doesn\u2019t touch a tracked pillar, we\u2019ll tell you honestly \u2014 and let you know when that changes.',
+  },
+]
+
+// ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function PartnersPage() {
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setFormState('submitting')
-    // In production, wire to a real form handler / CRM
-    await new Promise((r) => setTimeout(r, 1200))
-    setFormState('success')
-  }
+  const prefersReduced = useReducedMotion()
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-surface-inverse py-24 lg:py-32">
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-surface-inverse py-20 lg:py-28">
         <div
           className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
           style={{
-            background: 'radial-gradient(ellipse 80% 50% at 50% -10%, hsl(234 85% 68% / 0.15), transparent)',
+            background:
+              'radial-gradient(ellipse 70% 60% at 20% 50%, hsl(234 75% 55% / 0.14), transparent 65%)',
           }}
         />
         <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <Eyebrow className="text-primary/80">For partners</Eyebrow>
-            <Heading as="h1" size="2xl" className="mt-4 text-white">
-              Good vendors should welcome{' '}
-              <GradientText>accountability.</GradientText>
-            </Heading>
-            <Subheading size="lg" className="mt-6 text-white/60">
-              PracticeFront connects your services to practice outcomes. If your work is strong,
-              the data will prove it. Apply to be in the partner layer.
-            </Subheading>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="max-w-3xl"
+          >
+            <Eyebrow className="text-primary/70">For partners</Eyebrow>
+            <h1 className="mt-5 font-display text-4xl tracking-tight text-white sm:text-5xl lg:text-[3.5rem] leading-[1.06]">
+              If your dental service actually works, PracticeFront will prove it.
+            </h1>
+            <p className="mt-6 text-xl leading-[1.7] text-white/60 max-w-2xl">
+              Join the partner marketplace free. Get a verified performance scorecard built from real
+              practice outcomes. Reach practices that need what you do \u2014 at the exact moment they\u2019re
+              looking for a change.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
               <a
-                href="#apply"
+                href="mailto:daniel@practicefront.com?subject=Partner%20Application"
                 className="group inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 font-heading font-semibold text-white shadow-lg hover:bg-primary/90 transition-all"
               >
                 Apply to Partner
-                <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </a>
               <Link
                 href="/how-it-works"
-                className="rounded-xl border border-white/20 px-8 py-4 font-heading font-semibold text-white/80 hover:border-white/40 hover:text-white transition-all"
+                className="inline-flex items-center rounded-xl border border-white/20 px-8 py-4 font-heading font-semibold text-white/80 hover:border-white/40 hover:text-white transition-all"
               >
                 How It Works
               </Link>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Partner types */}
-      <section className="py-24 bg-background">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Who partners with PracticeFront</Eyebrow>
-            <Heading as="h2" size="xl" className="mt-4">
-              If you serve dental practices, you belong here.
-            </Heading>
-          </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {partnerTypes.map(({ icon: Icon, title, description, pillar }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ delay: i * 0.1 }}
-                className="rounded-2xl border border-border bg-card p-6"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </div>
-                  <span className="rounded-full bg-muted px-2.5 py-0.5 font-mono text-xs text-muted-foreground">
-                    {pillar}
-                  </span>
-                </div>
-                <h3 className="mt-4 font-display text-lg text-foreground">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Benefits */}
-      <section className="py-24 bg-secondary/30">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Why partner</Eyebrow>
-            <Heading as="h2" size="xl" className="mt-4">
-              What you get from the accountability layer.
-            </Heading>
-          </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {benefits.map(({ title, description }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ delay: i * 0.1 }}
-                className="flex gap-4 rounded-2xl border border-border bg-card p-6"
-              >
-                <div className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-success/10">
-                  <CheckIcon className="size-3 text-success" />
-                </div>
-                <div>
-                  <h3 className="font-heading font-semibold text-foreground">{title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Pricing callout */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            className="mx-auto mt-12 max-w-lg rounded-2xl border border-primary/20 bg-primary/5 p-8 text-center"
-          >
-            <div className="font-mono text-4xl font-bold text-foreground">$20–25</div>
-            <div className="mt-1 font-heading text-lg font-semibold text-muted-foreground">per connected practice / month</div>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Flat pricing. No revenue share. No setup fees. Cancel anytime.
-              The cost of one hour of your team&apos;s time, for ongoing practice relationships.
+            <p className="mt-8 font-heading text-sm text-white/35">
+              Free to join. No monthly fee. No revenue share.
             </p>
           </motion.div>
         </Container>
       </section>
 
-      {/* Application form */}
-      <section id="apply" className="py-24 bg-background">
+      {/* ── The accountability gap ── */}
+      <section className="py-24 lg:py-32 bg-background">
         <Container>
-          <div className="mx-auto max-w-xl">
-            <div className="text-center">
-              <Eyebrow>Apply to partner</Eyebrow>
-              <Heading as="h2" size="xl" className="mt-4">
-                Ready to make your results visible?
-              </Heading>
-              <Subheading className="mt-4">
-                We review applications within 2 business days. If you&apos;re a good fit,
-                we&apos;ll walk you through the setup.
-              </Subheading>
-            </div>
-
-            {formState === 'success' ? (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-10 rounded-2xl border border-success/20 bg-success/5 p-8 text-center"
-              >
-                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-success/10">
-                  <CheckIcon className="size-6 text-success" />
-                </div>
-                <h3 className="mt-4 font-heading text-xl font-bold text-foreground">Application received</h3>
-                <p className="mt-2 text-muted-foreground">
-                  We&apos;ll review it and be in touch within 2 business days.
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-start lg:gap-24">
+            {/* Left: the problem */}
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <Eyebrow>The accountability gap</Eyebrow>
+              <h2 className="mt-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+                Practices spend $2K\u2013$10K a month on services with zero tracking.
+              </h2>
+              <p className="mt-5 leading-[1.75] text-muted-foreground">
+                The average dental practice has a billing company, a marketing agency, a recall
+                solution, and a handful of other vendors \u2014 with no way to connect what they\u2019re
+                paying to what\u2019s actually happening in their practice.
+              </p>
+              <p className="mt-4 leading-[1.75] text-muted-foreground">
+                That creates two problems. Practices keep paying for services that underperform. And
+                vendors who actually deliver good results look the same as vendors who don\u2019t.
+              </p>
+              <p className="mt-4 font-semibold text-foreground">
+                PracticeFront fixes that. Your billing company either improves their numbers or loses
+                the account. That is how it should work.
+              </p>
+              <div className="mt-8 border-t border-border pt-6">
+                <p className="font-display italic text-base text-foreground/60">
+                  &ldquo;Good vendors should welcome accountability. The ones who resist it are telling
+                  you something.&rdquo;
                 </p>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="mt-10 space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div>
-                    <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                      Company name <span className="text-destructive">*</span>
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="company"
-                      placeholder="Your company"
-                      className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                      Your name <span className="text-destructive">*</span>
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="name"
-                      placeholder="Full name"
-                      className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                    Email <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    required
-                    type="email"
-                    name="email"
-                    placeholder="you@company.com"
-                    className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  />
-                </div>
-                <div>
-                  <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                    Service type <span className="text-destructive">*</span>
-                  </label>
-                  <select
-                    required
-                    name="type"
-                    className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  >
-                    <option value="">Select your service...</option>
-                    <option value="billing">Billing / RCM Company</option>
-                    <option value="marketing">Marketing Agency</option>
-                    <option value="recall">Recall / Scheduling Software</option>
-                    <option value="membership">Membership Plan Provider</option>
-                    <option value="consulting">Practice Consulting</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                    How many dental practices do you currently serve?
-                  </label>
-                  <select
-                    name="practices"
-                    className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  >
-                    <option value="">Select range...</option>
-                    <option value="1-10">1–10</option>
-                    <option value="11-50">11–50</option>
-                    <option value="51-200">51–200</option>
-                    <option value="200+">200+</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-heading text-sm font-medium text-foreground mb-1.5">
-                    Anything else we should know?
-                  </label>
-                  <textarea
-                    name="message"
-                    rows={3}
-                    placeholder="Tell us about your service and why you'd be a good fit..."
-                    className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={formState === 'submitting'}
-                  className="w-full rounded-xl bg-primary px-6 py-4 font-heading font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 disabled:opacity-60 transition-all"
+              </div>
+            </motion.div>
+
+            {/* Right: what breaks without accountability */}
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ delay: 0.15 }}
+            >
+              {[
+                {
+                  label: 'Marketing Agency',
+                  pillar: 'Patients',
+                  problem: 'Sends a quarterly report. Practice doesn\u2019t know if the 8 new patients this month are from the agency\u2019s campaigns or from word-of-mouth.',
+                  accent: 'text-primary',
+                },
+                {
+                  label: 'Billing Company',
+                  pillar: 'Collections',
+                  problem: 'Collection rate dropped from 96% to 89% over six months. Nobody flagged it. The practice owner found out from their accountant at year-end.',
+                  accent: 'text-destructive',
+                },
+                {
+                  label: 'Recall Software',
+                  pillar: 'Scheduling',
+                  problem: 'Recare scheduled rate is 71% and declining. The software vendor says it\u2019s working. The hygiene chair disagrees.',
+                  accent: 'text-warm',
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="border-t border-border py-8"
                 >
-                  {formState === 'submitting' ? 'Submitting...' : 'Apply to Partner →'}
-                </button>
-              </form>
-            )}
+                  <div className="flex items-baseline gap-3">
+                    <span className="font-heading text-sm font-semibold text-foreground">{item.label}</span>
+                    <span className={`font-heading text-xs ${item.accent}`}>{item.pillar}</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.problem}</p>
+                </motion.div>
+              ))}
+              <div className="border-t border-border" />
+            </motion.div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── What partners get ── */}
+      <section className="py-24 lg:py-32 bg-secondary/30">
+        <Container>
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            className="max-w-xl"
+          >
+            <Eyebrow>What you get</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+              More than a listing. A case study that updates itself.
+            </h2>
+          </motion.div>
+
+          <div className="mt-12">
+            {whatPartnersGet.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ delay: i * 0.07 }}
+                className="grid gap-4 border-t border-border py-8 lg:grid-cols-[240px,1fr] lg:gap-16 lg:items-start"
+              >
+                <h3 className="font-display text-lg tracking-tight text-foreground">{item.title}</h3>
+                <p className="leading-[1.75] text-muted-foreground">{item.description}</p>
+              </motion.div>
+            ))}
+            <div className="border-t border-border" />
+          </div>
+        </Container>
+      </section>
+
+      {/* ── How it works ── */}
+      <section className="py-24 lg:py-32 bg-background">
+        <Container>
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            className="max-w-xl"
+          >
+            <Eyebrow>The process</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+              From application to live scorecard.
+            </h2>
+          </motion.div>
+
+          <div className="mt-12">
+            {howItWorks.map((step, i) => (
+              <motion.div
+                key={step.number}
+                initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ delay: i * 0.07 }}
+                className="grid gap-6 border-t border-border py-10 lg:grid-cols-[80px,1fr] lg:gap-12 lg:items-start"
+              >
+                <span className="font-mono text-4xl font-bold tabular-nums text-muted/30 leading-none">
+                  {step.number}
+                </span>
+                <div>
+                  <h3 className="font-display text-xl tracking-tight text-foreground">{step.title}</h3>
+                  <p className="mt-3 leading-[1.75] text-muted-foreground">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+            <div className="border-t border-border" />
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Who joins ── */}
+      <section className="py-24 bg-secondary/30">
+        <Container>
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-24">
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <Eyebrow>Who qualifies</Eyebrow>
+              <h2 className="mt-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+                If you serve dental practices and your results are measurable, you belong here.
+              </h2>
+              <p className="mt-5 leading-[1.75] text-muted-foreground">
+                We only accept partners whose service can be connected to a tracked pillar. If your
+                work touches patient growth, schedule efficiency, or collections \u2014 we can measure it.
+                If it doesn\u2019t, we\u2019ll tell you honestly.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, x: 16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ delay: 0.15 }}
+              className="flex flex-wrap gap-3 lg:pt-2"
+            >
+              {categories.map((cat) => (
+                <span
+                  key={cat}
+                  className="rounded-full border border-border bg-card px-4 py-2 font-heading text-sm font-medium text-foreground shadow-sm"
+                >
+                  {cat}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Free to join ── */}
+      <section className="py-20 bg-background">
+        <Container>
+          <motion.div
+            initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            className="max-w-2xl"
+          >
+            <div className="border-t border-border pt-16">
+              <div className="flex items-baseline gap-5">
+                <span className="font-mono text-[4rem] font-bold tabular-nums leading-none text-primary">
+                  $0
+                </span>
+                <span className="text-muted-foreground">to join the partner marketplace</span>
+              </div>
+              <p className="mt-5 text-lg leading-[1.75] text-muted-foreground">
+                No monthly fee. No per-lead charge. No revenue share. Partners join free because a
+                rich, competitive marketplace serves practices better than a walled garden. If you
+                deliver results, PracticeFront will make that visible \u2014 and practices will find you.
+              </p>
+              <div className="mt-8">
+                <a
+                  href="mailto:daniel@practicefront.com?subject=Partner%20Application"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 font-heading font-semibold text-white shadow-lg hover:bg-primary/90 transition-all"
+                >
+                  Apply to Partner
+                  <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </a>
+              </div>
+              <p className="mt-4 font-heading text-xs text-muted-foreground">
+                We review all applications within 2 business days.
+              </p>
+            </div>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="py-24 bg-secondary/30">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <Eyebrow>FAQ</Eyebrow>
+              <h2 className="mt-4 font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+                Partner questions.
+              </h2>
+            </motion.div>
+            <div className="mt-12 divide-y divide-border">
+              {faqs.map(({ q, a }) => (
+                <details
+                  key={q}
+                  className="group py-6 [&>summary::-webkit-details-marker]:hidden"
+                >
+                  <summary className="flex cursor-pointer items-center justify-between gap-4">
+                    <span className="font-heading text-base font-semibold text-foreground">{q}</span>
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground group-open:rotate-45 transition-transform duration-200">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-4 leading-relaxed text-muted-foreground">{a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-20 bg-surface-inverse">
+        <Container>
+          <div className="max-w-xl">
+            <motion.div
+              initial={prefersReduced ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+                If your service actually works, prove it.
+              </h2>
+              <p className="mt-4 text-white/60">
+                Apply to join the PracticeFront partner marketplace. Free to join. We review all
+                applications within 2 business days.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="mailto:daniel@practicefront.com?subject=Partner%20Application"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 font-heading font-semibold text-white shadow-lg hover:bg-primary/90 transition-all"
+                >
+                  Apply to Partner
+                  <ArrowRightIcon className="size-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </a>
+                <Link
+                  href="/how-it-works"
+                  className="inline-flex items-center rounded-xl border border-white/20 px-8 py-4 font-heading font-semibold text-white/80 hover:border-white/40 hover:text-white transition-all"
+                >
+                  How It Works
+                </Link>
+              </div>
+            </motion.div>
           </div>
         </Container>
       </section>

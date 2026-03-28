@@ -9,7 +9,7 @@ import { AuthButton, AuthError } from '@/components/local/auth-ui'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type PmsType = 'opendental' | 'dentrix' | 'eaglesoft' | 'curve' | 'other'
+type PmsType = 'opendental' | 'dentrix' | 'eaglesoft' | 'other'
 
 interface WizardState {
   practiceName: string
@@ -28,11 +28,10 @@ const STEPS = [
 ]
 
 const PMS_OPTIONS: { value: PmsType; label: string; live: boolean }[] = [
-  { value: 'opendental', label: 'OpenDental',   live: true },
-  { value: 'dentrix',    label: 'Dentrix',      live: false },
-  { value: 'eaglesoft',  label: 'Eaglesoft',    live: false },
-  { value: 'curve',      label: 'Curve Dental', live: false },
-  { value: 'other',      label: 'Other',        live: false },
+  { value: 'opendental', label: 'OpenDental', live: true  },
+  { value: 'dentrix',    label: 'Dentrix',    live: false },
+  { value: 'eaglesoft',  label: 'Eaglesoft',  live: false },
+  { value: 'other',      label: 'Other',      live: false },
 ]
 
 const US_STATES = [
@@ -336,14 +335,35 @@ function ConnectStep({
   saving: boolean
   error: string
 }) {
-  const isOpenDental = pmsType === 'opendental'
+  const [notifyEmail, setNotifyEmail] = useState('')
+  const [notifyPms, setNotifyPms] = useState('')
+  const [notifySent, setNotifySent] = useState(false)
+  const [notifyError, setNotifyError] = useState(false)
+
   const pmsLabel = PMS_OPTIONS.find(p => p.value === pmsType)?.label ?? 'your PMS'
   const isLive = PMS_OPTIONS.find(p => p.value === pmsType)?.live ?? false
+  const isOther = pmsType === 'other'
+
+  async function handleNotify(e: React.FormEvent) {
+    e.preventDefault()
+    if (!notifyEmail || !notifyPms) return
+    try {
+      const res = await fetch('/api/pms-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: notifyEmail, pmsName: notifyPms, source: 'onboarding' }),
+      })
+      if (!res.ok) throw new Error()
+      setNotifySent(true)
+    } catch {
+      setNotifyError(true)
+    }
+  }
 
   return (
     <div>
       <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground">
-        Connect {pmsLabel}
+        Connect {isOther ? 'your PMS' : pmsLabel}
       </h2>
 
       {isLive ? (
@@ -411,17 +431,70 @@ function ConnectStep({
             </div>
           </div>
         </>
+      ) : isOther ? (
+        /* Other PMS — collect name + email so we can prioritize it */
+        <div className="mt-6">
+          <p className="text-sm text-muted-foreground">
+            We&apos;re expanding PMS support based on demand. Tell us which system you use and we&apos;ll let you know when it&apos;s ready.
+          </p>
+
+          {notifySent ? (
+            <div className="mt-6 border-t border-border pt-6">
+              <p className="font-heading text-sm font-semibold text-success">
+                Got it — we&apos;ll reach out when your PMS is supported.
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                In the meantime, continue to your dashboard to explore the platform.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleNotify} className="mt-6 space-y-4 border-t border-border pt-6">
+              <div className="space-y-1.5">
+                <label htmlFor="notifyPms" className="block font-heading text-sm font-medium text-foreground">
+                  Which PMS do you use? <span className="text-destructive">*</span>
+                </label>
+                <input
+                  id="notifyPms"
+                  type="text"
+                  value={notifyPms}
+                  onChange={(e) => setNotifyPms(e.target.value)}
+                  placeholder="e.g. Curve Dental, Carestream, Denticon…"
+                  required
+                  className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/60"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label htmlFor="notifyEmail" className="block font-heading text-sm font-medium text-foreground">
+                  Your email <span className="text-destructive">*</span>
+                </label>
+                <input
+                  id="notifyEmail"
+                  type="email"
+                  value={notifyEmail}
+                  onChange={(e) => setNotifyEmail(e.target.value)}
+                  placeholder="you@practice.com"
+                  required
+                  className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/60"
+                />
+              </div>
+              {notifyError && (
+                <p className="text-xs text-destructive">Something went wrong — please try again.</p>
+              )}
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary/8 px-4 py-2 font-heading text-sm font-semibold text-primary hover:bg-primary/15 transition-colors"
+              >
+                Notify me when it&apos;s ready
+              </button>
+            </form>
+          )}
+        </div>
       ) : (
-        <div className="mt-8 rounded-2xl border border-border bg-card p-8 text-center">
-          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-muted">
-            <ActivityIcon className="size-5 text-muted-foreground" />
-          </div>
-          <h3 className="font-heading text-base font-semibold text-foreground">
-            {pmsLabel} integration coming soon
-          </h3>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            We&apos;re actively building this integration. You&apos;ll be notified by email as soon as it&apos;s ready.
-            In the meantime, you can still set up your dashboard and explore the platform.
+        /* Dentrix / Eaglesoft — known timeline, no form needed */
+        <div className="mt-6 border-t border-border pt-6">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {pmsLabel} integration is planned for 2026. You&apos;ll receive an email as soon as it&apos;s available.
+            Continue to your dashboard to explore the platform with sample data in the meantime.
           </p>
         </div>
       )}

@@ -151,8 +151,22 @@ export const partnerPractices = pgTable('partner_practices', {
   index('pp_practice_idx').on(t.practiceId),
 ])
 
+// ─── PMS integration requests ──────────────────────────────────────────────────
+// Collected from /integrations "Request your PMS" form and the onboarding
+// wizard when a practice selects a PMS we don't support yet.
+
+export const pmsRequests = pgTable('pms_requests', {
+  id: text('id').primaryKey(),
+  email: text('email').notNull(),
+  pmsName: text('pms_name').notNull(),
+  practiceId: text('practice_id').references(() => practices.id, { onDelete: 'set null' }),
+  source: text('source').notNull().default('integrations'), // 'integrations' | 'onboarding'
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+})
+
 export type User = typeof users.$inferSelect
 export type Practice = typeof practices.$inferSelect
 export type HealthSnapshot = typeof healthSnapshots.$inferSelect
 export type Partner = typeof partners.$inferSelect
 export type PartnerPractice = typeof partnerPractices.$inferSelect
+export type PmsRequest = typeof pmsRequests.$inferSelect
