@@ -6,6 +6,25 @@ import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
 import { Container } from '@/components/local/container'
 
+// ─── Ambient node field ────────────────────────────────────────────────────────
+
+const AMBIENT_CTA_NODES = [
+  { id: 'ac1',  cx:   80, cy:  60, r: 2.0, color: 'hsl(234 85% 68%)', dur: 5.2, delay: 0.0 },
+  { id: 'ac2',  cx:  180, cy: 185, r: 1.5, color: 'hsl(270 65% 65%)', dur: 6.8, delay: 1.2 },
+  { id: 'ac3',  cx:   38, cy: 305, r: 2.5, color: 'hsl(152 58% 46%)', dur: 4.5, delay: 2.1 },
+  { id: 'ac4',  cx:  225, cy: 445, r: 1.8, color: 'hsl(234 85% 68%)', dur: 7.0, delay: 0.7 },
+  { id: 'ac5',  cx:  115, cy: 535, r: 1.5, color: 'hsl(28 80% 58%)',  dur: 5.8, delay: 1.8 },
+  { id: 'ac6',  cx: 1105, cy:  88, r: 2.0, color: 'hsl(152 58% 46%)', dur: 6.2, delay: 0.3 },
+  { id: 'ac7',  cx:  978, cy: 205, r: 1.5, color: 'hsl(234 85% 68%)', dur: 4.8, delay: 1.5 },
+  { id: 'ac8',  cx: 1145, cy: 342, r: 2.5, color: 'hsl(270 65% 65%)', dur: 5.5, delay: 0.9 },
+  { id: 'ac9',  cx: 1052, cy: 462, r: 1.8, color: 'hsl(28 80% 58%)',  dur: 7.2, delay: 2.4 },
+  { id: 'ac10', cx:  918, cy: 542, r: 1.5, color: 'hsl(152 58% 46%)', dur: 4.2, delay: 0.6 },
+  { id: 'ac11', cx:  418, cy:  28, r: 1.5, color: 'hsl(234 85% 68%)', dur: 6.5, delay: 1.0 },
+  { id: 'ac12', cx:  782, cy:  52, r: 1.8, color: 'hsl(270 65% 65%)', dur: 5.0, delay: 1.9 },
+  { id: 'ac13', cx:  348, cy: 572, r: 1.5, color: 'hsl(28 80% 58%)',  dur: 6.0, delay: 0.4 },
+  { id: 'ac14', cx:  852, cy: 568, r: 2.0, color: 'hsl(0 72% 62%)',   dur: 4.7, delay: 2.6 },
+]
+
 export function FinalCTASection() {
   const prefersReduced = useReducedMotion()
   const ref = useRef<HTMLElement>(null)
@@ -37,6 +56,32 @@ export function FinalCTASection() {
         }}
         aria-hidden="true"
       />
+
+      {/* Ambient data node field */}
+      <svg
+        viewBox="0 0 1200 600"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {/* Sparse hairline connections */}
+        <line x1="80"  y1="60"  x2="180" y2="185" stroke="hsl(234 85% 68%)" strokeWidth="0.4" strokeOpacity="0.07" />
+        <line x1="38"  y1="305" x2="225" y2="445" stroke="hsl(234 85% 68%)" strokeWidth="0.4" strokeOpacity="0.07" />
+        <line x1="1105" y1="88" x2="978" y2="205" stroke="hsl(234 85% 68%)" strokeWidth="0.4" strokeOpacity="0.07" />
+        <line x1="1145" y1="342" x2="1052" y2="462" stroke="hsl(234 85% 68%)" strokeWidth="0.4" strokeOpacity="0.07" />
+        <line x1="418" y1="28"  x2="782" y2="52"  stroke="hsl(234 85% 68%)" strokeWidth="0.4" strokeOpacity="0.05" />
+        {/* Breathing dots */}
+        {AMBIENT_CTA_NODES.map(({ id, cx, cy, r, color, dur, delay }) => (
+          <motion.circle
+            key={id}
+            cx={cx} cy={cy} r={r}
+            fill={color}
+            fillOpacity="0.06"
+            animate={{ fillOpacity: [0.06, 0.22, 0.06] }}
+            transition={{ duration: dur, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut', delay }}
+          />
+        ))}
+      </svg>
 
       {/* Top diagonal mask */}
       <div

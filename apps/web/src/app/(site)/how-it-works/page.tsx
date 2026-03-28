@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import {
   DatabaseIcon, ActivityIcon, ZapIcon,
@@ -114,6 +114,77 @@ const faqs = [
   },
 ]
 
+// ─── Data pipeline visualization ──────────────────────────────────────────────
+
+function PipelineDiagram() {
+  const prefersReduced = useReducedMotion()
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="mx-auto mt-10 max-w-lg"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 560 80" className="w-full overflow-visible" aria-hidden="true">
+        <defs>
+          <path id="hiw-pp0" d="M 42 40 L 229 40" fill="none" />
+          <path id="hiw-pp1" d="M 251 40 C 330 40 375 14 436 14" fill="none" />
+          <path id="hiw-pp2" d="M 251 40 L 436 40" fill="none" />
+          <path id="hiw-pp3" d="M 251 40 C 330 40 375 66 436 66" fill="none" />
+          <filter id="hiw-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="1.5" result="b" />
+            <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <radialGradient id="hiw-hub-g" cx="38%" cy="35%" r="65%">
+            <stop offset="0%" stopColor="hsl(234 70% 78%)" />
+            <stop offset="100%" stopColor="hsl(234 75% 52%)" />
+          </radialGradient>
+        </defs>
+        {/* Route lines */}
+        <path d="M 42 40 L 229 40" fill="none" stroke="hsl(234 75% 55%)" strokeWidth="0.8" strokeDasharray="4 6" strokeOpacity="0.30" strokeLinecap="round" />
+        <path d="M 251 40 C 330 40 375 14 436 14" fill="none" stroke="hsl(234 75% 55%)" strokeWidth="0.8" strokeDasharray="4 6" strokeOpacity="0.30" strokeLinecap="round" />
+        <path d="M 251 40 L 436 40" fill="none" stroke="hsl(28 75% 48%)" strokeWidth="0.8" strokeDasharray="4 6" strokeOpacity="0.30" strokeLinecap="round" />
+        <path d="M 251 40 C 330 40 375 66 436 66" fill="none" stroke="hsl(270 60% 58%)" strokeWidth="0.8" strokeDasharray="4 6" strokeOpacity="0.30" strokeLinecap="round" />
+        {/* Traveling packets */}
+        {!prefersReduced && (
+          <>
+            <circle r="2.4" fill="hsl(234 75% 55%)" fillOpacity="0.90">
+              <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.0s"><mpath href="#hiw-pp0" /></animateMotion>
+            </circle>
+            <circle r="2.4" fill="hsl(234 75% 55%)" fillOpacity="0.90">
+              <animateMotion dur="1.6s" repeatCount="indefinite" begin="0.3s"><mpath href="#hiw-pp1" /></animateMotion>
+            </circle>
+            <circle r="2.4" fill="hsl(28 75% 48%)" fillOpacity="0.90">
+              <animateMotion dur="1.6s" repeatCount="indefinite" begin="0.6s"><mpath href="#hiw-pp2" /></animateMotion>
+            </circle>
+            <circle r="2.4" fill="hsl(270 60% 58%)" fillOpacity="0.90">
+              <animateMotion dur="1.6s" repeatCount="indefinite" begin="0.9s"><mpath href="#hiw-pp3" /></animateMotion>
+            </circle>
+          </>
+        )}
+        {/* PMS source node */}
+        <circle cx={42} cy={40} r={9} fill="hsl(234 75% 55%)" fillOpacity="0.10" stroke="hsl(234 75% 55%)" strokeWidth="0.8" strokeOpacity="0.38" />
+        <text x={42} y={43.5} fontSize="5" textAnchor="middle" fontFamily="monospace" fontWeight="bold" fill="hsl(234 75% 55%)" fillOpacity="0.72">PMS</text>
+        {/* Hub */}
+        <circle cx={240} cy={40} r={17} fill="none" stroke="hsl(234 75% 55%)" strokeWidth="0.5" strokeOpacity="0.12" />
+        <circle cx={240} cy={40} r={11} fill="url(#hiw-hub-g)" fillOpacity="0.82" filter="url(#hiw-glow)" />
+        <text x={240} y={43.5} fontSize="3.8" textAnchor="middle" fontFamily="monospace" fontWeight="bold" fill="white" fillOpacity="0.88">PF Hub</text>
+        {/* Output pillar nodes + labels */}
+        <circle cx={444} cy={14} r={7} fill="hsl(234 75% 55%)" fillOpacity="0.12" stroke="hsl(234 75% 55%)" strokeWidth="0.8" strokeOpacity="0.45" />
+        <text x={456} y={17.5} fontSize="5" fontFamily="monospace" fill="hsl(234 75% 55%)" fillOpacity="0.72">Patients</text>
+        <circle cx={444} cy={40} r={7} fill="hsl(28 75% 48%)" fillOpacity="0.12" stroke="hsl(28 75% 48%)" strokeWidth="0.8" strokeOpacity="0.45" />
+        <text x={456} y={43.5} fontSize="5" fontFamily="monospace" fill="hsl(28 75% 48%)" fillOpacity="0.72">Scheduling</text>
+        <circle cx={444} cy={66} r={7} fill="hsl(270 60% 58%)" fillOpacity="0.12" stroke="hsl(270 60% 58%)" strokeWidth="0.8" strokeOpacity="0.45" />
+        <text x={456} y={69.5} fontSize="5" fontFamily="monospace" fill="hsl(270 60% 58%)" fillOpacity="0.72">Collections</text>
+      </svg>
+    </motion.div>
+  )
+}
+
+// ─── Page ──────────────────────────────────────────────────────────────────────
+
 export default function HowItWorksPage() {
   return (
     <>
@@ -135,6 +206,7 @@ export default function HowItWorksPage() {
             <Subheading size="lg" className="mt-6">
               Three steps. Under 10 minutes to your first health scan. No tech team required.
             </Subheading>
+            <PipelineDiagram />
           </div>
         </Container>
       </section>

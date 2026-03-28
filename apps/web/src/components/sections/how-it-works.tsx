@@ -12,7 +12,7 @@ const steps = [
     icon: DatabaseIcon,
     title: 'Connect',
     description:
-      'Link your practice management system in 10 minutes. Read-only. No migration, no disruption.',
+      'Link your OpenDental database in 10 minutes. No migration, no disruption.',
     detail: 'Your data never leaves your network',
   },
   {
@@ -20,7 +20,7 @@ const steps = [
     icon: ActivityIcon,
     title: 'Monitor',
     description:
-      'Your Three Pillars update daily. Green means healthy. Red means act. That\'s it.',
+      'Your Three Pillars update daily. Green means healthy. Red means act.',
     detail: 'Updated every 24 hours · Alerts when needed',
   },
   {
@@ -28,7 +28,7 @@ const steps = [
     icon: ZapIcon,
     title: 'Act',
     description:
-      'See which partner to call, or connect with a vetted alternative from our marketplace.',
+      'PracticeFront shows you which partner to call, or connects you with a better one.',
     detail: 'Replace what\'s not working — fast',
   },
 ]
@@ -133,7 +133,7 @@ export function HowItWorksSection() {
             href="/how-it-works"
             className="group inline-flex items-center gap-2 font-heading text-sm font-semibold text-primary hover:gap-3 transition-all duration-200"
           >
-            See the full walkthrough
+            See How It Works
             <ArrowRightIcon className="size-4" />
           </Link>
         </motion.div>

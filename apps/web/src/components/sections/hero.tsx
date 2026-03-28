@@ -509,7 +509,7 @@ function FloatingCard({
 
 // ─── Trust items ──────────────────────────────────────────────────────────────
 
-const TRUST = ['Works with any PMS', 'No credit card required', 'Setup in 10 minutes'] as const
+const TRUST = ['Works with OpenDental', 'No credit card required', 'Setup in 10 minutes'] as const
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 

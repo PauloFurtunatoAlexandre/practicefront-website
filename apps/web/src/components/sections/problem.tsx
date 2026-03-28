@@ -4,6 +4,84 @@ import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { Container } from '@/components/local/container'
 
+// ─── Frozen ecosystem background ──────────────────────────────────────────────
+
+const FROZEN_HUB = { cx: 268, cy: 292 }
+
+const FROZEN_NODES = [
+  { id: 'fn1', cx: 310, cy:  88, r: 5.5, dur: 5.8, delay: 0.0 },
+  { id: 'fn2', cx:  72, cy: 160, r: 4.0, dur: 4.9, delay: 1.3 },
+  { id: 'fn3', cx: 348, cy: 248, r: 3.5, dur: 6.2, delay: 0.6 },
+  { id: 'fn4', cx: 112, cy: 320, r: 5.0, dur: 4.7, delay: 1.9 },
+  { id: 'fn5', cx: 284, cy: 400, r: 4.0, dur: 5.5, delay: 0.9 },
+  { id: 'fn6', cx:  56, cy: 432, r: 3.0, dur: 4.3, delay: 2.2 },
+  { id: 'fn7', cx: 364, cy: 468, r: 2.5, dur: 6.8, delay: 0.4 },
+  { id: 'fn8', cx: 196, cy: 200, r: 1.8, dur: 5.1, delay: 1.7 },
+  { id: 'fn9', cx: 160, cy:  80, r: 1.5, dur: 4.6, delay: 2.8 },
+]
+
+const FROZEN_ROUTES = [
+  { id: 'fr0', d: 'M 268 292 Q 289 190 310 88'  },
+  { id: 'fr1', d: 'M 268 292 Q 170 226 72 160'  },
+  { id: 'fr2', d: 'M 268 292 Q 308 270 348 248' },
+  { id: 'fr3', d: 'M 268 292 Q 190 306 112 320' },
+  { id: 'fr4', d: 'M 268 292 Q 276 346 284 400' },
+  { id: 'fr5', d: 'M 268 292 Q 162 362 56 432'  },
+  { id: 'fr6', d: 'M 268 292 Q 316 380 364 468' },
+  { id: 'fr7', d: 'M 310 88 Q 235 134 196 200'  },
+]
+
+function FrozenEcosystemSVG({ prefersReduced }: { prefersReduced: boolean | null }) {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <svg
+        viewBox="0 0 420 560"
+        className="absolute right-0 top-0 h-full w-1/2"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {/* Frozen routes — dashed, no particles, dim */}
+        {FROZEN_ROUTES.map(({ id, d }) => (
+          <path
+            key={id}
+            d={d}
+            fill="none"
+            stroke="rgba(255,255,255,0.055)"
+            strokeWidth="0.8"
+            strokeDasharray="3 14"
+            strokeLinecap="round"
+          />
+        ))}
+        {/* Hub — no glow, locked */}
+        <circle cx={FROZEN_HUB.cx} cy={FROZEN_HUB.cy} r={32} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+        <circle cx={FROZEN_HUB.cx} cy={FROZEN_HUB.cy} r={19} fill="rgba(255,255,255,0.02)" />
+        <circle cx={FROZEN_HUB.cx} cy={FROZEN_HUB.cy} r={6}  fill="rgba(255,255,255,0.05)" />
+        {/* Satellite nodes — very slow ghostly pulse */}
+        {FROZEN_NODES.map(({ id, cx, cy, r, dur, delay }) => (
+          <g key={id}>
+            <motion.circle
+              cx={cx} cy={cy} r={r + 6}
+              fill="none"
+              stroke="rgba(255,255,255,0.05)"
+              strokeWidth="0.6"
+              animate={prefersReduced ? {} : { opacity: [0.6, 0.08, 0.6] }}
+              transition={{ duration: dur, repeat: Number.POSITIVE_INFINITY, delay, ease: 'easeInOut' }}
+            />
+            <motion.circle
+              cx={cx} cy={cy} r={r}
+              fill="rgba(255,255,255,0.07)"
+              animate={prefersReduced ? {} : { opacity: [0.4, 0.9, 0.4] }}
+              transition={{ duration: dur, repeat: Number.POSITIVE_INFINITY, delay, ease: 'easeInOut' }}
+            />
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+// ─── Section data ──────────────────────────────────────────────────────────────
+
 const painPoints = [
   { stat: '1×', unit: '/mo', label: 'Your billing report arrives. By then it\'s too late to act.' },
   { stat: '~3', unit: 'mo', label: 'Before most owners notice the practice is slipping.' },
@@ -57,6 +135,9 @@ export function ProblemSection() {
         aria-hidden="true"
       />
 
+      {/* Frozen data ecosystem — right half background */}
+      <FrozenEcosystemSVG prefersReduced={prefersReduced} />
+
       <Container className="relative">
         {/* Top eyebrow */}
         <motion.div
@@ -97,8 +178,9 @@ export function ProblemSection() {
               className="mt-6 text-lg leading-[1.75] text-white/50"
             >
               You&apos;re seeing patients back-to-back. Your billing company sends a monthly
-              report you don&apos;t have time to read. Your marketing agency says things are
-              great. Your collections are... probably fine?
+              report you do not have time to read. Your marketing agency says things are
+              great. Your collections are... probably fine? Most practice owners do not know
+              their practice is in trouble until it is expensive to fix.
             </motion.p>
 
             <motion.p
@@ -106,10 +188,10 @@ export function ProblemSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: 0.25 }}
-              className="mt-5 text-lg font-semibold text-white/90"
+              className="mt-5 text-lg leading-[1.75] text-white/50"
             >
-              Most practice owners don&apos;t know their practice is in trouble until it&apos;s
-              expensive to fix.
+              You do not need another dashboard to babysit. You need a faster way to know
+              whether the practice is healthy and whether the people you pay are actually helping.
             </motion.p>
 
             {/* Quote */}

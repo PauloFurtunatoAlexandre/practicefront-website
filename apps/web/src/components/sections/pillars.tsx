@@ -29,7 +29,7 @@ const pillars = [
     title: 'Scheduling',
     tagline: 'Is your schedule working as hard as it should?',
     description:
-      'Track no-show cost, recare coverage, and unscheduled treatment so hidden production doesn\'t stay trapped in charts.',
+      'Track no-show cost, recare coverage, and unscheduled treatment so hidden production does not stay trapped in charts.',
     color: 'warm' as const,
     accentFrom: 'hsl(28 75% 48%)',
     accentTo: 'hsl(38 85% 55%)',
@@ -111,8 +111,8 @@ export function PillarsSection() {
             </h2>
             <p className="mt-5 text-lg leading-[1.7] text-muted-foreground">
               Most dental software gives you more data. PracticeFront gives you a clearer signal.
-              In one view, see whether your patient base is healthy, your schedule is productive,
-              and you&apos;re collecting what you produce.
+              In one view, you can see whether your patient base is healthy, whether your schedule
+              is doing its job, and whether you are actually collecting what you produce.
             </p>
           </motion.div>
         </div>
