@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRightIcon, CheckIcon } from 'lucide-react'
 import { Container } from '@/components/local/container'
@@ -16,10 +17,30 @@ const included = [
 
 export function PricingCalloutSection() {
   const prefersReduced = useReducedMotion()
+  const ref = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rawY = useTransform(scrollYProgress, [0, 1], [0, -30])
+  const bgY = useSpring(rawY, { stiffness: 70, damping: 26 })
 
   return (
-    <section className="relative overflow-hidden py-24 lg:py-32 bg-secondary/30">
-      <Container>
+    <section ref={ref} className="relative overflow-hidden py-24 lg:py-32 bg-secondary/30">
+      {/* Parallax background accent */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        style={prefersReduced ? undefined : { y: bgY }}
+        aria-hidden="true"
+      >
+        <div
+          className="absolute right-0 top-0 h-full w-1/2 opacity-50"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 70% at 80% 50%, hsl(234 75% 55% / 0.06), transparent)',
+          }}
+        />
+      </motion.div>
+
+      <Container className="relative">
         <motion.div
           initial={prefersReduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}

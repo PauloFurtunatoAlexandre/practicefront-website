@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { StarIcon } from 'lucide-react'
 import { Container } from '@/components/local/container'
 import { Eyebrow, Heading } from '@/components/local/text'
@@ -38,10 +39,30 @@ const trustStats = [
 
 export function SocialProofSection() {
   const prefersReduced = useReducedMotion()
+  const ref = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rawY = useTransform(scrollYProgress, [0, 1], [0, -40])
+  const bgY = useSpring(rawY, { stiffness: 60, damping: 24 })
 
   return (
-    <section className="relative py-24 lg:py-32 bg-background">
-      <Container>
+    <section ref={ref} className="relative py-24 lg:py-32 bg-background overflow-hidden">
+      {/* Subtle parallax background gradient */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        style={prefersReduced ? undefined : { y: bgY }}
+        aria-hidden="true"
+      >
+        <div
+          className="absolute -top-24 left-1/2 -translate-x-1/2 h-96 w-[800px] rounded-full opacity-30"
+          style={{
+            background:
+              'radial-gradient(ellipse, hsl(234 75% 55% / 0.07) 0%, transparent 70%)',
+          }}
+        />
+      </motion.div>
+
+      <Container className="relative">
         {/* Trust stats */}
         <motion.div
           initial={prefersReduced ? false : { opacity: 0, y: 20 }}
