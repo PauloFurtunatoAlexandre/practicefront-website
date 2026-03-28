@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'For Partners',
   description:
-    'Good vendors welcome accountability. PracticeFront lets dental service providers be visible in the practices they serve. Apply to join the partner network.',
+    'If your dental service actually works, PracticeFront will prove it. Join the partner marketplace free — get a verified performance scorecard and qualified leads from practices that need what you do.',
   openGraph: {
     title: 'For Partners — Good Vendors Welcome Accountability',
     description:
-      'Join PracticeFront\'s partner network. Be visible in the practices you serve. Pay $20–25/month per connected practice. No revenue share.',
+      'PracticeFront connects dental service providers to practices through verified, data-backed performance scores. Free to join. Apply today.',
   },
 }
 

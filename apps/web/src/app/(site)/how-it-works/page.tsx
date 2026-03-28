@@ -344,7 +344,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-foreground">
+      <section className="py-20 bg-surface-inverse">
         <Container>
           <div className="mx-auto max-w-xl text-center">
             <Heading as="h2" size="xl" className="text-white">

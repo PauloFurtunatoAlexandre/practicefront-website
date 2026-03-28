@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 }
 import { PMSLogosSection } from '@/components/sections/pms-logos'
 import { ProblemSection } from '@/components/sections/problem'
+import { ValuePropSection } from '@/components/sections/value-prop'
 import { PillarsSection } from '@/components/sections/pillars'
+import { ProductClaritySection } from '@/components/sections/product-clarity'
 import { PartnerAccountabilitySection } from '@/components/sections/partner-accountability'
 import { HowItWorksSection } from '@/components/sections/how-it-works'
 import { SocialProofSection } from '@/components/sections/social-proof'
@@ -26,7 +28,9 @@ export default function HomePage() {
       <HeroSection />
       <PMSLogosSection />
       <ProblemSection />
+      <ValuePropSection />
       <PillarsSection />
+      <ProductClaritySection />
       <PartnerAccountabilitySection />
       <HowItWorksSection />
       <SocialProofSection />

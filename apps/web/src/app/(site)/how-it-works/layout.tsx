@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'How It Works',
   description:
-    'PracticeFront connects to your practice management system in under 10 minutes — read-only, no data migration. See how Three Pillars monitoring works.',
+    'PracticeFront monitors Patients, Scheduling, and Collections daily — and shows you which vendor to call when something\'s red. Free dashboard. Setup in 10 minutes on OpenDental.',
   openGraph: {
-    title: 'How PracticeFront Works — Under 10 Minutes to Your First Health Scan',
+    title: 'How PracticeFront Works — 10-Second Practice Health Scan',
     description:
-      'Connect your PMS, get daily pillar scores, and know exactly which partner to call when something\'s off. Free for dental practices.',
+      'Three Pillars. Daily scores. Weekly email every Monday. See exactly what\'s working and what\'s not — without reading another 40-page billing report.',
   },
 }
 

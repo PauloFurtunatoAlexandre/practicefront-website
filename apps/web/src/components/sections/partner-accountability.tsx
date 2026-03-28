@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ShieldCheckIcon, AlertCircleIcon, ArrowRightIcon, CheckCircle2Icon } from 'lucide-react'
 import Link from 'next/link'
 import { Container } from '@/components/local/container'
-import { Eyebrow, Heading, Subheading, GradientText } from '@/components/local/text'
+import { Eyebrow, Heading, Subheading } from '@/components/local/text'
 
 const partners = [
   {
@@ -172,16 +172,16 @@ export function PartnerAccountabilitySection() {
               <Eyebrow>Partner accountability</Eyebrow>
               <Heading as="h2" size="2xl" className="mt-4">
                 Know if your vendors are{' '}
-                <GradientText>earning their fees.</GradientText>
+                <span className="text-primary">earning their fees.</span>
               </Heading>
               <Subheading size="lg" className="mt-6">
-                When a pillar turns red, PracticeFront doesn&apos;t just tell you what&apos;s
+                When a pillar turns red, PracticeFront does not just tell you what is
                 wrong — it shows you which partner is responsible and connects you to a vetted
                 alternative if you need one.
               </Subheading>
               <p className="mt-4 font-semibold text-foreground">
                 Your billing company either improves their numbers or loses the account.
-                That&apos;s how it should work.
+                That is how it should work.
               </p>
             </motion.div>
 
@@ -200,17 +200,17 @@ export function PartnerAccountabilitySection() {
               ))}
             </motion.ul>
 
-            <motion.blockquote
+            <motion.div
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: 0.3 }}
-              className="mt-10 rounded-xl border-l-4 border-primary bg-primary/5 py-4 pl-6 pr-4"
+              className="mt-10 border-t border-border pt-6"
             >
-              <p className="font-display italic text-lg text-foreground/80">
+              <p className="font-display italic text-lg text-foreground/60">
                 &ldquo;Data without action is just anxiety.&rdquo;
               </p>
-            </motion.blockquote>
+            </motion.div>
 
             <motion.div
               initial={prefersReduced ? false : { opacity: 0, y: 16 }}

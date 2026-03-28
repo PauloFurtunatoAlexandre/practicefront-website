@@ -67,7 +67,7 @@ export default function PartnersPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-foreground py-24 lg:py-32">
+      <section className="relative overflow-hidden bg-surface-inverse py-24 lg:py-32">
         <div
           className="pointer-events-none absolute inset-0"
           style={{

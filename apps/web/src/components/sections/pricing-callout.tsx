@@ -59,19 +59,17 @@ export function PricingCalloutSection() {
                 }}
               />
               <div className="relative">
-                <span className="inline-flex rounded-full bg-success/10 px-3 py-1 font-heading text-xs font-semibold text-success">
+                <Heading as="h2" size="xl" className="mt-0">
                   Free for practices. Always.
-                </span>
-                <Heading as="h2" size="xl" className="mt-4">
-                  No subscription. No credit card. No catch.
                 </Heading>
                 <div className="mt-6 flex items-end gap-2">
                   <span className="font-mono text-6xl font-bold tabular-nums text-foreground">$0</span>
                   <span className="mb-2 text-muted-foreground font-heading">/month for practices</span>
                 </div>
                 <Subheading className="mt-4">
-                  We make money when partners pay to participate — openly, not quietly. Partners
-                  pay $20–25 per connected practice.
+                  PracticeFront is free for dental practices. Full Three Pillars monitoring,
+                  partner performance tracking, and marketplace access are included. We make money
+                  when partners pay to participate — openly, not quietly.
                 </Subheading>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">

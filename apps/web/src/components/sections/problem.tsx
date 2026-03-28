@@ -108,7 +108,7 @@ export function ProblemSection() {
     <section ref={ref} className="relative overflow-hidden py-28 lg:py-40">
       {/* Parallax background */}
       <motion.div
-        className="absolute inset-0 bg-foreground"
+        className="absolute inset-0 bg-surface-inverse"
         style={prefersReduced ? undefined : { backgroundPositionY: bgY }}
         aria-hidden="true"
       />
@@ -194,18 +194,6 @@ export function ProblemSection() {
               whether the practice is healthy and whether the people you pay are actually helping.
             </motion.p>
 
-            {/* Quote */}
-            <motion.blockquote
-              initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ delay: 0.38 }}
-              className="mt-10 border-l-2 border-primary/60 pl-5"
-            >
-              <p className="font-display italic text-xl text-white/70 leading-relaxed">
-                &ldquo;Data without action is just anxiety.&rdquo;
-              </p>
-            </motion.blockquote>
           </div>
 
           {/* Right: stat cards */}
@@ -214,41 +202,26 @@ export function ProblemSection() {
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12 } } }}
-            className="flex flex-col gap-4"
+            className="flex flex-col"
           >
             {painPoints.map(({ stat, unit, label }) => (
               <motion.div
                 key={stat}
                 variants={staggerItem}
-                className="group relative overflow-hidden rounded-2xl border border-white/8 bg-white/4 p-6 backdrop-blur-sm transition-colors hover:bg-white/6"
+                className="flex items-end justify-between gap-6 border-t border-white/10 py-7"
               >
-                {/* Hover glow */}
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: 'radial-gradient(circle at 30% 50%, hsl(234 85% 68% / 0.08), transparent 60%)' }} />
-
-                <div className="flex items-baseline gap-1">
-                  <span className="font-mono text-5xl font-bold tabular-nums text-primary leading-none">
+                <div className="flex items-baseline gap-1.5 shrink-0">
+                  <span className="font-mono text-6xl font-bold tabular-nums text-primary/90 leading-none tracking-tight">
                     {stat}
                   </span>
                   {unit && (
-                    <span className="font-mono text-xl text-primary/60 leading-none">{unit}</span>
+                    <span className="font-mono text-xl text-primary/30 leading-none">{unit}</span>
                   )}
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-white/45">{label}</p>
+                <p className="text-sm leading-relaxed text-white/40 text-right max-w-[190px]">{label}</p>
               </motion.div>
             ))}
-
-            {/* Bottom call */}
-            <motion.div
-              variants={staggerItem}
-              className="rounded-2xl border border-primary/25 bg-primary/10 p-6 backdrop-blur-sm"
-            >
-              <p className="font-heading text-base font-semibold text-white/90">
-                PracticeFront is the 10-second answer.
-              </p>
-              <p className="mt-1.5 text-sm text-white/50">
-                Green means healthy. Red means act. That&apos;s it.
-              </p>
-            </motion.div>
+            <div className="border-t border-white/10" />
           </motion.div>
         </div>
       </Container>

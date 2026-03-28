@@ -465,14 +465,8 @@ function FloatingCard({
       >
         {/* Top edge shine */}
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/65 to-transparent" />
-        {/* Left accent bar — glows on hover */}
-        <motion.div
-          animate={{ opacity: hovered ? 1 : 0.7 }}
-          transition={{ duration: 0.2 }}
-          className={`absolute inset-y-0 left-0 w-[3px] bg-linear-to-b ${s.bar}`}
-        />
 
-        <div className="p-4 pl-[18px]">
+        <div className="p-4">
           <p className="font-heading text-[9px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
             {label}
           </p>
@@ -782,9 +776,8 @@ export function HeroSection() {
                   initial={prefersReduced ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 + i * 0.07, type: 'spring', stiffness: 220, damping: 24 }}
-                  className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/90 p-4 pl-5 shadow-sm backdrop-blur-sm"
+                  className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/90 p-4 shadow-sm backdrop-blur-sm"
                 >
-                  <div className={`absolute inset-y-0 left-0 w-[3px] bg-linear-to-b ${STATUS[c.status].bar}`} />
                   <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent" />
                   <p className="font-heading text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">{c.label}</p>
                   <p className={`mt-1.5 font-mono text-xl font-bold tabular-nums leading-none ${STATUS[c.status].num}`}>{c.value}</p>

@@ -105,9 +105,7 @@ export function PillarsSection() {
             </span>
             <h2 className="mt-4 font-display text-4xl tracking-tight text-foreground sm:text-5xl lg:text-[3rem]">
               One view.{' '}
-              <span className="bg-linear-to-br from-primary via-[hsl(250,80%,62%)] to-[hsl(280,70%,65%)] bg-clip-text text-transparent">
-                Three signals.
-              </span>
+              <span className="text-primary">Three signals.</span>
             </h2>
             <p className="mt-5 text-lg leading-[1.7] text-muted-foreground">
               Most dental software gives you more data. PracticeFront gives you a clearer signal.

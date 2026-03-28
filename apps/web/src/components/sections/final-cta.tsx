@@ -32,7 +32,7 @@ export function FinalCTASection() {
   const glowY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%'])
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-32 lg:py-48 bg-foreground">
+    <section ref={ref} className="relative overflow-hidden py-32 lg:py-48 bg-surface-inverse">
       {/* Parallax radial glow */}
       <motion.div
         className="pointer-events-none absolute inset-0"
